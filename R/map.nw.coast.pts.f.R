@@ -1,4 +1,4 @@
-function(pts = NULL, cex = 0.5, levels = c(30, 100, 300, 700), US.EEZ = T, zoom = F, longrange = c(-132, -117), latrange = c(30, 
+map.nw.coast.pts.f <- function(pts = NULL, cex = 0.5, levels = c(30, 100, 300, 700), US.EEZ = T, zoom = F, longrange = c(-132, -117), latrange = c(30, 
 	51), shade = F, new.graph = T, identify. = F, pts.col = 1, Size.Graph = 1, ...)
 {
 	plot.bubble.zero.cross <- function(x, y, z, z.max = NULL, maxsize = 0.3, cross.cex = 0.5, cross.col = 2, num.col = 4, 
