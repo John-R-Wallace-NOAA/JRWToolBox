@@ -1,6 +1,6 @@
-\name{JRWToolBox}
+\name{JRWToolBox-package}
+\alias{JRWToolBox-package}
 \alias{JRWToolBox}
-\alias{ToolBox}
 \docType{package}
 \title{
 This package includes functions built by John Wallace for anyone to use at their own risk.
@@ -11,7 +11,7 @@ More about what it does (maybe more than one line)
 }
 \details{
 \tabular{ll}{
-Package: \tab ThorsonUtilities\cr
+Package: \tab JRWToolBox\cr
 Type: \tab Package\cr
 Version: \tab 1.0\cr
 Date: \tab 2015-08-03\cr
