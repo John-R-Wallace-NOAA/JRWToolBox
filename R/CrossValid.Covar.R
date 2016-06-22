@@ -27,7 +27,9 @@ out <- NULL
 }
 
 
+if(F) {
 
+# Example
 
 x <- seq(0, 100, len=1000)
 y <- 3 + 4*x + rnorm(1000, sd=4)
@@ -54,12 +56,12 @@ summary(glm(Y ~L, family=binomial))$cov.scaled
 
 CrossValid.Covar(P, L, family=binomial, iter=500)
 
-1           2            4            6           8 
-0.008962203 0.00801388   0.007341321  0.008275168 0.007606578
+# 1           2            4            6           8 
+# 0.008962203 0.00801388   0.007341321  0.008275168 0.007606578
 
 
 
-N <- length(x)
+    N <- length(x)
 
     S1 <- sample(1:N, floor(N/2))
     S2 <- sample(1:N, ceiling(N/2))
@@ -72,6 +74,6 @@ N <- length(x)
    # Y2.HAT.2 <- F1$coef[1] +  F1$coef[2] * x[S2]
 
     F2 <- glm(Y2.HAT ~ x[S2], family=binomial)
-
-
+    
+}
 
