@@ -8,6 +8,8 @@ write.clip <- function (x, digits = 1, sep = "\t", quote = F, Round = T, ...)
     else write.matrix(x, "clipboard", sep = sep, ...)
 }
 
+if(F) {
+
 write.clip.OLD <- function (x, digits = 1, row = F, col = T, sep = "\t", quote = F, Round = T, ...) 
 {
     if (all(apply(x,2,is.numeric)) & Round) 
@@ -16,3 +18,4 @@ write.clip.OLD <- function (x, digits = 1, row = F, col = T, sep = "\t", quote =
     else write.table(x, "clipboard", row = row, col = col, sep = sep, quote = quote, ...)
 }
 
+}
