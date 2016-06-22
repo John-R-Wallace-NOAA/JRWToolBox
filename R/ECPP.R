@@ -6,6 +6,9 @@ ECPP <- function(N=657, COL.FUNC = Colors, pick= !tones, tones = F, Repeat = 1, 
 #    //                                                      //   
 #     ////////////////////////////////////////////////////////  
 
+   # Example of tones- the DOS executable 'xecho' is needed for 'tones' to work.
+   # ECPP(tones="A4G4J5N5R6S5X5Y4Z4Z5d6g6h5h5h4i3f3d2Z1U0K0K2M7P7J5L5M3U")
+   # ECPP(tones="A5Q5T4O4Q4T4W4Y4b4Y4W4T4Q4N7L")
 
         sort.f <- function(x, col = 1, reverse = F, renumber = T)
         {
@@ -102,9 +105,6 @@ ECPP <- function(N=657, COL.FUNC = Colors, pick= !tones, tones = F, Repeat = 1, 
 }
 
 
-ECPP(tones="A4G4J5N5R6S5X5Y4Z4Z5d6g6h5h5h4i3f3d2Z1U0K0K2M7P7J5L5M3U")
-
-ECPP(tones="A5Q5T4O4Q4T4W4Y4b4Y4W4T4Q4N7L")
 
 
 
