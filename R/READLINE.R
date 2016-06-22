@@ -1,4 +1,4 @@
-READLINE <- function 
+READLINE <- function() 
 {
         print(eval(parse(), .GlobalEnv))
         savehistory()
