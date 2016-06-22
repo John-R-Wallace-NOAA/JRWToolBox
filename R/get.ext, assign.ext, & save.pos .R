@@ -27,10 +27,10 @@ ls.ext <- function(file) {
  }
 
 
-  con <- 
-## print the value to see what objects were created.
-print(load(url("http://some.where.net/R/data/example.rda")))
-close(con) # url() always opens the connection
+#  con <- 
+#  ## print the value to see what objects were created.
+#  print(load(url("http://some.where.net/R/data/example.rda")))
+#  close(con) # url() always opens the connection
 
 
 
