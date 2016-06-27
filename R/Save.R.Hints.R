@@ -101,6 +101,33 @@ getAnywhere("trueRandom")
 
 base::ls(loadNamespace("mcmc"))
 
+# =======================================================
+
+# Matching and pushing out functions and data to e.g. load into GitHub
+
+tmp <- match.f(LL(4), LL(2), 1, 1, 1)
+names(tmp)[4] <- "Match"
+tmp <- renum(tmp)
+names(tmp)[1] <- "Names"
+
+tmp <- renum(tmp[tmp$Class %in% "function",])
+
+for ( i in 1:nrow(tmp)) {
+
+     TMP <- get(tmp$Names[i], pos = 4)
+     attr(TMP, "source") <- NULL
+     sink(paste("ToolBox/", tmp$Names[i], ".R", sep=""))
+     cat(paste(tmp$Names[i], "<- "))
+     print(TMP)
+     sink()
+}
+
+dump("nw.poly", file=paste("ToolBox/nw.poly.R"))
+dump("Spec.code.052002", file=paste("ToolBox/Spec.code.052002.R"))
+
+
+
+
 
 
 }
