@@ -16,4 +16,4 @@ winvi <- function (x, editor = "w:\\bin\\winvi.exe", ...)
     }
     assign(subx, x, envir = .GlobalEnv)
 }
-<environment: namespace:utils>
+
