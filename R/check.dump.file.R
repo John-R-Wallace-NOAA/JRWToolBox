@@ -1,4 +1,4 @@
-function (dump.location) 
+check.dump.file <- function (dump.location) 
 {
     local({
         load(dump.location)

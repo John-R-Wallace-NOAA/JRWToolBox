@@ -1,4 +1,4 @@
-function (SQL, VAR = "", VAL = "", File = F, dsn = "AFSC", uid = "wallacej", 
+import.AFSC.sql <- function (SQL, VAR = "", VAL = "", File = F, dsn = "AFSC", uid = "wallacej", 
     pwd = AFSC.PW, View.Parsed.Only = F) 
 {
     require(RODBC)

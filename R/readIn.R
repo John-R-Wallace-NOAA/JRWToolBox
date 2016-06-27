@@ -1,4 +1,4 @@
-function (ncol, nlines, ...) 
+readIn <- function (ncol, nlines, ...) 
 {
     x <- matrix(scan(, "", quiet = TRUE, nlines = nlines), ncol = ncol, 
         byrow = TRUE)

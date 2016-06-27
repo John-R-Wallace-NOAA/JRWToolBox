@@ -1,4 +1,4 @@
-function (formula, data, effects, modelFile = "model.bug", initFile = "getInits.R", 
+glmmBUGS <- function (formula, data, effects, modelFile = "model.bug", initFile = "getInits.R", 
     family = c("bernoulli", "binomial", "poisson", "gaussian"), link = "", invlink = "inverse",
     spatial = NULL, spatialEffect = NULL, reparam = NULL, prefix = NULL, program = "WinBUGS", ...) 
 {

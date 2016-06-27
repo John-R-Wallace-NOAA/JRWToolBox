@@ -1,4 +1,4 @@
-function (objs.list, sec = 0.3, forth.and.back = F, repeat.) 
+play.movie <- function (objs.list, sec = 0.3, forth.and.back = F, repeat.) 
 {
     N <- length(objs.list)
     if (forth.and.back) 

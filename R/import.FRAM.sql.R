@@ -1,4 +1,4 @@
-function (SQL = "BDS_Age.sql", VAR = "SPID", VAL = "YTRK", pwd, 
+import.FRAM.sql <- function (SQL = "BDS_Age.sql", VAR = "SPID", VAL = "YTRK", pwd, 
     File = T) 
 {
     require(RODBC)

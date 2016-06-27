@@ -1,4 +1,4 @@
-function (fit) 
+plot.dev.resid.f <- function (fit) 
 {
     rs <- resid(fit, type = "deviance")
     plot(predict(fit), rs, xlab = "Linear Predictors", ylab = "Deviance Residuals")

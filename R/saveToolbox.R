@@ -1,4 +1,4 @@
-function(pos = grep("JRW", search()))
+saveToolbox <- function(pos = grep("JRW", search()))
   { 
 
         save(list=ls(pos=grep("JRW", search())), file="w:/ALL_USR/JRW/R/library/JRW.tb/JRW.tb.Rdata")

@@ -1,4 +1,4 @@
-function (x) 
+BIC.f <- function (x) 
 {
     LL <- logLik(x)
     cat("\n")

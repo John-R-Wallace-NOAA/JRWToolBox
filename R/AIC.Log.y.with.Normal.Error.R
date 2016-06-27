@@ -1,4 +1,4 @@
-function (FIT, k = 2, verbose = TRUE) 
+AIC.Log.y.with.Normal.Error <- function (FIT, k = 2, verbose = TRUE) 
 {
     x <- resid(FIT)
     N <- length(x)

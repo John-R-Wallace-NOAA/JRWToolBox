@@ -1,4 +1,4 @@
-function (x, len. = 15) 
+tail.OLD <- function (x, len. = 15) 
 {
     M <- is.matrix(x) | is.data.frame(x)
     if (M) 

@@ -1,4 +1,4 @@
-function () 
+save.all <- function () 
 {
     "Save backup of image"
     save.image(file = paste("BACKUP ", paste(strsplit(date(), 

@@ -1,4 +1,4 @@
-function (vector = F, head = T, as.is = T, ...) 
+read.clip <- function (vector = F, head = T, as.is = T, ...) 
 {
     if (vector) 
         as.numeric(unlist(as.vector(read.table("clipboard", head = F))))

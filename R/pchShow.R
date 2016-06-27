@@ -1,4 +1,4 @@
-function(extras = c("*",".", "o","O","0","+","-","|","%","#"),
+pchShow <- function(extras = c("*",".", "o","O","0","+","-","|","%","#"),
            cex = 3, ## good for both .Device=="postscript" and "x11"
            col = "red3", bg = "gold", coltext = "brown", cextext = 1.2,
            main = paste("plot symbols :  points (...  pch = *, cex =",

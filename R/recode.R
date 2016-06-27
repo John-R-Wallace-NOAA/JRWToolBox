@@ -1,4 +1,4 @@
-function (var, recodes, as.factor.result, as.numeric.result = TRUE, 
+recode <- function (var, recodes, as.factor.result, as.numeric.result = TRUE, 
     levels) 
 {
     recode.list <- rev(strsplit(recodes, ";")[[1]])

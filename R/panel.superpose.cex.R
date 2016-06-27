@@ -1,4 +1,4 @@
-function (x, y = NULL, subscripts, groups, panel.groups = "panel.xyplot", 
+panel.superpose.cex <- function (x, y = NULL, subscripts, groups, panel.groups = "panel.xyplot", 
     col = NA, col.line = superpose.line$col, col.symbol = superpose.symbol$col, 
     pch = superpose.symbol$pch, cex = superpose.symbol$cex, fill = superpose.symbol$fill, 
     font = superpose.symbol$font, fontface = superpose.symbol$fontface, 

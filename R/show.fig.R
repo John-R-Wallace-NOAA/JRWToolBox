@@ -1,4 +1,4 @@
-function (width = 6.5, height = 5, units = "in", res = 150, ...) 
+show.fig <- function (width = 6.5, height = 5, units = "in", res = 150, ...) 
 {
     FILE <- paste(".\\Figs\\Fig.", FIG.NUM, ".jpg", sep = "")
     printf(FILE)

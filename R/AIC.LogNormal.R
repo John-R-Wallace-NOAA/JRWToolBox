@@ -1,4 +1,4 @@
-function (FIT, k = 2) 
+AIC.LogNormal <- function (FIT, k = 2) 
 {
     x <- resid(FIT)
     N <- length(x)

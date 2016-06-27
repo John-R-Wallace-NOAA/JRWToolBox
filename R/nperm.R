@@ -1,4 +1,4 @@
-function (n, r) 
+nperm <- function (n, r) 
 {
     factorial(n)/factorial(n - r)
 }

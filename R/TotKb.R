@@ -1,4 +1,4 @@
-function () 
+TotKb <- function () 
 {
     require(gdata)
     Sum <- sum(ll()$KB)

@@ -1,4 +1,4 @@
-function(n, border = if (n < 32) "light gray" else NA,
+demo.pal <- function(n, border = if (n < 32) "light gray" else NA,
            main = paste("color palettes;  n=", n),
            ch.col = c("rainbow(n, start=.7, end=.1)", "heat.colors(n)",
                       "terrain.colors(n)", "topo.colors(n)",

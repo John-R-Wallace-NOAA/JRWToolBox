@@ -1,4 +1,4 @@
-function (data, FUNC, step = 2000, tol = 1e-08, max.N = 30, plot = F) 
+Boot <- function (data, FUNC, step = 2000, tol = 1e-08, max.N = 30, plot = F) 
 {
     OLD <- FUNC(data, step)
     DIFF <- NULL

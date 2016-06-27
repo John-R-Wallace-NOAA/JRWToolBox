@@ -1,4 +1,4 @@
-function (file, ...) 
+load.f <- function (file, ...) 
 {
     ls.ext <- function(file) {
         local({

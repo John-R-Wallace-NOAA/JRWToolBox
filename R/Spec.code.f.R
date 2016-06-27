@@ -1,4 +1,4 @@
-function(com.name, year = "052002", char = F)
+Spec.code.f <- function(com.name, year = "052002", char = F)
 {
 	Spec.code.name <- paste("Spec.code.", year, sep = "")
 	Spec.code <- eval(parse(text = Spec.code.name))

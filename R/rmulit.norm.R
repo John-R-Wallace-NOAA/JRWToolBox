@@ -1,4 +1,4 @@
-function (nt, dim = 1, mn, std, crr, lg = F) 
+rmulit.norm <- function (nt, dim = 1, mn, std, crr, lg = F) 
 {
     if (missing(mn)) 
         mn <- rep(0, dim)

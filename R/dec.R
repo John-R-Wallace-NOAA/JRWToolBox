@@ -1,4 +1,4 @@
-function (x) 
+dec <- function (x) 
 {
     x - trunc(x)
 }

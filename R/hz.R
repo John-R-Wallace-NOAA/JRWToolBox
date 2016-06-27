@@ -1,4 +1,4 @@
-function (x) 
+hz <- function (x) 
 {
     x[!is.finite(x)] <- 0
     if (all(x == 0)) 

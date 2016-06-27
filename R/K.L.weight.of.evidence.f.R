@@ -1,4 +1,4 @@
-function (AIC, digits = 7) 
+K.L.weight.of.evidence.f <- function (AIC, digits = 7) 
 {
     cat("\n")
     delta <- AIC - min(AIC)

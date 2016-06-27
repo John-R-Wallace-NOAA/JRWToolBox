@@ -1,4 +1,4 @@
-function (col = 2, lty = 1, ...) 
+Draw.poly <- function (col = 2, lty = 1, ...) 
 {
     xy <- locator()
     xy <- data.frame(xy)

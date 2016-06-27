@@ -1,4 +1,4 @@
-function () 
+exit <- function () 
 {
     q("no", , F)
 }

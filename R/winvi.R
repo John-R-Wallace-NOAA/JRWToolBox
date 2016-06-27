@@ -1,4 +1,4 @@
-function (x, editor = "w:\\bin\\winvi.exe", ...) 
+winvi <- function (x, editor = "w:\\bin\\winvi.exe", ...) 
 {
     subx <- substitute(x)
     if (is.name(subx)) 

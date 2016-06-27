@@ -1,4 +1,4 @@
-function (N = 10000, M = 5000) 
+Illustrate.Central.Limit.Theorem <- function (N = 10000, M = 5000) 
 {
     graphics.off()
     par(mfrow = c(1, 2), pty = "s")

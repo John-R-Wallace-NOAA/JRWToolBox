@@ -1,4 +1,4 @@
-function (x, z = x, y = NULL, uiw, liw = uiw, ylo = NULL, yhi = NULL, 
+plotCI.jrw <- function (x, z = x, y = NULL, uiw, liw = uiw, ylo = NULL, yhi = NULL, 
     ..., sfrac = 0.01, ymax = NULL, add = FALSE, col = "black") 
 {
     if (is.list(x)) {

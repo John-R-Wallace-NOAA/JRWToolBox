@@ -1,4 +1,4 @@
-function(...) {
+Table <- function(...) {
 
    table(..., useNA = "ifany")
 }

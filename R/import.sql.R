@@ -1,4 +1,4 @@
-function (SQL, VAR = "", VAL = "", File = F, dsn, uid, pwd, View.Parsed.Only = F) 
+import.sql <- function (SQL, VAR = "", VAL = "", File = F, dsn, uid, pwd, View.Parsed.Only = F) 
 {
     require(RODBC)
     require(Hmisc)

@@ -1,4 +1,4 @@
-function (cex = 1, sub.cex = 0.8) 
+trellis.cex <- function (cex = 1, sub.cex = 0.8) 
 {
     trellis.par.set("add.text", list(cex = cex))
     trellis.par.set("box.dot", list(cex = cex))

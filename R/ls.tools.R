@@ -1,4 +1,4 @@
-function (..., pos = grep("JRW", search())) 
+ls.tools <- function (..., pos = grep("JRW", search())) 
 {
     ls(..., pos = pos)
 }

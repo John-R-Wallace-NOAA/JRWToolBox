@@ -1,4 +1,4 @@
-function () 
+Symbols <- function () 
 {
     Pex <- 3
     ipch <- 1:(np <- 25 + 11)

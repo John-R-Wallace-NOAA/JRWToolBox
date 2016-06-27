@@ -1,4 +1,4 @@
-function (M1, M2, M3, Years = All.Years, Areas = NULL, Depl = F, 
+Plot.SSB.3.Models <- function (M1, M2, M3, Years = All.Years, Areas = NULL, Depl = F, 
     ylim = NULL, ylim.depl = c(0, 100), gp = 0) 
 {
     if (is.null(M1$timeseries$Area)) 

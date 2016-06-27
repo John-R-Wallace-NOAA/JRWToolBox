@@ -1,1 +1,1 @@
-function (x)  .Primitive("length")
+len <- function (x)  .Primitive("length")

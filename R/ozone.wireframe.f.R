@@ -1,4 +1,4 @@
-function()
+ozone.wireframe.f <- function()
 {
 	attach(environmental)
         on.exit(detach(2))

@@ -1,4 +1,4 @@
-function (pattern, max.show = Inf, reverse = F, ...) 
+Hist <- function (pattern, max.show = Inf, reverse = F, ...) 
 {
     file1 <- tempfile("Rrawhist")
     savehistory(file1)
