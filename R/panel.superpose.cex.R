@@ -71,4 +71,4 @@ panel.superpose.cex <- function (x, y = NULL, subscripts, groups, panel.groups =
         }
     }
 }
-<environment: namespace:lattice>
+
