@@ -1,0 +1,4 @@
+function(...) {
+
+   table(..., useNA = "ifany")
+}
