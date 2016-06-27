@@ -1,4 +1,4 @@
-function (pos = 1, unit = "KB", digits = 0, dim = FALSE, sort = FALSE, 
+ll <- function (pos = 1, unit = "KB", digits = 0, dim = FALSE, sort = FALSE, 
     class = NULL, invert = FALSE, ...) 
 {
 
@@ -94,4 +94,4 @@ function (pos = 1, unit = "KB", digits = 0, dim = FALSE, sort = FALSE,
     object.frame <- sort.f(renum(cbind(row.names(object.frame), object.frame[,1:2])),3)
     return(object.frame)
 }
-<environment: namespace:gdata>
+
