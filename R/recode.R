@@ -49,4 +49,4 @@ recode <- function (var, recodes, as.factor.result, as.numeric.result = TRUE,
     }
     result
 }
-<environment: namespace:car>
+
