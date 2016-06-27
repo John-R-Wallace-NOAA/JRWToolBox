@@ -6,3 +6,4 @@ All functions were written by me except for:
 - mvnorm, dmulti.norm, Inside.polygon, inside.xypolygon & verify.xypolygon: Uploads from various Splus user group website(s)
 - The panel.XX functions are value added versions from the ones in the lattice package.
  
+Install with: devtools::install_github("John-R-Wallace/R-ToolBox")
