@@ -7,7 +7,7 @@ All functions were written by me except for (this list under construction):
 - mvnorm, dmulti.norm, Inside.polygon, inside.xypolygon, & verify.xypolygon: Uploads from various Splus user group website(s)
 - Some panel.XX functions are value added versions from the ones in the lattice package, however panel.chull, panel.chull.2.peels, & panel.conf.pred.band are mine.
 - ll() is value added from a function by Arni Magnusson found in the package 'gdata'
-- Symbols is an old version of pchShow given in the help of the points() function
+- Symbols is an old version of pchShow given in the help of the points function
  
 
 
