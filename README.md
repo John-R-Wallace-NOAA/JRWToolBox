@@ -1,7 +1,7 @@
 R-ToolBox
 ============================
 
-All functions were written by me except for (this list under construction):
+All functions were written by me except for (this list is under construction):
 
 - xlsxToR: Substantial fix and value added changes; see the fork off of xlsxToR: https://gist.github.com/John-R-Wallace/3eab07a93877e87ec968
 - mvnorm, dmulti.norm, Inside.polygon, inside.xypolygon, & verify.xypolygon: submissions to various Splus user group website(s)
