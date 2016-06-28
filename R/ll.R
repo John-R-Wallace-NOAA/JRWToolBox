@@ -58,12 +58,12 @@ ll <- function (pos = 1, unit = "KB", digits = 0, dim = FALSE, sort = FALSE,
         original.rank <- rank(names(pos))
         pos <- as.environment(pos)
     }
-    if (length(ls(pos, ...)) == 0) {
+    if (length(base::ls(pos, ...)) == 0) {
         object.frame <- data.frame()
     }
     else if (environmentName(as.environment(pos)) == "Autoloads") {
-        object.frame <- data.frame(rep("function", length(ls(pos, 
-            ...))), rep(0, length(ls(pos, ...))), row.names = ls(pos, 
+        object.frame <- data.frame(rep("function", length(base::ls(pos, 
+            ...))), rep(0, length(base::ls(pos, ...))), row.names = base::ls(pos, 
             ...))
         if (dim) {
             object.frame <- cbind(object.frame, rep("", nrow(object.frame)))
@@ -72,16 +72,16 @@ ll <- function (pos = 1, unit = "KB", digits = 0, dim = FALSE, sort = FALSE,
         else names(object.frame) <- c("Class", unit)
     }
     else {
-        class.vector <- sapply(ls(pos, ...), get.object.class, 
+        class.vector <- sapply(base::ls(pos, ...), get.object.class, 
             pos = pos)
-        size.vector <- sapply(ls(pos, ...), get.object.size, 
+        size.vector <- sapply(base::ls(pos, ...), get.object.size, 
             pos = pos)
         size.vector <- round(size.vector/denominator, digits)
         object.frame <- data.frame(class.vector = class.vector, 
             size.vector = size.vector, row.names = names(size.vector))
         names(object.frame) <- c("Class", unit)
         if (dim) 
-            object.frame <- cbind(object.frame, Dim = sapply(ls(pos, 
+            object.frame <- cbind(object.frame, Dim = sapply(base::ls(pos, 
                 ...), get.object.dim, pos = pos))
     }
     if (!sort && !is.null(original.rank)) 
@@ -92,6 +92,8 @@ ll <- function (pos = 1, unit = "KB", digits = 0, dim = FALSE, sort = FALSE,
             include <- !include
         object.frame <- object.frame[include, ]
     }
+     
+    assign("object.frame", object.frame, pos=1)
 
     object.frame <- sort.f(renum(cbind(row.names(object.frame), object.frame[,1:2])),3)
     return(object.frame)
