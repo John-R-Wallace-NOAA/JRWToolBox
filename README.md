@@ -11,4 +11,6 @@ All functions were written by me except for:
 - Symbols is an old version of pchShow() given in the help of the points() function
  
 
-Install with:     devtools::install_github("John-R-Wallace/R-ToolBox")
+Install with:
+
+    devtools::install_github("John-R-Wallace/R-ToolBox")
