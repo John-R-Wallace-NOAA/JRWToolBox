@@ -26,14 +26,11 @@ gitAFile <- function (URL, type = "function", File = NULL, delete.Object.R = TRU
            File.ASCII <- "Object.R"
         else 
            File.ASCII <- File
-        sink(File.ASCII)
-        cat(paste(readLines(textConnection(getURL(URL))), collapse = "\n"))
-        sink()
+        writeLines(paste(readLines(textConnection(getURL(URL))), collapse = "\n"), File.ASCII)
         if(delete.Object.R & is.null(File))
            on.exit(file.remove("Object.R"))
         if(is.null(File))
           Source("Object.R")
     }
 }
-
 
