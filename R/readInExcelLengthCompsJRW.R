@@ -5,8 +5,10 @@ readInExcelLengthCompsJRW <- function (file, sheet = "LengthComps", skip = 7) {
         "MinStratumDepth", "MaxStratumDepth", "Length", "NumF", 
         "NumM", "NumUnsexed")
     out <- xlsxToR(file, sheet, head=T, skip=skip, ver=F)
+    cat("\nBefore column name change:\n")
+    print(out[1:3,])
     names(out) <- nombres
-    cat("\nNOTE: column names have been modified from the Excel Sheet. You may want to verify that they match.\n")
-    print(out[1:4,])
+    cat("\n\nAfter column name change:\n")
+    print(out[1:3,])
     invisible(out)
 }
