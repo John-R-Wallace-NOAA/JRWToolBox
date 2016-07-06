@@ -7,5 +7,6 @@ readInExcelLengthCompsJRW <- function (file, sheet = "LengthComps", skip = 7) {
     out <- xlsxToR(file, sheet, head=T, skip=skip, ver=F)
     names(out) <- nombres
     cat("\nNOTE: column names have been modified from the Excel Sheet. You may want to verify that they match.\n")
-    out
+    print(out[1:4,])
+    invisible(out)
 }
