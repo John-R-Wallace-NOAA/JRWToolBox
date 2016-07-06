@@ -5,8 +5,10 @@ readInExcelAgeCompsJRW <- function (file, sheet = "AgeComps", skip = 7)
         "Age", "NumF", "NumM", "NumUnsexed", "LengthedAgeTally", 
         "AgeTallyF", "AgeTallyM", "AgeTallyU")
     out <- xlsxToR(file, sheet, head=T, skip=skip, ver=F)
+    cat("\nBefore column name change:\n")
+    print(out[1:3,])
     names(out) <- nombres
-    cat("\nNOTE: column names have been modified from the Excel Sheet. You may want to verify that they match.\n\n")
-    print(out[1:4,])
+    cat("\n\nAfter column name change:\n")
+    print(out[1:3,])
     invisible(out)
 }
