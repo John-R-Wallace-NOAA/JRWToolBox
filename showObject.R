@@ -1,4 +1,4 @@
-showFile <- function (x, digits = 1, row = F, col = F, sep = "\t", quote = F, ...) 
+showObject <- function (x, digits = 1, row = F, col = F, sep = "\t", quote = F, ...) 
 {
     tmpFile <- tempfile()
     file.create(tmpFile)
