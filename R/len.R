@@ -1,1 +1,1 @@
-len <- function (x)  .Primitive("length")
+len <- function(...) { base::length(...) }
