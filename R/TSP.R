@@ -10,12 +10,11 @@ TSP <- function(funds = Allfunds, plot = TRUE, grid = TRUE) {
    curl_download("https://www.tsp.gov/InvestmentFunds/FundPerformance/index.html", tempFile)
    TSPData <- scan(tempFile, "")
 
-   Prices <- matrix(as.numeric(TSPData[grep("class='packed'",  TSPData) + 1]), ncol = 10, byrow=T)
-   Months <- substring(TSPData[grep("class='leadingCell'",  TSPData)][-1], 21)
-   Days <- substring(TSPData[grep("class='leadingCell'",  TSPData) + 1][-1],1,2)
-   Years <- substring(TSPData[grep("class='leadingCell'",  TSPData) + 2][-1],1,4)
+   Prices <- matrix(as.numeric(TSPData[grep('class="packed"',  TSPData) + 1]), ncol = 10, byrow=T)
+   Months <- substring(TSPData[grep('class="leadingCell"',  TSPData)][-1], 21)
+   Days <- substring(TSPData[grep('class="leadingCell"',  TSPData) + 1][-1],1,2)
+   Years <- substring(TSPData[grep('class="leadingCell"',  TSPData) + 2][-1],1,4)
    Dates <- as.Date(paste(Years, Months, Days, sep="-"), "%Y-%b-%d")
-
    TSPShares <- data.frame(Date = Dates, Prices)
    
    names(TSPShares)[2:11] <- Allfunds
