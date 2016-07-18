@@ -2,7 +2,7 @@
 
 TSP <- function(funds = Allfunds, plot = TRUE, grid = TRUE) {
 
-   " #  Subset of funds: TSP(c("L 2020", "L 2030", "L 2040")) "
+   ' #  Subset of funds: TSP(c("L 2020", "L 2030", "L 2040")) '
 
    Allfunds <- c("L Income", "L 2020", "L 2030", "L 2040", "L 2050", "G Fund", "F Fund", "C Fund", "S Fund", "I Fund")
  
