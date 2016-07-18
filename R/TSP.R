@@ -8,7 +8,7 @@ TSP <- function(funds = Allfunds, plot = TRUE, grid = TRUE) {
  
    tempFile <- tempfile()
    curl_download("https://www.tsp.gov/InvestmentFunds/FundPerformance/index.html", tempFile)
-   TSPData <- scan(tempFile, "")
+   TSPData <- scan(tempFile, "", quiet = TRUE)
 
    Prices <- matrix(as.numeric(TSPData[grep('class="packed"',  TSPData) + 1]), ncol = 10, byrow=T)
    Months <- substring(TSPData[grep('class="leadingCell"',  TSPData)][-1], 21)
