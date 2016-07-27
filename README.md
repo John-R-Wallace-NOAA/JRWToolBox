@@ -14,3 +14,9 @@ All functions were written by me except for (this list is under construction):
 Install with:
 
     devtools::install_github("John-R-Wallace/R-ToolBox")
+    
+Comments are functions:
+
+- Ls() is a replacement for ls() to avoid seeing all the quotes on the object names.
+- dir.use() is a wrapper function which creates a path of sub-directory given, if it doesn't already exist and then returns the      path: some.function(..., path = dir.use('c:/create_this_path_if_needed')
+- showObject() shows an R object in an editor, edit the function to change the default editor for ease of use.
