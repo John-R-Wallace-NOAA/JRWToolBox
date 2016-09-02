@@ -8,7 +8,7 @@ change <- function(x) {
    	detach(pos=pos)
    }
    
-   attach(x, 2, paste("Mydata:", deparse(substitute(x)), sep=""))
+   attach(x, 2, paste("Mydata:", substring(deparse(substitute(x))[1], 1, 30), sep=""))
 
 }
 
