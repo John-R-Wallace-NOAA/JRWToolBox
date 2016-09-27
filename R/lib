@@ -1,0 +1,7 @@
+lib <- function(Package) {
+
+    if(!any(installed.packages()[,1] %in% Package))
+       install.packages(Package)
+    require(Package, character.only = TRUE)
+}
+
