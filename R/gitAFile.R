@@ -11,7 +11,7 @@ gitAFile <- function (URL, type = "function", File = NULL, delete.Object.R = TRU
         ls.ext <- function(file) {
             local({
                 base::source(file, TRUE)
-                base::lsFile
+                base::ls()
             })
         }
         base::source(file, ...)
