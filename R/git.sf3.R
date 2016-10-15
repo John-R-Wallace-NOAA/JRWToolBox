@@ -1,3 +1,3 @@
 g3 <- function(run = TRUE) {
-  sf.name <- gitAFile("https://raw.githubusercontent.com/John-R-Wallace/Scratch/master/sf3.R", run = run)
+  gitAFile("https://raw.githubusercontent.com/John-R-Wallace/Scratch/master/sf3.R", run = run)
 }
