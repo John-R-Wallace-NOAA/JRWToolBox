@@ -1,5 +1,5 @@
 
-gitAFile <- function (URL, type = "function", File = NULL, delete.Object.R = TRUE) 
+gitAFile <- function (URL, run = TRUE, type = "function", File = NULL, delete.Object.R = TRUE) 
 {
   
   '# Use the raw git name, i.e.: "https://raw.githubusercontent.com/John-R-Wallace/R-ToolBox/master/R/panel.conf.pred.band.R"'
@@ -29,8 +29,13 @@ gitAFile <- function (URL, type = "function", File = NULL, delete.Object.R = TRU
         writeLines(paste(readLines(textConnection(getURL(URL))), collapse = "\n"), File.ASCII)
         if(delete.Object.R & is.null(File))
            on.exit(file.remove("Object.R"))
-        if(is.null(File))
-          Source("Object.R")
-    }
+        if(is.null(File)) {
+           s.name <- Source("Object.R")
+           if(run)
+             eval(parse(text = s.name))()
+           else
+             s.name
+        }
+    } 
 }
 
