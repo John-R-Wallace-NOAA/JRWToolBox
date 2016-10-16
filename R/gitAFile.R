@@ -1,5 +1,5 @@
 
-gitAFile <- function (URL, run = TRUE, type = "function", File = NULL, delete.Object.R = TRUE) 
+gitAFile <- function (URL, run = TRUE, show = !run, type = "function", File = NULL, delete.Object.R = TRUE) 
 {
   
   '# Use the raw git name, i.e.: "https://raw.githubusercontent.com/John-R-Wallace/R-ToolBox/master/R/panel.conf.pred.band.R"'
@@ -33,8 +33,12 @@ gitAFile <- function (URL, run = TRUE, type = "function", File = NULL, delete.Ob
            s.name <- Source("Object.R")
            if(run)
              eval(parse(text = s.name))()
-           else
-             s.name
+           else {
+             if(show)
+                 eval(parse(text = s.name))
+             else
+                 s.name
+           }
         }
     } 
 }
