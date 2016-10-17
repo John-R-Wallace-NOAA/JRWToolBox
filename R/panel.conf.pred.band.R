@@ -1,8 +1,8 @@
-if(F) {
-  x_1:100
-  y_3+ 1.3*x + 0.02*x^2 + rnorm(100, 0, 25)
-  xyplot(y~x,panel=panel.conf.pred.band)
-}
+' if(F) { '
+'  x_1:100 '
+'  y_3+ 1.3*x + 0.02*x^2 + rnorm(100, 0, 25) '
+'  xyplot(y~x,panel=panel.conf.pred.band) '
+'  } '
 
 panel.conf.pred.band<-
 function(x, y, type = "p", cex = plot.symbol$cex, pch = plot.symbol$pch, font = 
