@@ -23,14 +23,14 @@ gitAFile <- function (URL, run = TRUE, show = !run, type = "function", File = NU
         return(read.csv(textConnection(getURL(URL))))
     if (type == "function") {
         if(is.null(File))
-           File.ASCII <- "Object.R"
+           File.ASCII <- tempfile()
         else 
            File.ASCII <- File
         writeLines(paste(readLines(textConnection(getURL(URL))), collapse = "\n"), File.ASCII)
         if(delete.Object.R & is.null(File))
-           on.exit(file.remove("Object.R"))
+           on.exit(file.remove(File.ASCII))
         if(is.null(File)) {
-           s.name <- Source("Object.R")
+           s.name <- Source(File.ASCII)
            if(run)
              eval(parse(text = s.name))()
            else {
