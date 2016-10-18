@@ -3,13 +3,13 @@ R-ToolBox
 
 Prologue
 
-Any csv file, script, or R fucntion, including those in this toolbox can be individually downloaded using the function gitAFile() found in this toolbox. (Which could intially be copied from the 'R' directory here and pasted into R.)
+Any csv file, script (of any kind), or R fucntion, including those in this toolbox can be individually downloaded using the function gitAFile() found in this toolbox. (Which could intially be copied from the 'R' directory here and pasted into R.)
 
 For example to download just the popular function match.f() use:
 
     gitAFile('https://raw.githubusercontent.com/John-R-Wallace/R-ToolBox/master/R/match.f.R')
 
-Note the use of the raw github, see: http://rawgit.com/
+Note the use of the raw GitHub, see: http://rawgit.com/
 
 Install the entire package with:
 
