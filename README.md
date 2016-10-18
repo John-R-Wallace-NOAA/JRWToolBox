@@ -1,6 +1,22 @@
 R-ToolBox
 ============================
 
+Prologue
+
+Any csv file, script, or R fucntion, including those in this Tool Box can be individually downloaded using the function gitAFile() found in this toolbox. Which could intially be copied from the 'R' directory here and pasted into R.
+
+For example to download only the popular function match.f() use:
+
+
+Install the entire package with:
+
+    devtools::install_github("John-R-Wallace/R-ToolBox")
+
+
+
+
+    
+
 All functions were written by me except for (this list is under construction):
 
 - xlsxToR: Substantial fix and value added changes; see the fork off of xlsxToR: https://gist.github.com/John-R-Wallace/3eab07a93877e87ec968
@@ -11,9 +27,7 @@ All functions were written by me except for (this list is under construction):
  
 
   
-Install with:
 
-    devtools::install_github("John-R-Wallace/R-ToolBox")
     
 Comments are functions:
 
