@@ -7,7 +7,7 @@ Any csv file, script, or R fucntion, including those in this toolbox can be indi
 
 For example to download only the popular function match.f() use:
 
-https://raw.githubusercontent.com/John-R-Wallace/R-ToolBox/master/R/match.f.R
+    https://raw.githubusercontent.com/John-R-Wallace/R-ToolBox/master/R/match.f.R
 
 Note the use of the raw github, see: http://rawgit.com/
 
