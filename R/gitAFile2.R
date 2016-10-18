@@ -29,7 +29,7 @@ gitAFile2 <- function (URL, run = FALSE, show = !run, type = "function", File = 
         if(delete.R.Object)
            on.exit(file.remove(File.ASCII))
      }
-     if("function") {
+     if(function) {
            s.name <- Source(File.ASCII)
            if(run)
              eval(parse(text = s.name))()
@@ -38,7 +38,7 @@ gitAFile2 <- function (URL, run = FALSE, show = !run, type = "function", File = 
              else
                  s.name
       }
-      if("script") {
+      if(script) {
          if(run)
             source(File.ASCII)
           if(show)
