@@ -34,7 +34,7 @@ gitAFile <- function (URL, run = FALSE, show = !run, type = "function", File = N
            if(run)
              eval(parse(text = s.name))()
            if(show)
-                 eval(parse(text = s.name))
+                 print(eval(parse(text = s.name)))
              else
                  s.name
       }
