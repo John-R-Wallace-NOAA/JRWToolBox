@@ -3,19 +3,19 @@ R-ToolBox
 
 Prologue
 
-Any csv file, script, or R fucntion, including those in this Tool Box can be individually downloaded using the function gitAFile() found in this toolbox. Which could intially be copied from the 'R' directory here and pasted into R.
+Any csv file, script, or R fucntion, including those in this toolbox can be individually downloaded using the function gitAFile() found in this toolbox. (Which could intially be copied from the 'R' directory here and pasted into R.)
 
 For example to download only the popular function match.f() use:
 
+https://raw.githubusercontent.com/John-R-Wallace/R-ToolBox/master/R/match.f.R
+
+Note the use of the raw github, see: http://rawgit.com/
 
 Install the entire package with:
 
     devtools::install_github("John-R-Wallace/R-ToolBox")
 
-
-
-
-    
+============================   
 
 All functions were written by me except for (this list is under construction):
 
@@ -25,11 +25,8 @@ All functions were written by me except for (this list is under construction):
 - ll() is value added from a function by Arni Magnusson found in the package 'gdata'.
 - Symbols is an old version of pchShow given in the help of the points function.
  
-
-  
-
-    
-Comments are functions:
+   
+Comments on functions:
 
 - Ls() is a replacement for ls() to avoid seeing all the quotes on the object names.
 - dir.use() is a wrapper function which creates a path of sub-directory given, if it doesn't already exist and then returns the      path: some.function(..., path = dir.use('c:/create_this_path_if_needed')
