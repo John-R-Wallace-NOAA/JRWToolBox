@@ -5,9 +5,9 @@ Prologue
 
 Any csv file, script (of any kind), or R fucntion, including those in this toolbox can be individually downloaded using the function gitAFile() found in this toolbox. (Which could intially be copied from the 'R' directory here and pasted into R.)
 
-For example to download just the popular function match.f() use:
+For example to download just the lib() function which replaces the 2 stop process of install.packages('foo'); library(foo) with just one step:
 
-    gitAFile('https://raw.githubusercontent.com/John-R-Wallace/R-ToolBox/master/R/match.f.R')
+    gitAFile('https://raw.githubusercontent.com/John-R-Wallace/R-ToolBox/master/R/lib.R')
 
 Note the use of the raw GitHub, see: http://rawgit.com/
 
