@@ -7,7 +7,8 @@ Any csv file, script (of any kind), or R fucntion, including those in this toolb
 
 For example to download just the lib() function which replaces the 2 stop process of install.packages('foo'); library(foo) with just one step use:
 
-    gitAFile('https://raw.githubusercontent.com/John-R-Wallace/R-ToolBox/master/R/lib.R') # lib() saved to .GlobalEnv
+    gitAFile('https://raw.githubusercontent.com/John-R-Wallace/R-ToolBox/master/R/lib.R') 
+    # lib() is saved to .GlobalEnv
 
 Note the use of the raw GitHub, see: http://rawgit.com/
 
