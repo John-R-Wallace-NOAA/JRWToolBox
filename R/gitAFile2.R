@@ -1,4 +1,4 @@
-gitAFile2 <- function (URL, run = FALSE, show = !run, type = "function", File = NULL, delete.R.Object = ifelse(type %in% 'function', TRUE, FALSE)) 
+gitAFile <- function (URL, run = FALSE, show = !run, type = "function", File = NULL, delete.R.Object = ifelse(type %in% 'function', TRUE, FALSE)) 
 {
   
   '# Use the raw git name, i.e.: "https://raw.githubusercontent.com/John-R-Wallace/R-ToolBox/master/R/panel.conf.pred.band.R"'
