@@ -1,4 +1,4 @@
-Optimize <- function (obj, startpar = obj$par, lower = rep(-Inf, length(startpar)), 
+OptimizeJRW <- function (obj, startpar = obj$par, lower = rep(-Inf, length(startpar)), 
     upper = rep(Inf, length(startpar)), getsd = TRUE, control = list(eval.max = 10000, 
         iter.max = 10000, trace = TRUE), savedir = NULL, loopnum = 3, ...)  
 {
