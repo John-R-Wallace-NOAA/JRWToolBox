@@ -20,7 +20,7 @@ TSP <- function(funds = Allfunds, plot = TRUE, grid = TRUE) {
    names(TSPShares)[2:11] <- Allfunds
 
    if(plot) {
-     JRWToolBox::lib(lattice)
+      JRWToolBox::lib(lattice)
       TSPPlot <- data.frame(Date = rep(Dates, 10), Price = c(Prices), Funds = rep(Allfunds, each = 25))
       DATA <- TSPPlot[TSPPlot$Funds %in% funds,]
       DATA$Funds <- factor(DATA$Funds, Allfunds, ordered = TRUE)
