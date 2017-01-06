@@ -1,6 +1,6 @@
 
 
-strSQL <- function(Table, units = 'GB', sampleSize = 5000, dsn = DSN, uid = UID, pwd = PWD) {
+strSQL <- function(Table, units = 'GB', sampleSize = 5000, countBy = NULL, dsn = DSN, uid = UID, pwd = PWD) {
     ' '
     ' Define the SQL information outside the function: '
     ' DSN <- "PacFIN" '
@@ -14,7 +14,7 @@ strSQL <- function(Table, units = 'GB', sampleSize = 5000, dsn = DSN, uid = UID,
     dsn.Table <- paste(dsn, Table, sep=".")
     denominator <- switch(units, KB = 1024, MB = 1024^2, GB = 1024^3, 1)
     ' '
-    rowCount <- as.numeric(import.sql(paste("Select count(*) from", dsn.Table), dsn=dsn, uid=uid, pwd=pwd))
+    rowCount <- as.numeric(JRWToolBox::import.sql(paste("Select count(*) from", dsn.Table), dsn=dsn, uid=uid, pwd=pwd))
     if(rowCount < sampleSize)  sampleSize <- rowCount
     ' '
     Sample <- JRWToolBox::import.sql(paste("Select * from", dsn.Table, "where rownum <=", sampleSize), dsn=dsn, uid=uid, pwd=pwd)
@@ -30,7 +30,11 @@ strSQL <- function(Table, units = 'GB', sampleSize = 5000, dsn = DSN, uid = UID,
     ' '
     cat("\nThe first few rows of", Table, "are:\n")
     print(head(Sample, 4))
+
+    if(!is.null(countBy)) {
+      cat("\n")
+      print(JRWToolBox::sort.f(JRWToolBox::import.sql(paste("select", countBy, ", COUNT(", countBy, ") as Count from", dsn.Table, "group by", countBy), 
+                 dsn = DSN, uid = UID, pwd = PWD)))
+    }
     invisible(Sample)
 }
-
-
