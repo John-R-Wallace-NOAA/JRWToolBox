@@ -1,6 +1,6 @@
 
 
-strSQL <- function(Table, sampleSize = 5000, units = 'GB', dsn="PacFIN", uid="wallacej", pwd=PacFIN.PW) {
+strSQL <- function(Table, units = 'GB', sampleSize = 5000, dsn="PacFIN", uid="wallacej", pwd=PacFIN.PW) {
 
     if (!(is.character(substitute(Table)))) Table <- deparse(substitute(Table))
     ' '
