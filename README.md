@@ -14,7 +14,7 @@ to download just the lib() function which replaces the 2 stop process of install
 
 Note the use of the raw GitHub, see: http://rawgit.com/
 
-Install the entire package with:
+Install or upgrade the package with:
 
     devtools::install_github("John-R-Wallace/R-ToolBox")
 
