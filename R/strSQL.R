@@ -1,7 +1,14 @@
 
 
 strSQL <- function(Table, units = 'GB', sampleSize = 5000, dsn = DSN, uid = UID, pwd = PWD) {
-
+    ' '
+    ' Define the SQL information outside the function: '
+    ' DSN <- "PacFIN" '
+    ' UID <- "wallacej" '
+    ' PWD <- PacFIN.PW '
+    ' '
+    ' Or copy and edit the function to change the defaults of the SQL information directly. '
+    ' '
     if (!(is.character(substitute(Table)))) Table <- deparse(substitute(Table))
     ' '
     dsn.Table <- paste(dsn, Table, sep=".")
