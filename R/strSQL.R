@@ -17,7 +17,7 @@ strSQL <- function(Table, units = 'GB', sampleSize = 5000, dsn = DSN, uid = UID,
     rowCount <- as.numeric(import.sql(paste("Select count(*) from", dsn.Table), dsn=dsn, uid=uid, pwd=pwd))
     if(rowCount < sampleSize)  sampleSize <- rowCount
     ' '
-    Sample <- import.sql(paste("Select * from", dsn.Table, "where rownum <=", sampleSize), dsn=dsn, uid=uid, pwd=pwd)
+    Sample <- JRWToolBox::import.sql(paste("Select * from", dsn.Table, "where rownum <=", sampleSize), dsn=dsn, uid=uid, pwd=pwd)
     ' '
     # print(paste("Select * from", dsn.Table, "where rownum <=", sampleSize))
     ' '
