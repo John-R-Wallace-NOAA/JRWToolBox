@@ -10,8 +10,6 @@ strSQL <- function(Table, units = 'GB', sampleSize = 5000, countBy = NULL, dsn =
     ' Or copy and edit the function to change the defaults of the SQL information directly. '
     ' '
     if (!(is.character(substitute(Table)))) Table <- deparse(substitute(Table))
-    if(!is.null(countBy))
-        if (!(is.character(substitute(countBy)))) countBy <- deparse(substitute(countBy))
     ' '
     dsn.Table <- paste(dsn, Table, sep=".")
     denominator <- switch(units, KB = 1024, MB = 1024^2, GB = 1024^3, 1)
