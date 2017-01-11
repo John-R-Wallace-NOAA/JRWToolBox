@@ -16,7 +16,8 @@ Note the use of the raw GitHub, see: http://rawgit.com/
 
 Install or upgrade the package with:
 
-    if (!require('devtools')) install.packages('devtools')
+    if (!require('devtools')) install.packages('devtools')  # Get devtools if you don't already have it.
+    
     devtools::install_github("John-R-Wallace/R-ToolBox")
 
 ============================   
