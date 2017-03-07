@@ -21,8 +21,7 @@ WCGBTS_Combo_Catch_Wt <- function(Species = "Sebastes pinniger", YearRange = c(2
     if(length(YearRange) == 1)
           YearRange <- c(YearRange, YearRange)
 
-    Vars <- c("scientific_name", "year", "latitude_in_degrees", "longitude_in_degrees", "total_catch_wt_kg", "cpue_kg_per_ha_der", 
-               "operation_dim$vessel_id", "pass", "tow")
+    Vars <- c("scientific_name", "year", "total_catch_wt_kg", "cpue_kg_per_ha_der", "operation_dim$vessel_id", "tow")
 
     ' # Available, but not used: cpue_numbers_per_ha_der, project, date_dim$full_date, performance (as an output column)'
 
@@ -35,14 +34,14 @@ WCGBTS_Combo_Catch_Wt <- function(Species = "Sebastes pinniger", YearRange = c(2
    
     ' # SP.Before <<- SP '
 
-    SP <- rename_columns(SP, newname = c("Year", "cpue", "Vessel", "Pass", "Scientific_Name", "Wt_kg", "Tow"))
+    SP <- rename_columns(SP, newname = c("Year", "cpue", "Vessel", "Scientific_Name", "Wt_kg", "Tow"))
 
     ' # SP.After <<- SP '
     
     SP$Area_Swept_ha <- SP$Wt_kg/SP$cpue
     SP$cpue <- NULL
 
-    SP <- SP[, c("Year", "Pass", "Vessel", "Tow", "Depth_m", "Scientific_Name", "Wt_kg", "Area_Swept_ha")]
+    SP <- SP[, c("Year", "Vessel", "Tow", "Scientific_Name", "Wt_kg", "Area_Swept_ha")]
     ' '
     ' # Match SP to all tows to get the zeros '
     ' '
@@ -52,9 +51,9 @@ WCGBTS_Combo_Catch_Wt <- function(Species = "Sebastes pinniger", YearRange = c(2
                       "performance=Satisfactory,", "date_dim$year>=", YearRange[1], ",date_dim$year<=", YearRange[2], "&variables=", paste0(Vars, collapse = ","))
     All.Tows <- jsonlite::fromJSON(UrlText)
     All.Tows <- rename_columns(All.Tows, newname = c("Year", "Pass", "Vessel", "Tow", "Depth_m", "Longitude_dd", "Latitude_dd"))
-    All.Tows <- All.Tows[!duplicated(paste(All.Tows$Year, All.Tows$Pass, All.Tows$Vessel, All.Tows$Tow)), c("Year", "Pass", "Vessel", "Tow", "Longitude_dd", "Latitude_dd")]
+    All.Tows <- All.Tows[!duplicated(paste(All.Tows$Year, All.Tows$Pass, All.Tows$Vessel, All.Tows$Tow)), c("Year", "Pass", "Vessel", "Tow", "Depth.m", "Longitude_dd", "Latitude_dd")]
     ' '
-    Out <- JRWToolBox::match.f(All.Tows, SP, c("Year", "Pass", "Vessel", "Tow"), c("Year", "Pass", "Vessel", "Tow"), c("Scientific_Name", "Wt_kg", "Area_Swept_ha")) 
+    Out <- JRWToolBox::match.f(All.Tows, SP, c("Year", "Vessel", "Tow"), c("Year", "Vessel", "Tow"), c("Scientific_Name", "Wt_kg", "Area_Swept_ha")) 
     Out$Wt_kg[is.na(Out$Wt_kg)] <- 0.0
     Out$Area_Swept_ha[is.na(Out$Area_Swept_ha)] <- mean(Out$Area_Swept_ha, na.rm=T)
     Out$Scientific_Name <- Species
