@@ -51,7 +51,7 @@ WCGBTS_Combo_Catch_Wt <- function(Species = "Sebastes pinniger", YearRange = c(2
                       "performance=Satisfactory,", "date_dim$year>=", YearRange[1], ",date_dim$year<=", YearRange[2], "&variables=", paste0(Vars, collapse = ","))
     All.Tows <- jsonlite::fromJSON(UrlText)
     All.Tows <- rename_columns(All.Tows, newname = c("Year", "Pass", "Vessel", "Tow", "Depth_m", "Longitude_dd", "Latitude_dd"))
-    All.Tows <- All.Tows[!duplicated(paste(All.Tows$Year, All.Tows$Pass, All.Tows$Vessel, All.Tows$Tow)), c("Year", "Pass", "Vessel", "Tow", "Depth.m", "Longitude_dd", "Latitude_dd")]
+    All.Tows <- All.Tows[!duplicated(paste(All.Tows$Year, All.Tows$Pass, All.Tows$Vessel, All.Tows$Tow)), c("Year", "Pass", "Vessel", "Tow", "Depth_m", "Longitude_dd", "Latitude_dd")]
     ' '
     Out <- JRWToolBox::match.f(All.Tows, SP, c("Year", "Vessel", "Tow"), c("Year", "Vessel", "Tow"), c("Scientific_Name", "Wt_kg", "Area_Swept_ha")) 
     Out$Wt_kg[is.na(Out$Wt_kg)] <- 0.0
