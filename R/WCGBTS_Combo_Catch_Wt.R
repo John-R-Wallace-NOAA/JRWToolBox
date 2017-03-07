@@ -54,7 +54,7 @@ WCGBTS_Combo_Catch_Wt <- function(Species = "Sebastes pinniger", YearRange = c(2
     All.Tows <- rename_columns(All.Tows, newname = c("Year", "Pass", "Vessel", "Tow", "Longitude_dd", "Latitude_dd"))
     All.Tows <- All.Tows[!duplicated(paste(All.Tows$Year, All.Tows$Pass, All.Tows$Vessel, All.Tows$Tow)), c("Year", "Pass", "Vessel", "Tow", "Longitude_dd", "Latitude_dd")]
     ' '
-    Out <- JRWToolBox::match.f(All.Tows, SP, c("Year", "Pass", "Vessel", "Tow"), c("Year", "Pass", "Vessel", "Tow"), c("Scientific_Name", "Wt_kg", "Area_Swept_ha")) 
+    Out <- JRWToolBox::match.f(All.Tows, SP, c("Year", "Pass", "Vessel", "Tow"), c("Year", "Pass", "Vessel", "Tow"), c("Depth_m", "Scientific_Name", "Wt_kg", "Area_Swept_ha")) 
     Out$Wt_kg[is.na(Out$Wt_kg)] <- 0.0
     Out$Area_Swept_ha[is.na(Out$Area_Swept_ha)] <- mean(Out$Area_Swept_ha, na.rm=T)
     Out$Scientific_Name <- Species
