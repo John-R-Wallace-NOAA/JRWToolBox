@@ -6,7 +6,7 @@ WCGBTS_Combo_Catch_Wt <- function(Species = "Sebastes pinniger", YearRange = c(2
      devtools::install_github("John-R-Wallace/R-ToolBox")
    ' '
    " # By using grep() and changing things around I fixed J. Thorson's rename_columns() function found inside the download_catch_rates() function from his FishData paackage "
-   ' # The updated function no longer requires that the order of the names inside of newname and origname to be the same. '
+   ' # The updated function no longer requires the order of the names inside of newname and origname to be the same. '
    ' '
    rename_columns = function(DF, origname = colnames(DF), newname) {
         DF_new = DF
