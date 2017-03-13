@@ -21,7 +21,7 @@ WCGBTS_Combo_Catch_Wt <- function(Species = "Sebastes pinniger", YearRange = c(2
     if(length(YearRange) == 1)
           YearRange <- c(YearRange, YearRange)
 
-    Vars <- c("scientific_name", "year", "total_catch_wt_kg", "cpue_kg_per_ha_der", "operation_dim$vessel_id", "tow")
+    Vars <- c("scientific_name", "year", "total_catch_wt_kg", "cpue_kg_per_ha_der", "vessel", "tow")
 
     ' # Available, but not used: cpue_numbers_per_ha_der, project, date_dim$full_date, performance (as an output column)'
 
@@ -45,7 +45,7 @@ WCGBTS_Combo_Catch_Wt <- function(Species = "Sebastes pinniger", YearRange = c(2
     ' '
     ' # Match SP to all tows to get the zeros '
     ' '
-    Vars <- c("year", "operation_dim$vessel_id", "pass", "tow", "depth_m", "longitude_dd", "latitude_dd")
+    Vars <- c("year", "vessel", "pass", "tow", "depth_m", "longitude_dd", "latitude_dd")
 
     UrlText <- paste0("https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.catch_fact/selection.json?filters=project=Groundfish%20Slope%20and%20Shelf%20Combination%20Survey,", 
                       "performance=Satisfactory,", "date_dim$year>=", YearRange[1], ",date_dim$year<=", YearRange[2], "&variables=", paste0(Vars, collapse = ","))
