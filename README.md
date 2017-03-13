@@ -20,6 +20,10 @@ Install or upgrade the package with:
     
     devtools::install_github("John-R-Wallace/R-ToolBox")
 
+If you want to load the package into R use:
+
+    library(JRWToolBox)    
+
 ============================   
 
 All functions were written by me except for (this list is under construction):
