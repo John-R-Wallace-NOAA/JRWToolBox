@@ -10,7 +10,7 @@ For example use:
     gitAFile('https://raw.githubusercontent.com/John-R-Wallace/R-ToolBox/master/R/lib.R') 
     # lib() is saved to .GlobalEnv
 
-to download just the lib() function which replaces the two step process of install.packages('foo'); library(foo) with just one step; lib(foo).  If the foo package is already installed, then lib(foo) will only do library(foo), hence lib(foo) is all that is needed when installing and/or loading a package from CRAN.
+to download just the lib() function which replaces the two step process of install.packages('foo'); library(foo) with just one step: lib(foo).  If the foo package is already installed, then lib(foo) will only do library(foo), hence lib(foo) is all that is needed when installing and/or loading a package from CRAN.
 
 Note, for the use of a raw GitHub URL see: http://rawgit.com/
 
