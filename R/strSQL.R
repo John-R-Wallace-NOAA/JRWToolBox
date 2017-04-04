@@ -1,6 +1,7 @@
 
 
-strSQL <- function(Table, units = 'GB', sampleSize = 5000, countBy = NULL, dsn = DSN, uid = UID, pwd = PWD) {
+strSQL <- function(Table, units = 'GB', sampleSize = 5000, countBy = NULL, dsn = DSN, uid = UID, 
+                   pwd = PWD, prefix = dsn) {
     ' '
     ' Define the SQL information outside the function: '
     ' DSN <- "PacFIN" '
@@ -11,7 +12,7 @@ strSQL <- function(Table, units = 'GB', sampleSize = 5000, countBy = NULL, dsn =
     ' '
     if (!(is.character(substitute(Table)))) Table <- deparse(substitute(Table))
     ' '
-    dsn.Table <- paste(dsn, Table, sep=".")
+    dsn.Table <- paste(prefix, Table, sep=".")
     denominator <- switch(units, KB = 1024, MB = 1024^2, GB = 1024^3, 1)
     ' '
     rowCount <- as.numeric(JRWToolBox::import.sql(paste("Select count(*) from", dsn.Table), dsn=dsn, uid=uid, pwd=pwd))
