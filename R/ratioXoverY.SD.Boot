@@ -1,4 +1,4 @@
-CR.boot <- function(x, y, N=10000, progress = F, skip.bar = 100, hist = F) {
+ratioXoverY.SD.Boot <- function(x, y, N=10000, progress = F, skip.bar = 100, hist = F) {
 
  bar <- function(i, n, size = 60, char = ">", prefix = memory.size())
  {
