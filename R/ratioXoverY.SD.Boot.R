@@ -21,7 +21,7 @@ ratioXoverY.SD.Boot <- function(x, y, N=1e6, XoverXplusY = FALSE, iter.min = 100
   '  # With tol = 0.001 elasped time is 100-209 sec (340 elasped sec on Tantulas)  '
   '  # system.time(tmp <- ratioXoverY.SD.Boot(x, y,  XoverXplusY = T, tol=0.01, plot=T, Times.LT.tol = 5)); cat("\n"); tmp  '
   '  '
-  '  # converenge is much slower for a simple ratio of sum(x)/sum(y)  '
+  '  # Convergence is much slower for a simple ratio of sum(x)/sum(y)  '
   '  # system.time(tmp <- ratioXoverY.SD.Boot(x,y, tol=0.01, plot=T, Times.LT.tol = 5)); cat("\n"); tmp  '
   '  '
   
