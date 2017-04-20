@@ -1,4 +1,4 @@
-CR.boot.x.part.of.y <- function(x, y, N=1e6, iter.min = 100000, progress = 10000, plot. = T, tol = 0.00001, Times.LT.tol = 200, BurnIn.Prop =  0.30, delta = 0.0000001) {
+ratioXoverXplusY.SD.Boot <- function(x, y, N=1e6, iter.min = 100000, progress = 10000, plot. = T, tol = 0.00001, Times.LT.tol = 200, BurnIn.Prop =  0.30, delta = 0.0000001) {
 
  # ------------------ Functions ----------------------
   cumsd <- function(x) {
