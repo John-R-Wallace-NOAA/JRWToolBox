@@ -1,4 +1,5 @@
-plot.design.jrw <- function(x, y = NULL, fun = mean, xaxt = "n", xlab = "Factors", ylab = "", ylim, data = NULL, ask = T, stagger.text = F, delta.stagger = 1, text.cex = 0.4, ...)
+plot.design.jrw <- function(x, y = NULL, fun = mean, xaxt = "n", xlab = "Factors", ylab = "", ylim, ask = T, stagger.text = T, 
+			    delta.stagger = 1, text.cex = 0.4, ...)
 {
    
 # utils::str(esoph)
