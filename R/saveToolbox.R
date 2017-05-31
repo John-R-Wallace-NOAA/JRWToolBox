@@ -3,10 +3,10 @@ saveToolbox <- function (pos = grep("JRW", search()), Loc = paste0(substring(get
 {
     save(list = JRWToolBox::Ls(pos = grep("JRW", search())), file = Loc)
     cat("\n\n")
-    save(list = JRWToolBox::Ls(pos = pos), file = paste(Loc, "BACKUP",  paste0(paste0(strsplit(date(), ":")[[1]], collapse = ":"), ".dmp")))
+    save(list = JRWToolBox::Ls(pos = pos), file = paste(Loc, "BACKUP",  paste0(paste0(strsplit(date(), ":")[[1]], collapse = "."), ".dmp")))
     cat("\n\n")
     save(list = JRWToolBox::Ls(pos = pos), file = paste(Loc2, 
-        "BACKUP", paste0(paste0(strsplit(date(), ":")[[1]], collapse = ":"), ".dmp")))
+        "BACKUP", paste0(paste0(strsplit(date(), ":")[[1]], collapse = "."), ".dmp")))
     cat("\n\n")
     tmp <- gdata::ll(pos = pos)
     FUNC <- dimnames(tmp[tmp$Class == "function", ])[[1]]
