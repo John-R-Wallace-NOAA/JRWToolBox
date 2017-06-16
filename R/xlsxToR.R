@@ -35,7 +35,18 @@
 
 
 xlsxToR <- function(file, keep_sheets = NULL, skip = NULL, header = TRUE, simplify_names = TRUE, verbose = FALSE) {
-  
+ ' # Function to convert any character columns to numeric if they are all numbers ' 
+    charToNum <- function(x) {
+      for( i in (1:ncol(x))[sapply(x, is.character)]) {
+          numNA <- sum(is.na(x[,i]) | x[,i] %in% c("NA", ""))
+          Test <- as.numeric(x[,i])
+          if(numNA == sum(is.na(Test)))
+              x[,i] <- Test
+      }
+     x
+    }
+' # ----------------------------------------------------------------------------------- '
+'  '
   JRWToolBox::lib(XML)
   JRWToolBox::lib(plyr)
   JRWToolBox::lib(pbapply)
@@ -262,5 +273,5 @@ xlsxToR <- function(file, keep_sheets = NULL, skip = NULL, header = TRUE, simpli
     names(workbook) <- sheet_names$name
   }
   
-  workbook
+   charToNum(workbook)
 }
