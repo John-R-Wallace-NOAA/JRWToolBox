@@ -1,11 +1,13 @@
-convert.hr.min.to.decimal.hrs <- function(hr.min) {
+convert.hr.min.to.decimal.hrs <-  function (hr.min, sep = ":") {
 
-  convert <- function(hr.min) {
-                if(is.na(hr.min))
-                return(NA)
-                tmp <- as.numeric(get.subs(hr.min, sep = ":"))
-                tmp[1] + tmp[2]/60
-          }
+' # ---------- '
+  FUNC <- function (hr.min, sep = ":") {
+    if (hr.min %in% "<NA>") 
+        return(NA)
+    tmp <- as.numeric(get.subs(hr.min, sep = sep))
+    tmp[1] + tmp[2]/60
+ }
+' # ---------- '
+ apply(as.matrix(hr.min, ncol = 1), 1, FUNC, sep = sep)
 
-  apply(matrix(hr.min, ncol=1), 1, convert)
 }
