@@ -36,7 +36,7 @@ function(cx, cy, r, fill.col = NULL, border.col = fill.col, yaxis = T, facets.nu
 		if(neg.flag)
 			circle.f(cx, cy, r * 0.5, fill.col = 0, yaxis = yaxis, facets.num = facets.num)
 	}
-	invisible()
+	invisible({ if(neg.flag) data.frame(x = cx, y = cy) else data.frame(x = x, y = y) })
 }
 
 
