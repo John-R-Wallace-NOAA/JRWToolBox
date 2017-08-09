@@ -1,5 +1,5 @@
 ellipse <- function(cx, cy, rx, ry = rx, theta = 0, facets.num = 40, yaxis = TRUE, pointsOnly = FALSE, fill = FALSE, ...) {
-' 
+" 
 # Function to plot an ellipse with center (cx,cy)
 # and major axis/2 along x equal to rx, 
 # major axis/2 along y equal to ry
@@ -36,7 +36,7 @@ ellipse <- function(cx, cy, rx, ry = rx, theta = 0, facets.num = 40, yaxis = TRU
 #   AUTHOR:  John R. Wallace (John.Wallace@noaa.gov)
 #
 #
-# z converted to be in radians  '
+# z converted to be in radians  "
     z <- (seq(0, 360, 360/facets.num) * pi)/180
     if(figureAdj) {
        pin <- par()$pin
