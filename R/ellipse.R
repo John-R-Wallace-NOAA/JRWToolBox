@@ -9,7 +9,7 @@ ellipse <- function(cx, cy, rx, ry = rx, theta = 0, facets.num = 40, yaxis = TRU
 #
 # The parameter yaxis adjusts to the correct shape in the
 # y- or x-axis (FALSE), as plotting is generally not square
-# ...so using par(pty="s") will eliminate the need for this.
+# ...so using par(pty='s') will eliminate the need for this.
 #
 #
 # Fill is a flag to indicate whether fill in the ellipse.
