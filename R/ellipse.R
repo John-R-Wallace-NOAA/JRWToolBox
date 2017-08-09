@@ -1,4 +1,4 @@
-function (cx, cy, rx, ry = rx, theta = 0, facets.num = 40, figureAdj = TRUE, yaxis = TRUE, fill = FALSE, ...)  {
+ellipse <- function (cx, cy, rx, ry = rx, theta = 0, facets.num = 40, figureAdj = TRUE, yaxis = TRUE, fill = FALSE, ...)  {
 # Function to plot an ellipse with center (cx,cy)
 # and major axis/2 along x equal to rx, 
 # major axis/2 along y equal to ry
