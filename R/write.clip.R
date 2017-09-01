@@ -12,11 +12,13 @@ write.clip <- function (x, digits = 1, sep = "\t", quote = F, Round = T, vectorT
 
 
 
-write.table.clip <- function (x, digits = 1, row = F, col = T, sep = "\t", quote = F, Round = T, ...) 
+write.table.clip <- function (x, digits = 1, row = F, col = T, sep = "\t", quote = F, Round = T, append = FALSE, File = ifelse(append, "writeOutput.txt", "clipboard"), ...) 
 {
-    if (all(apply(x,2,is.numeric)) & Round) 
-        write.table(round(x, digits), "clipboard", row = row, col = col, sep = sep, quote = quote, ...)
-
-    else write.table(x, "clipboard", row = row, col = col, sep = sep, quote = quote, ...)
+    if (all(apply(x, 2, is.numeric)) & Round) 
+        write.table(round(x, digits), File, row = row, 
+            col = col, sep = sep, quote = quote, append = append, ...)
+    else write.table(x, File, row = row, col = col, sep = sep, 
+        quote = quote, append = append, ...)
 }
+
 
