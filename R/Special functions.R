@@ -1,4 +1,4 @@
-assign("%>>%", function(x, y) { x > y & !is.na(x) }, pos = 1)
+"%>>%" <- function(x, y) { x > y & !is.na(x) }
 assign("%<<%", function(x, y) { x < y & !is.na(x) }, pos = 1)
 assign("%>=%", function(x, y) { x >= y & !is.na(x) }, pos = 1)
 assign("%<=%", function(x, y) { x <= y & !is.na(x) }, pos = 1)
