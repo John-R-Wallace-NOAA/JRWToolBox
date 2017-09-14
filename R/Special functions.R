@@ -11,6 +11,7 @@
     ' # %ino% keeps the order of elements listed in the table argument, %in% gives the order found in x '
     xSeq <- seq(along = x)
     names(xSeq) <- x
-    xSeq[as.character(table)]
+    Out <- xSeq[as.character(table)]
+    Out[!is.na(Out)]
   }
   
