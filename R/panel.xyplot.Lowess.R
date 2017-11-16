@@ -78,7 +78,7 @@ panel.Lowess <- function (x, y, span = 2/3, degree = 1, family = c("symmetric",
             col.line = col.line, col.symbol = col.symbol, font = font, 
             fontfamily = fontfamily, fontface = fontface, lty = lty, 
             cex = cex, fill = fill, lwd = lwd, horizontal = horizontal, 
-            panel.groups = function(...) {panel.xyplot.Loess(..., span = span)}, jitter.x = jitter.x, 
+            panel.groups = function(...) {panel.xyplot.Lowess(..., span = span)}, jitter.x = jitter.x, 
             jitter.y = jitter.y, factor = factor, amount = amount, 
             grid = FALSE, ...)
     else {
