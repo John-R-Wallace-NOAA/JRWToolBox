@@ -1,5 +1,4 @@
-panel.xyplot.loess <- 
-function (x, y, type = "p", groups = NULL, pch = if (is.null(groups)) plot.symbol$pch else superpose.symbol$pch, 
+panel.xyplot.loess <- function (x, y, type = "p", groups = NULL, pch = if (is.null(groups)) plot.symbol$pch else superpose.symbol$pch, 
     col, col.line = if (is.null(groups)) plot.line$col else superpose.line$col, 
     col.symbol = if (is.null(groups)) plot.symbol$col else superpose.symbol$col, 
     font = if (is.null(groups)) plot.symbol$font else superpose.symbol$font, 
@@ -10,16 +9,14 @@ function (x, y, type = "p", groups = NULL, pch = if (is.null(groups)) plot.symbo
     fill = if (is.null(groups)) plot.symbol$fill else superpose.symbol$fill, 
     lwd = if (is.null(groups)) plot.line$lwd else superpose.line$lwd, 
     horizontal = FALSE, ..., jitter.x = FALSE, jitter.y = FALSE, 
-    factor = 0.5, amount = NULL, evaluation = 50, span = 0.75, loess.lwd = 1, loess.points.alpha = 1) 
+    factor = 0.5, amount = NULL, evaluation = 50, span = 0.75, 
+    loess.lwd = 1, loess.points.alpha = 1) 
 {
-
- llowess.line <- function(x, y, smoothing.param = 2/3, ...)
- {
-       tmp <- na.omit(cbind(x, y))
-       llines(stats::lowess(tmp[, 2]~tmp[, 1], f = smoothing.param), ...)
- }
-
-
+    llowess.line <- function(x, y, smoothing.param = 2/3, ...) {
+        tmp <- na.omit(cbind(x, y))
+        llines(stats::lowess(tmp[, 2] ~ tmp[, 1], f = smoothing.param), 
+            ...)
+    }
     if (all(is.na(x) | is.na(y))) 
         return()
     x <- as.numeric(x)
@@ -39,7 +36,7 @@ function (x, y, type = "p", groups = NULL, pch = if (is.null(groups)) plot.symbo
             col.line = col.line, col.symbol = col.symbol, font = font, 
             fontfamily = fontfamily, fontface = fontface, lty = lty, 
             cex = cex, fill = fill, lwd = lwd, horizontal = horizontal, 
-            panel.groups = panel.xyplot, jitter.x = jitter.x, 
+            panel.groups = function(...) {panel.xyplot.loess(..., loess.lwd = loess.lwd, span = span)}, jitter.x = jitter.x, 
             jitter.y = jitter.y, factor = factor, amount = amount, 
             ...)
     else {
@@ -53,8 +50,8 @@ function (x, y, type = "p", groups = NULL, pch = if (is.null(groups)) plot.symbo
             else x, y = if (jitter.y) 
                 jitter(y, factor = factor, amount = amount)
             else y, cex = cex, fill = fill, font = font, fontfamily = fontfamily, 
-                fontface = fontface, col = col.alpha(col.symbol, alpha = loess.points.alpha), pch = pch, 
-                ...)
+                fontface = fontface, col = col.alpha(col.symbol, 
+                  alpha = loess.points.alpha), pch = pch, ...)
         if ("l" %in% type) 
             panel.lines(x = x, y = y, lty = lty, col = col.line, 
                 lwd = lwd, ...)
@@ -102,33 +99,31 @@ function (x, y, type = "p", groups = NULL, pch = if (is.null(groups)) plot.symbo
         if ("a" %in% type) 
             panel.linejoin(x, y, horizontal = horizontal, lwd = lwd, 
                 lty = lty, col.line = col.line, ...)
-        
-    x <- as.numeric(x)
-    y <- as.numeric(y)
-    ok <- is.finite(x) & is.finite(y)
-    if (sum(ok) < 1) 
-        return()
-    if (!missing(col)) {
-        if (missing(col.line)) 
-            col.line <- col
-    }
-
-    if (horizontal) {
-        smooth <- loess.smooth(y[ok], x[ok], span = span, family = family, 
-            degree = degree, evaluation = evaluation)
-        panel.lines(x = smooth$y, y = smooth$x, col = col.line, 
-            lty = lty, lwd = lwd, ...)
-    }
-    else {
-        llowess.line(x[ok], y[ok], smoothing.param = span, col = col.line, lwd=loess.lwd)
-        if(F) {
-        smooth <- loess.smooth(x[ok], y[ok], span = span, family = family, 
-            degree = degree, evaluation = evaluation)
-        panel.lines(x = smooth$x, y = smooth$y, col = col.line, 
-            lty = lty, lwd = lwd, ...)
+        x <- as.numeric(x)
+        y <- as.numeric(y)
+        ok <- is.finite(x) & is.finite(y)
+        if (sum(ok) < 1) 
+            return()
+        if (!missing(col)) {
+            if (missing(col.line)) 
+                col.line <- col
         }
-    }
-
+        if (horizontal) {
+            smooth <- loess.smooth(y[ok], x[ok], span = span, 
+                family = family, degree = degree, evaluation = evaluation)
+            panel.lines(x = smooth$y, y = smooth$x, col = col.line, 
+                lty = lty, lwd = lwd, ...)
+        }
+        else {
+            llowess.line(x[ok], y[ok], smoothing.param = span, 
+                col = col.line, lwd = loess.lwd, ...)
+            if (F) {
+                smooth <- loess.smooth(x[ok], y[ok], span = span, 
+                  family = family, degree = degree, evaluation = evaluation)
+                panel.lines(x = smooth$x, y = smooth$y, col = col.line, 
+                  lty = lty, lwd = lwd, ...)
+            }
+        }
     }
 }
 
