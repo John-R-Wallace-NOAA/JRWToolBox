@@ -1,4 +1,4 @@
-panel.Loess <- function (x, y, span = 0.5, degree = 1, family = c("symmetric", 
+panel.Lowess <- function (x, y, span = 0.5, degree = 1, family = c("symmetric", 
     "gaussian"), evaluation = 50, lwd = plot.line$lwd, lty = plot.line$lty, 
     col, col.line = plot.line$col, type, horizontal = FALSE, 
     ..., identifier = "loess") 
