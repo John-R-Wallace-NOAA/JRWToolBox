@@ -136,10 +136,10 @@ panel.Loess <- function (x, y, span = 2/3, degree = 1, family = c("symmetric",
         if ("r" %in% type) 
             panel.lmline(x, y, col = col.line, lty = lty, lwd = lwd, ...)
         if ("smooth" %in% type) {
-		    # catf("\n\nSmooth\n")
-			# catf('span = ', span, "\n\n")
+		# catf("\n\nSmooth\n")
+		# catf('span = ', span, "\n\n")
             JRWToolBox::panel.Loess(x, y, horizontal = horizontal, span = span, col = col.line, lty = lty, lwd = lwd, ...)
-			}
+	}
         if ("spline" %in% type) 
             panel.spline(x, y, horizontal = horizontal, col = col.line, 
                 lty = lty, lwd = lwd, ...)
