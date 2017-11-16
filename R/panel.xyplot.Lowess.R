@@ -1,4 +1,4 @@
-panel.xyplot.Loess <- function (x, y, type = "p", groups = NULL, span = 2/3, pch = if (is.null(groups)) plot.symbol$pch else superpose.symbol$pch, 
+panel.xyplot.Lowess <- function (x, y, type = "p", groups = NULL, span = 2/3, pch = if (is.null(groups)) plot.symbol$pch else superpose.symbol$pch, 
     col, col.line = if (is.null(groups)) plot.line$col else superpose.line$col, 
     col.symbol = if (is.null(groups)) plot.symbol$col else superpose.symbol$col, 
     font = if (is.null(groups)) plot.symbol$font else superpose.symbol$font, 
@@ -16,7 +16,7 @@ panel.xyplot.Loess <- function (x, y, type = "p", groups = NULL, span = 2/3, pch
 # catf('span = ', span, "\n\n")
 
 if(F) {
-panel.Loess <- function (x, y, span = 2/3, degree = 1, family = c("symmetric", 
+panel.Lowess <- function (x, y, span = 2/3, degree = 1, family = c("symmetric", 
     "gaussian"), evaluation = 50, lwd = plot.line$lwd, lty = plot.line$lty, 
     col, col.line = plot.line$col, type, horizontal = FALSE, 
     ..., identifier = "loess") 
@@ -138,7 +138,7 @@ panel.Loess <- function (x, y, span = 2/3, degree = 1, family = c("symmetric",
         if ("smooth" %in% type) {
 		# catf("\n\nSmooth\n")
 		# catf('span = ', span, "\n\n")
-            JRWToolBox::panel.Loess(x, y, horizontal = horizontal, span = span, col = col.line, lty = lty, lwd = lwd, ...)
+            JRWToolBox::panel.Lowess(x, y, horizontal = horizontal, span = span, col = col.line, lty = lty, lwd = lwd, ...)
 	}
         if ("spline" %in% type) 
             panel.spline(x, y, horizontal = horizontal, col = col.line, 
