@@ -26,7 +26,16 @@ If you then want to load the package into R use:
     library(JRWToolBox)    
 
 ============================   
+Comments
 
+- %ino% preserves the order when using matching operators unlike %in%. See my entry in Stack Overflow:
+https://stackoverflow.com/questions/10586652/r-preserve-order-when-using-matching-operators-in
+
+
+
+
+
+============================   
 All functions were written by me except for (this list is under construction):
 
 - xlsxToR: Substantial fix and value added changes; see the fork off of xlsxToR: https://gist.github.com/John-R-Wallace/3eab07a93877e87ec968
