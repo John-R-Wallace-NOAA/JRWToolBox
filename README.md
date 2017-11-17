@@ -28,7 +28,7 @@ If you then want to load the package into R use:
 ============================   
 Comments
 
-- %ino% preserves the order when using matching operators unlike %in%. See my entry in Stack Overflow:
+- %ino% preserves the order when using matching operators unlike %in%.  See my entry in Stack Overflow:
 https://stackoverflow.com/questions/10586652/r-preserve-order-when-using-matching-operators-in
 
 
