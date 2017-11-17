@@ -32,7 +32,7 @@ Highlights and Comments
 https://stackoverflow.com/questions/10586652/r-preserve-order-when-using-matching-operators-in
 
 
-- gitHub_SHA() shows the current (full) SHA for a given repo.  A call is also given that can be used to revert to that commit in the future. Saving these calls for each relevant package with your correct code insures you are using the commits that your code works with:
+- gitHub_SHA() shows the current (full) SHA for a given repo.  A call is also given that can be used to revert to that commit in the future. Saving these calls for each relevant package with your current code insures you are using the commits that your code works with:
       
       gitHub_SHA("John-R-Wallace/R-ToolBox")
     
