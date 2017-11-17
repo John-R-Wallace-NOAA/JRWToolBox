@@ -32,7 +32,7 @@ Highlights and Comments
 https://stackoverflow.com/questions/10586652/r-preserve-order-when-using-matching-operators-in
 
 
-- gitHub_SHA() shows the current (full) SHA for a given repo.  A call is also given that can be used to revert back to that Commit in the future:
+- gitHub_SHA() shows the current (full) SHA for a given repo.  A call is also given that can be used to revert back to that commit in the future:
       
       gitHub_SHA("John-R-Wallace/R-ToolBox")
     
