@@ -32,13 +32,16 @@ Highlights and Comments
 https://stackoverflow.com/questions/10586652/r-preserve-order-when-using-matching-operators-in
 
 
-- gitHub_SHA() shows the current (full) SHA for a given repo.  A call is also given that can be used to revert back that Commit in the future.
-
-    gitHub_SHA("John-R-Wallace/R-ToolBox")
-    SHA: a269b7fda4acec1b303d42351a66b3d042cd2c6d from reference: master
-    Current date and time and the call to reinstall this Commit in the future:
-    2017-11-17 12:23:24
-    devtools::install_github('John-R-Wallace/R-ToolBox', ref = 'a269b7fda4acec1b303d42351a66b3d042cd2c6d')
+- gitHub_SHA() shows the current (full) SHA for a given repo.  A call is also given that can be used to revert back to that Commit in the future:
+      
+      gitHub_SHA("John-R-Wallace/R-ToolBox")
+    
+      SHA: a269b7fda4acec1b303d42351a66b3d042cd2c6d from reference: master
+    
+      Current date and time and the call to reinstall this Commit in the future:
+    
+      2017-11-17 12:23:24
+      devtools::install_github('John-R-Wallace/R-ToolBox', ref = 'a269b7fda4acec1b303d42351a66b3d042cd2c6d')
 
 
      
