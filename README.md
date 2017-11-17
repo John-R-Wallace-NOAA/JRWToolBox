@@ -32,7 +32,7 @@ Highlights and Comments
 https://stackoverflow.com/questions/10586652/r-preserve-order-when-using-matching-operators-in
 
 
-- gitHub_SHA() shows the current (full) SHA for a given repo.  A call is also given that can be used to revert to that commit in the future. Saving these calls for each relevant package with your current code insures you are using the commits that your code works with and that your results are reproducible. The date and call are also invisibly returned:
+- gitHub_SHA() shows the current (full) SHA for a given repo.  A call is also given that can be used to revert to that commit in the future. Saving these calls for each relevant package with your current code insures you are using the commits that your code works with and that your results are reproducible. The date and call are also invisibly returned and hence can be used to install the commit at any time in the future:
       
       JRWToolBox.Commit <- gitHub_SHA("John-R-Wallace/R-ToolBox")
 
@@ -51,6 +51,10 @@ https://stackoverflow.com/questions/10586652/r-preserve-order-when-using-matchin
       $Call
       [1] "devtools::install_github('John-R-Wallace/R-ToolBox', ref = 'a5820d8c1bc0b62e523440b847e027a8af655f81')"
 
+
+      eval(parse(text = JRWToolBox.Commit$Call))
+      Downloading GitHub repo John-R-Wallace/R-ToolBox@e7f64f375fc1179b1e564755fec1516c077edec7 ...
+      
 
 ============================   
 All functions were written by me except for (this list is under construction):
