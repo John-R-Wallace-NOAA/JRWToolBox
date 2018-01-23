@@ -1,5 +1,5 @@
 
-plot.bubble.zero.cross  <- 
+plot.bubble.zero.cross.OLD  <- 
 function(xyz, group = rep("A", nrow(xyz)), maxsize = scale.size * diff(range(xyz[, 2])), scale.size = 0.07, add = F, xlab = dimnames(xyz)[[2]][1], ylab = dimnames(xyz)[[2]][2], 
         range.bump = F, cross.cex = 1, adj=NULL, fill.col = c('green', 'red', 'blue', 'cyan', 'black'), fill.col.alpha = 0.2, border.col = "black", 
         cross.col = { if(is.null(fill.col)) border.col else fill.col }, cross.col.alpha = ifelse(fill.col.alpha + 0.65 > 1, 1, fill.col.alpha + 0.5), 
