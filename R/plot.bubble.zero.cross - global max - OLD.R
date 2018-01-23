@@ -1,5 +1,5 @@
 
-plot.bubble.zero.cross  <- 
+plot.bubble.zero.cross.GB.OLD  <- 
 function(xyz, maxsize = scale.size * diff(range(xyz[, 2])), scale.size = 0.07, add = F, xlab = dimnames(xyz)[[2]][1], ylab = dimnames(xyz)[[2]][2], range.bump = F, cross.cex = 1, 
 	adj=NULL, fill.col = NULL, border.col = 1, cross.col = border.col, border.lwd = 2, prop.to.area = T, Grid.circle = F, globalMax = NULL, ...)
 {
