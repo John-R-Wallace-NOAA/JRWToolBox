@@ -1,4 +1,4 @@
-lib <- function(Package, require = TRUE) {
+Lib <- function(Package, require = TRUE) {
   
     if (!(is.character(substitute(Package)))) 
        Package <- deparse(substitute(Package))
