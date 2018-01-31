@@ -81,16 +81,16 @@ plot.bubble.zero.cross <- function (xyzOrg, group = rep("A", nrow(xyz)), maxsize
 		
         text(Usr[1] + (legLoc[1] + 0.05) * (Usr[2] - Usr[1]), Usr[3] + legLoc[2] * (Usr[4] - Usr[3]), legUnits, cex=0.9) 		
 		text(Usr[1] + legLoc[1] * (Usr[2] - Usr[1]), Usr[3] + (legLoc[2] - 0.03) * (Usr[4] - Usr[3]), "+")
-		text(Usr[1] + (legLoc[1] + 0.08) * (Usr[2] - Usr[1]), Usr[3] + (legLoc[2] - 0.03) * (Usr[4] - Usr[3]), "0.00", adj = 0, cex=0.9)
+		text(Usr[1] + (legLoc[1] + 0.125) * (Usr[2] - Usr[1]), Usr[3] + (legLoc[2] - 0.03) * (Usr[4] - Usr[3]), "  0.0", adj = 1, cex=0.9)
 		
 		circle.f(Usr[1] + legLoc[1] * (Usr[2] - Usr[1]), Usr[3] + (legLoc[2] - 0.075) * (Usr[4] - Usr[3]), maxsize * sqrt(Small)/max(xyzSqrt[, 3], na.rm = T), fill.col=col.alpha(legCol, legAlpha))
-		text(Usr[1] + (legLoc[1] + 0.08) * (Usr[2] - Usr[1]), Usr[3] + (legLoc[2] - 0.075) * (Usr[4] - Usr[3]), format(Small, nsmall=2), adj = 0, cex=0.9)
+		text(Usr[1] + (legLoc[1] + 0.125) * (Usr[2] - Usr[1]), Usr[3] + (legLoc[2] - 0.075) * (Usr[4] - Usr[3]), format(Small, nsmall=1), adj = 1, cex=0.9)
 						
 		circle.f(Usr[1] + legLoc[1] * (Usr[2] - Usr[1]), Usr[3] + (legLoc[2] - 0.115) * (Usr[4] - Usr[3]), maxsize * sqrt(Mid)/max(xyzSqrt[, 3], na.rm = T), fill.col=col.alpha(legCol, legAlpha))
-		text(Usr[1] + (legLoc[1] + 0.08) * (Usr[2] - Usr[1]), Usr[3] + (legLoc[2] - 0.115) * (Usr[4] - Usr[3]), format(Mid, nsmall=2), adj = 0, cex=0.9)
+		text(Usr[1] + (legLoc[1] + 0.125) * (Usr[2] - Usr[1]), Usr[3] + (legLoc[2] - 0.115) * (Usr[4] - Usr[3]), format(Mid, nsmall=1), adj = 1, cex=0.9)
 		
 		circle.f(Usr[1] + legLoc[1] * (Usr[2] - Usr[1]), Usr[3] + (legLoc[2] - 0.175) * (Usr[4] - Usr[3]), maxsize * sqrt(Large)/max(xyzSqrt[, 3], na.rm = T), fill.col=col.alpha(legCol, legAlpha))
-		text(Usr[1] + (legLoc[1] + 0.08) * (Usr[2] - Usr[1]), Usr[3] + (legLoc[2] - 0.175) * (Usr[4] - Usr[3]), format(Large, nsmall=2),  adj = 0, cex=0.9)
+		text(Usr[1] + (legLoc[1] + 0.125) * (Usr[2] - Usr[1]), Usr[3] + (legLoc[2] - 0.175) * (Usr[4] - Usr[3]), format(Large, nsmall=1),  adj = 1, cex=0.9)
 
     }
     invisible()
