@@ -1,7 +1,7 @@
 plot.bubble.zero.cross <- function (xyzOrg, group = rep("A", nrow(xyz)), maxsize = scale.size * diff(range(xyzOrg[, 2])), scale.size = 0.07, add = F, xlab = dimnames(xyz)[[2]][1], 
     ylab = dimnames(xyz)[[2]][2], range.bump = F, cross.cex = 1, adj = NULL, fill.col = c("green", "red", "blue", "cyan", "black"), fill.col.alpha = 0.2, border.col = "black", 
     cross.col = { if (is.null(fill.col)) border.col else fill.col }, cross.col.alpha = ifelse(fill.col.alpha + 0.65 > 1, 1, fill.col.alpha + 0.5), border.lwd = 1.25, 
-    Grid.circle = F, legend = TRUE, legLoc = c(0.1, 0.25), legCol = 'grey4', legAlpha = 0.5, legUnits= 'Metric Tons', ...) 
+    Grid.circle = F, legend = TRUE, legLoc = c(0.1, 0.25), legCol = 'grey4', legAlpha = 0.5, legUnits = 'Metric Tons', legNsmall = 1, ...) 
 {
 ' **** Data is proportional to the area of the circle **** '
     "%r1%" <- function(e1, e2) ifelse(e1%%e2 == 0, e2, e1%%e2)
@@ -84,13 +84,13 @@ plot.bubble.zero.cross <- function (xyzOrg, group = rep("A", nrow(xyz)), maxsize
 		text(Usr[1] + (legLoc[1] + 0.125) * (Usr[2] - Usr[1]), Usr[3] + (legLoc[2] - 0.03) * (Usr[4] - Usr[3]), "  0.0", adj = 1, cex=0.9)
 		
 		circle.f(Usr[1] + legLoc[1] * (Usr[2] - Usr[1]), Usr[3] + (legLoc[2] - 0.075) * (Usr[4] - Usr[3]), maxsize * sqrt(Small)/max(xyzSqrt[, 3], na.rm = T), fill.col=col.alpha(legCol, legAlpha))
-		text(Usr[1] + (legLoc[1] + 0.125) * (Usr[2] - Usr[1]), Usr[3] + (legLoc[2] - 0.075) * (Usr[4] - Usr[3]), format(Small, nsmall=1), adj = 1, cex=0.9)
+		text(Usr[1] + (legLoc[1] + 0.125) * (Usr[2] - Usr[1]), Usr[3] + (legLoc[2] - 0.075) * (Usr[4] - Usr[3]), format(Small, nsmall=legNsmall), adj = 1, cex=0.9)
 						
 		circle.f(Usr[1] + legLoc[1] * (Usr[2] - Usr[1]), Usr[3] + (legLoc[2] - 0.115) * (Usr[4] - Usr[3]), maxsize * sqrt(Mid)/max(xyzSqrt[, 3], na.rm = T), fill.col=col.alpha(legCol, legAlpha))
-		text(Usr[1] + (legLoc[1] + 0.125) * (Usr[2] - Usr[1]), Usr[3] + (legLoc[2] - 0.115) * (Usr[4] - Usr[3]), format(Mid, nsmall=1), adj = 1, cex=0.9)
+		text(Usr[1] + (legLoc[1] + 0.125) * (Usr[2] - Usr[1]), Usr[3] + (legLoc[2] - 0.115) * (Usr[4] - Usr[3]), format(Mid, nsmall=legNsmall), adj = 1, cex=0.9)
 		
 		circle.f(Usr[1] + legLoc[1] * (Usr[2] - Usr[1]), Usr[3] + (legLoc[2] - 0.175) * (Usr[4] - Usr[3]), maxsize * sqrt(Large)/max(xyzSqrt[, 3], na.rm = T), fill.col=col.alpha(legCol, legAlpha))
-		text(Usr[1] + (legLoc[1] + 0.125) * (Usr[2] - Usr[1]), Usr[3] + (legLoc[2] - 0.175) * (Usr[4] - Usr[3]), format(Large, nsmall=1),  adj = 1, cex=0.9)
+		text(Usr[1] + (legLoc[1] + 0.125) * (Usr[2] - Usr[1]), Usr[3] + (legLoc[2] - 0.175) * (Usr[4] - Usr[3]), format(Large, nsmall=legNsmall),  adj = 1, cex=0.9)
 
     }
     invisible()
