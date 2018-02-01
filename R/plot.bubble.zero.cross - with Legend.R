@@ -81,7 +81,7 @@ plot.bubble.zero.cross <- function (xyzOrg, group = rep("A", nrow(xyz)), maxsize
 		
         text(Usr[1] + (legLoc[1] + 0.05) * (Usr[2] - Usr[1]), Usr[3] + legLoc[2] * (Usr[4] - Usr[3]), legUnits, cex=0.9) 		
 		text(Usr[1] + legLoc[1] * (Usr[2] - Usr[1]), Usr[3] + (legLoc[2] - 0.03) * (Usr[4] - Usr[3]), "+")
-		text(Usr[1] + (legLoc[1] + 0.125) * (Usr[2] - Usr[1]), Usr[3] + (legLoc[2] - 0.03) * (Usr[4] - Usr[3]), "  0.0", adj = 1, cex=0.9)
+		text(Usr[1] + (legLoc[1] + 0.125) * (Usr[2] - Usr[1]), Usr[3] + (legLoc[2] - 0.03) * (Usr[4] - Usr[3]), format(0, nsmall=legNsmall), adj = 1, cex=0.9)
 		
 		circle.f(Usr[1] + legLoc[1] * (Usr[2] - Usr[1]), Usr[3] + (legLoc[2] - 0.075) * (Usr[4] - Usr[3]), maxsize * sqrt(Small)/max(xyzSqrt[, 3], na.rm = T), fill.col=col.alpha(legCol, legAlpha))
 		text(Usr[1] + (legLoc[1] + 0.125) * (Usr[2] - Usr[1]), Usr[3] + (legLoc[2] - 0.075) * (Usr[4] - Usr[3]), format(Small, nsmall=legNsmall), adj = 1, cex=0.9)
