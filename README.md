@@ -70,6 +70,7 @@ https://stackoverflow.com/questions/10586652/r-preserve-order-when-using-matchin
       eval(parse(text = JRWToolBox.Commit$Call))
       Downloading GitHub repo John-R-Wallace/R-ToolBox@a5820d8c1bc0b62e523440b847e027a8af655f81 ...
       
+      packageDescription('Imap')$RemoteSHA
 
 ============================   
 All functions were written by me except for (this list is under construction):
