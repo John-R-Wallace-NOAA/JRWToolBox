@@ -28,6 +28,20 @@ If you then want to load the package into R use:
 ============================   
 Highlights and Comments
 
+lib() installs 
+
+Code to start using lib() and other functions in JRWToolBox would look like:
+
+    if (!any(installed.packages()[, 1] %in% "devtools"))  install.packages('devtools')  
+	
+	devtools::install_github("John-R-Wallace/JRWToolBox", quiet = T)
+	if (!any(installed.packages()[, 1] %in% "JRWToolBox"))
+	    stop('JRWToolBox is not installed, an attempt to install failed (check for GitHub internet access)')
+    require(JRWToolBox)
+     
+    lib("John-R-Wallace/Imap") # GitHub
+    lib(plyr) # CRAN
+
 - %ino% preserves the order when using matching operators unlike %in%.  See my entry in Stack Overflow:
 https://stackoverflow.com/questions/10586652/r-preserve-order-when-using-matching-operators-in
 
