@@ -36,7 +36,7 @@ Code to put on the top of a function to start using lib() and other functions in
 	
 	devtools::install_github("John-R-Wallace/JRWToolBox", quiet = T)
 	if (!any(installed.packages()[, 1] %in% "JRWToolBox"))
-	    stop('JRWToolBox is not installed, an attempt to install failed (check for GitHub internet access)')
+	    stop('JRWToolBox is not installed, an attempt to install failed (check for internet access)')
     require(JRWToolBox)
      
     # Examples 
