@@ -28,9 +28,9 @@ If you then want to load the package into R use:
 ============================   
 Highlights and Comments
 
-lib() installs 
+The function lib() will install and update both GitHub and CRAN packages only if needed and regardless will load the package into the R session, if require = TRUE (the default).
 
-Code to start using lib() and other functions in JRWToolBox would look like:
+Code to put on the top of a function to start using lib() and other functions in JRWToolBox would look like:
 
     if (!any(installed.packages()[, 1] %in% "devtools"))  install.packages('devtools')  
 	
@@ -39,6 +39,7 @@ Code to start using lib() and other functions in JRWToolBox would look like:
 	    stop('JRWToolBox is not installed, an attempt to install failed (check for GitHub internet access)')
     require(JRWToolBox)
      
+    # Examples 
     lib("John-R-Wallace/Imap") # GitHub
     lib(plyr) # CRAN
 
