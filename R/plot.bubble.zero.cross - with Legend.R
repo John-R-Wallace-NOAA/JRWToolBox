@@ -68,13 +68,21 @@ plot.bubble.zero.cross <- function (xyzOrg, group = rep("A", nrow(xyz)), maxsize
     if(legend) {
 	   
 	   	pretVec <-  pretty(c(0, max(xyzOrg[,3], na.rm=TRUE)))
+		
 		Usr <- par()$usr
 		
 		Np <- length(pretVec)
 		
-		Large <- pretVec[Np -1]
-		Mid <- pretVec[Np/1.5]
-		Small <- pretVec[Np/2.5]
+		if(Np <= 4) {
+		   Large <- pretVec[Np]
+		   Mid <- pretVec[Np/1.25]
+		   Small <- pretVec[Np/2]
+		} else {
+		   Large <- pretVec[Np -1]
+		   Mid <- pretVec[Np/1.5]
+		   Small <- pretVec[Np/2.5]
+		}
+		
 		
 		# printf(max(xyzOrg[,3], na.rm=TRUE))
 		# printf(pretVec)
