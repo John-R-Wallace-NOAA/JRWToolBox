@@ -1,6 +1,9 @@
 import.PacFIN.sql <- function (SQL, VAR = "", VAL = "", File = F, dsn = "PacFIN", 
     uid = "wallacej", pwd = PacFIN.PW, View.Parsed.Only = F) 
 {
+ ''   
+ '  # import.PacFIN.sql("Select * from pacfin.bds_sp where rownum < 11", File = F, pwd = PacFIN.PW)  '
+ ''   
     require(RODBC)
     require(Hmisc)
     if (File) {
