@@ -1,4 +1,8 @@
 match.f <- function (file, table, findex = 1, tindex = findex, tcol = NULL, round. = T, digits = 0) {
+''
+'  #   DATE WRITTEN:  Circa 1995      LAST REVISED:   Circa 2005  '
+'  #   AUTHOR:  John R. Wallace (John.Wallace@noaa.gov)  '
+''
     paste.col <- function(x) {
         if (is.null(dim(x)))
             return(paste(as.character(x)))
@@ -27,4 +31,5 @@ match.f <- function (file, table, findex = 1, tindex = findex, tcol = NULL, roun
     cbind(file, table[match(paste.col(file[, findex]), paste.col(table[,
         tindex])), tcol, drop = F])
 }
+
 
