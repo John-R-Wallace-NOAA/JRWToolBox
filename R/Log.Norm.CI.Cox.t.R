@@ -8,7 +8,7 @@ Log.Norm.CI.Cox.t <- function(x = NULL, MeanLogNorm = NULL, SDLogNorm.Pop = NULL
 "   # This function, including the parametric bootstrapping for the case when only the mean, SD, and N of the log-normal data are known, is by:  "
 "   #        John Wallace John.Wallace@noaa.gov  "
 
-"   # Note that if only the SD of the mean is available, then the argument 'SDLogNorm.Pop' could be set to SD * N .  "
+"   # Note that if only the SD of the mean is available, then the argument 'SDLogNorm.Pop' can be set to SD * N .  "
 "   # Note also, that if the exact value of N is not known, a reasonably close estimate of N will still give a good estimate of the CI.  "
 
  if(!is.null(x)) {   # Apply the modified Cox function to log-normal data
