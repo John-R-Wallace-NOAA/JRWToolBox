@@ -10,7 +10,7 @@ WCGBTS_Combo_Catch_Wt <- function (Species = "Sebastes pinniger", YearRange = c(
     " # The updated function no longer requires the order of the names inside of newname and origname to be the same. "
     " "
     rename_columns = function(DF, origname = colnames(DF), newname) {
-	    " # 'Total_sp_wt_kg' doesn't match 'total_catch_wt_kg', so forcing it here "
+        " # 'Total_sp_wt_kg' doesn't match 'total_catch_wt_kg', so forcing it here "
         colnames(DF)[grep("total_catch_wt_kg", colnames(DF))] <- "Total_sp_wt_kg"
 
         DF_new = DF
@@ -59,9 +59,9 @@ WCGBTS_Combo_Catch_Wt <- function (Species = "Sebastes pinniger", YearRange = c(
     if (verbose) cat("\n\nURL Text for all tows (needed for zero catch tows):\n\n", UrlText, "\n\n")
     " "
     All.Tows <- jsonlite::fromJSON(UrlText)
-	if (verbose) { print(All.Tows[1:4, ]); cat("\n\n") }
+    if (verbose) { print(All.Tows[1:4, ]); cat("\n\n") }
     All.Tows <- rename_columns(All.Tows, newname = c("Year", "Pass", "Vessel", "Tow", "Date", "Depth_m", "Longitude_dd", "Latitude_dd", "Area_Swept_ha"))
-	if (verbose) { print(All.Tows[1:4, ]); cat("\n\n") }
+    if (verbose) { print(All.Tows[1:4, ]); cat("\n\n") }
     " # There should be no duplicates "
     All.Tows <- All.Tows[!duplicated(paste(All.Tows$Year, All.Tows$Pass, 
         All.Tows$Vessel, All.Tows$Tow)), c("Year", "Pass", "Vessel", "Tow",  "Date", "Depth_m", "Longitude_dd", "Latitude_dd", "Area_Swept_ha")]
@@ -73,6 +73,7 @@ WCGBTS_Combo_Catch_Wt <- function (Species = "Sebastes pinniger", YearRange = c(
         trim = 0.05, na.rm = TRUE)
     " # Scientific Name is missing after the matching when Total_sp_wt_kg is zero  "
     Out$Scientific_Name <- Species
-	Out$Date <- chron(format(as.POSIXlt(Out$Date, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"), format = "y-m-d", out.format = "YYYY-m-d")
+    Out$Date <- chron(format(as.POSIXlt(Out$Date, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"), format = "y-m-d", out.format = "YYYY-m-d")
+    if (verbose) { print(Out[1:4, ]); cat("\n\n") }
     invisible(sort.f(Out, 1:4))
 }
