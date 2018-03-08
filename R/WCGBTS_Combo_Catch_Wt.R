@@ -1,4 +1,4 @@
-WGBTS_Combo_Catch_Wt <- function (Species = "Sebastes pinniger", YearRange = c(2003, 
+WCGBTS_Combo_Catch_Wt <- function (Species = "Sebastes pinniger", YearRange = c(2003, 
     2015), verbose = FALSE) 
 {
     if (!any(installed.packages()[, 1] %in% "jsonlite")) 
