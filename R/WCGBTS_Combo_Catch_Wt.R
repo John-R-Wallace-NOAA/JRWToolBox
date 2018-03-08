@@ -10,6 +10,9 @@ WCGBTS_Combo_Catch_Wt <- function (Species = "Sebastes pinniger", YearRange = c(
     " # The updated function no longer requires the order of the names inside of newname and origname to be the same. "
     " "
     rename_columns = function(DF, origname = colnames(DF), newname) {
+	    " # 'Total_sp_wt_kg' doesn't match 'total_catch_wt_kg', so forcing it here "
+        colnames(DF)[grep("total_catch_wt_kg", colnames(DF))] <- "Total_sp_wt_kg"
+
         DF_new = DF
         for (i in 1:length(newname)) {
             Match = grep(newname[i], origname, ignore.case = TRUE)
