@@ -37,16 +37,16 @@ WCGBTS_Combo_Catch_BD <- function (Species = "Sebastes pinniger", YearRange = c(
     if (verbose) cat("\n\nURL Text for the species:\n\n", UrlText, "\n\n")
     " "
     SP <- jsonlite::fromJSON(UrlText)
-    if(verbose) print(SP[1:4,]); cat("\n\n")
+    if(verbose) { print(SP[1:4,]); cat("\n\n") }
     " # SP.Before <<- SP  "
     " "
     SP <- rename_columns(SP, newname = c("Year", "Vessel", "Pass", "Scientific_Name", "Tow", "Date", "Depth_ftm", "Weight_kg", "Length_cm", "Sex", "Age", "Latitude_dd", "Longitude_dd"))
-    if(verbose) print(SP[1:4,]); cat("\n\n")
+    if(verbose) { print(SP[1:4,]); cat("\n\n") }
     "  # SP.After <<- SP  "
     " "
     SP <- SP[, c("Year", "Vessel", "Pass", "Tow", "Date", "Depth_ftm", "Scientific_Name", "Weight_kg", "Length_cm", "Sex", "Age", "Latitude_dd", "Longitude_dd")]
     SP$Date <- chron(format(as.POSIXlt(SP$Date, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"), format = "y-m-d", out.format = "YYYY-m-d")
     " "
-    if(verbose) print(SP[1:4,]); cat("\n\n")
+    if(verbose) { print(SP[1:4,]); cat("\n\n") }
     invisible(SP)
 }
