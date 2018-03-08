@@ -71,11 +71,11 @@ WCGBTS_Combo_Catch_Wt <- function (Species = "Sebastes pinniger", YearRange = c(
         All.Tows$Vessel, All.Tows$Tow)), c("Year", "Pass", "Vessel", "Tow",  "Date", "Depth_m", "Longitude_dd", "Latitude_dd", "Area_Swept_ha")]
     " # Note that tow number is within vessel and within year, but not within pass (the Noahs Ark did both passes in 2012 and the tow number max is ~ twice the one pass per year total)  "
     Out <- JRWToolBox::match.f(All.Tows, SP, c("Year", "Vessel", "Tow"), c("Year", "Vessel", "Tow"), c("Scientific_Name", "Total_sp_wt_kg"))
-    Out$Wt_kg[is.na(Out$Wt_kg)] <- 0
+    Out$Total_sp_wt_kg[is.na(Out$Total_sp_wt_kg)] <- 0
     " # No missing swept areas for 2003-2015 "
     Out$Area_Swept_ha[is.na(Out$Area_Swept_ha)] <- mean(Out$Area_Swept_ha, 
         trim = 0.05, na.rm = TRUE)
-    " # Scientific Name is missing after the matching when Wt_kg is zero  "
+    " # Scientific Name is missing after the matching when Total_sp_wt_kg is zero  "
     Out$Scientific_Name <- Species
 	Out$Date <- chron(format(as.POSIXlt(Out$Date, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"), format = "y-m-d", out.format = "YYYY-m-d")
     invisible(sort.f(Out, 1:4))
