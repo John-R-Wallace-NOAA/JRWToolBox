@@ -37,17 +37,13 @@ WCGBTS_Combo_Catch_Wt <- function (Species = "Sebastes pinniger", YearRange = c(
         paste0(Vars, collapse = ","))
     " "
     if (verbose) 
-        cat("\n\nURL Text for the species:\n\n", UrlText, "\n")
+        cat("\n\nURL Text for the species:\n\n", UrlText, "\n\n")
     " "
     SP <- jsonlite::fromJSON(UrlText)
-    if (verbose) 
-        print(SP[1:4, ])
-    cat("\n\n")
+    if (verbose) { print(SP[1:4, ]); cat("\n\n") }
     "  # SP.Before <<- SP  "
     SP <- rename_columns(SP, newname = c("Year", "Vessel", "Scientific_Name", "Total_sp_wt_kg", "Tow"))
-    if (verbose) 
-        print(SP[1:4, ])
-    cat("\n\n")
+    if (verbose) { print(SP[1:4, ]); cat("\n\n") }
     " # SP.After <<- SP  "
     SP <- SP[, c("Year", "Vessel", "Tow", "Scientific_Name", "Total_sp_wt_kg")]
     " "
@@ -60,12 +56,12 @@ WCGBTS_Combo_Catch_Wt <- function (Species = "Sebastes pinniger", YearRange = c(
         "date_dim$year>=", YearRange[1], ",date_dim$year<=", 
         YearRange[2], "&variables=", paste0(Vars, collapse = ","))
     " "
-    if (verbose) 
-        cat("\n\nURL Text for all tows (needed for zero catch tows):\n\n", 
-            UrlText, "\n\n")
+    if (verbose) cat("\n\nURL Text for all tows (needed for zero catch tows):\n\n", UrlText, "\n\n")
     " "
     All.Tows <- jsonlite::fromJSON(UrlText)
+	if (verbose) { print(All.Tows[1:4, ]); cat("\n\n") }
     All.Tows <- rename_columns(All.Tows, newname = c("Year", "Pass", "Vessel", "Tow", "Date", "Depth_m", "Longitude_dd", "Latitude_dd", "Area_Swept_ha"))
+	if (verbose) { print(All.Tows[1:4, ]); cat("\n\n") }
     " # There should be no duplicates "
     All.Tows <- All.Tows[!duplicated(paste(All.Tows$Year, All.Tows$Pass, 
         All.Tows$Vessel, All.Tows$Tow)), c("Year", "Pass", "Vessel", "Tow",  "Date", "Depth_m", "Longitude_dd", "Latitude_dd", "Area_Swept_ha")]
