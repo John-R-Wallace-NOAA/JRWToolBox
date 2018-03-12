@@ -1,10 +1,10 @@
 WCGBTS_Combo_Catch_Wt <- function (Species = "Sebastes pinniger", YearRange = c(2003, 
     2015), verbose = FALSE) 
 {
-    if (!any(installed.packages()[, 1] %in% "jsonlite")) 
-        install.packages("jsonlite")
     if (!any(installed.packages()[, 1] %in% "JRWToolBox")) 
         devtools::install_github("John-R-Wallace/R-ToolBox")
+	JRWToolBox::lib("jsonlite")
+	JRWToolBox::lib("chron")   
     " "
     " # By using grep() and changing things around I fixed J. Thorson's rename_columns() function found inside the download_catch_rates() function from his FishData paackage "
     " # The updated function no longer requires the order of the names inside of newname and origname to be the same. "
