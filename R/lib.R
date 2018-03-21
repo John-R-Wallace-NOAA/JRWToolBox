@@ -1,6 +1,9 @@
 lib <- function (Package, Package.Name = NULL, require = TRUE, quiet = TRUE, force = FALSE) 
 {
-
+   
+   if(!any(names(getOption("repos")) %in% 'CRAN'))
+        options(repos = c(getOption("repos"), CRAN="http://cran.fhcrc.org"))
+'  '
 	
     if (!(is.character(substitute(Package)))) 
         Package <- deparse(substitute(Package))
