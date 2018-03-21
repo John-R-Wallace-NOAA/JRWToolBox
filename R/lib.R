@@ -1,8 +1,8 @@
-lib <- function (Package, Package.Name = NULL, require = TRUE, quiet = TRUE, force = FALSE) 
+lib <- function (Package, Package.Name = NULL, require = TRUE, quiet = TRUE, force = FALSE, autoAddRepo = TRUE) 
 {
-   
-   if(!any(names(getOption("repos")) %in% 'CRAN'))
-        options(repos = c(getOption("repos"), CRAN="http://cran.fhcrc.org"))
+ 
+if(autoAddRepo & options()$repos[names(options()$repos) %in% 'CRAN'] %in% "@CRAN@") 	 
+       local({getOption("repos") -> r; r["CRAN"] <- "http://cran.fhcrc.org"; options(repos = r)})	 
 '  '
 	
     if (!(is.character(substitute(Package)))) 
