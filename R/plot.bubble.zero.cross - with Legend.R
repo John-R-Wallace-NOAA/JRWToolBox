@@ -1,9 +1,14 @@
-plot.bubble.zero.cross <- function (xyzOrg, group = rep("A", nrow(xyz)), maxsize = scale.size * diff(range(xyzOrg[, 2])), scale.size = 0.07, add = F, xlab = dimnames(xyz)[[2]][1], 
-    ylab = dimnames(xyz)[[2]][2], range.bump = F, cross.cex = 1, adj = NULL, fill.col = c("green", "red", "blue", "cyan", "black"), fill.col.alpha = 0.2, border.col = "black", 
-    cross.col = { if (is.null(fill.col)) border.col else fill.col }, cross.col.alpha = ifelse(fill.col.alpha + 0.65 > 1, 1, fill.col.alpha + 0.5), border.lwd = 1.25, 
-    Grid.circle = F, legend = TRUE, legLoc = c(0.1, 0.25), legCol = 'grey4', legAlpha = 0.5, legUnits = 'Metric Tons', legNsmall = 1, ...) 
+plot.bubble.zero.cross <- function (xyzOrg, group = rep("A", nrow(xyz)), maxsize = scale.size * 
+    diff(range(xyzOrg[, 2])), scale.size = 0.07, add = F, xlab = dimnames(xyz)[[2]][1], 
+    ylab = dimnames(xyz)[[2]][2], main = NULL, range.bump = F, cross.cex = 1, 
+    adj = NULL, fill.col = c("green", "red", "blue", "cyan", "black"), 
+	fill.col.alpha = 0.2, border.col = "black", 
+    cross.col = { if (is.null(fill.col)) { border.col } else { fill.col } }, 
+	cross.col.alpha = ifelse(fill.col.alpha + 0.65 > 1, 1, fill.col.alpha + 0.5), 
+	border.lwd = 1.25, Grid.circle = F, legend = TRUE, legLoc = c(0.1, 0.25), 
+	legCol = "grey4", legAlpha = 0.5, legUnits = "Metric Tons", legNsmall = 1, ...) 
 {
-' **** Data is proportional to the area of the circle **** '
+    " **** Data is proportional to the area of the circle **** "
     "%r1%" <- function(e1, e2) ifelse(e1%%e2 == 0, e2, e1%%e2)
     col.alpha <- function(col, alpha = 0.5) {
         FUNC <- function(col, alpha = alpha) {
@@ -23,14 +28,14 @@ plot.bubble.zero.cross <- function (xyzOrg, group = rep("A", nrow(xyz)), maxsize
         cross.col <- col.alpha(cross.col, cross.col.alpha)
     xyzSqrt <- xyzOrg
     xyzSqrt[, 3] <- sign(xyzSqrt[, 3]) * sqrt(abs(xyzSqrt[, 3]))
-	xyz <- xyzSqrt
+    xyz <- xyzSqrt
     xyz[, 3] <- (maxsize * xyzSqrt[, 3])/max(xyzSqrt[, 3], na.rm = T)
     tf <- !apply(xyz, 1, function(x) any(is.na(x)))
     xyz <- xyz[tf, ]
     group <- group[tf]
     Groups <- unique(group)
     N <- length(Groups)
-	if (!add) {
+    if (!add) {
         if (range.bump) {
             xlim <- c(min(xyz[, 1], na.rm = T) - 0.2 * diff(range(xyz[, 
                 1], na.rm = T)), max(xyz[, 1], na.rm = T) + 0.2 * 
@@ -39,10 +44,10 @@ plot.bubble.zero.cross <- function (xyzOrg, group = rep("A", nrow(xyz)), maxsize
                 2], na.rm = T)), max(xyz[, 2], na.rm = T) + 0.2 * 
                 diff(range(xyz[, 2], na.rm = T)))
             plot(xyz[, 1], xyz[, 2], type = "n", xlim = xlim, 
-                ylim = ylim, xlab = xlab, ylab = ylab)
+                ylim = ylim, xlab = xlab, ylab = ylab, main = main)
         }
         else plot(xyz[, 1], xyz[, 2], type = "n", xlab = xlab, 
-            ylab = ylab)
+            ylab = ylab, main = main)
     }
     for (j in 1:N) {
         XYZ <- xyz[group %in% Groups[j], ]
@@ -63,43 +68,49 @@ plot.bubble.zero.cross <- function (xyzOrg, group = rep("A", nrow(xyz)), maxsize
             }
         }
     }
-	# assign('xyz', xyz, pos=1)
-	# assign('xyzOrg', xyzOrg, pos=1)
-    if(legend) {
-	   
-	   	pretVec <-  pretty(c(0, max(xyzOrg[,3], na.rm=TRUE)))
-		
-		Usr <- par()$usr
-		
-		Np <- length(pretVec)
-		
-		if(Np <= 4) {
-		   Large <- pretVec[Np]
-		   Mid <- pretVec[Np/1.25]
-		   Small <- pretVec[Np/2]
-		} else {
-		   Large <- pretVec[Np -1]
-		   Mid <- pretVec[Np/1.5]
-		   Small <- pretVec[Np/2.5]
-		}
-		
-		
-		# printf(max(xyzOrg[,3], na.rm=TRUE))
-		# printf(pretVec)
-		
-        text(Usr[1] + (legLoc[1] + 0.05) * (Usr[2] - Usr[1]), Usr[3] + legLoc[2] * (Usr[4] - Usr[3]), legUnits, cex=0.9) 		
-		text(Usr[1] + legLoc[1] * (Usr[2] - Usr[1]), Usr[3] + (legLoc[2] - 0.03) * (Usr[4] - Usr[3]), "+")
-		text(Usr[1] + (legLoc[1] + 0.125) * (Usr[2] - Usr[1]), Usr[3] + (legLoc[2] - 0.03) * (Usr[4] - Usr[3]), format(0, nsmall=legNsmall), adj = 1, cex=0.9)
-		
-		circle.f(Usr[1] + legLoc[1] * (Usr[2] - Usr[1]), Usr[3] + (legLoc[2] - 0.075) * (Usr[4] - Usr[3]), maxsize * sqrt(Small)/max(xyzSqrt[, 3], na.rm = T), fill.col=col.alpha(legCol, legAlpha))
-		text(Usr[1] + (legLoc[1] + 0.125) * (Usr[2] - Usr[1]), Usr[3] + (legLoc[2] - 0.075) * (Usr[4] - Usr[3]), format(Small, nsmall=legNsmall), adj = 1, cex=0.9)
-						
-		circle.f(Usr[1] + legLoc[1] * (Usr[2] - Usr[1]), Usr[3] + (legLoc[2] - 0.115) * (Usr[4] - Usr[3]), maxsize * sqrt(Mid)/max(xyzSqrt[, 3], na.rm = T), fill.col=col.alpha(legCol, legAlpha))
-		text(Usr[1] + (legLoc[1] + 0.125) * (Usr[2] - Usr[1]), Usr[3] + (legLoc[2] - 0.115) * (Usr[4] - Usr[3]), format(Mid, nsmall=legNsmall), adj = 1, cex=0.9)
-		
-		circle.f(Usr[1] + legLoc[1] * (Usr[2] - Usr[1]), Usr[3] + (legLoc[2] - 0.175) * (Usr[4] - Usr[3]), maxsize * sqrt(Large)/max(xyzSqrt[, 3], na.rm = T), fill.col=col.alpha(legCol, legAlpha))
-		text(Usr[1] + (legLoc[1] + 0.125) * (Usr[2] - Usr[1]), Usr[3] + (legLoc[2] - 0.175) * (Usr[4] - Usr[3]), format(Large, nsmall=legNsmall),  adj = 1, cex=0.9)
-
+    if (legend) {
+        pretVec <- pretty(c(0, max(xyzOrg[, 3], na.rm = TRUE)))
+        Usr <- par()$usr
+        Np <- length(pretVec)
+        if (Np <= 4) {
+            Large <- pretVec[Np]
+            Mid <- pretVec[Np/1.25]
+            Small <- pretVec[Np/2]
+        }
+        else {
+            Large <- pretVec[Np - 1]
+            Mid <- pretVec[Np/1.5]
+            Small <- pretVec[Np/2.5]
+        }
+        text(Usr[1] + (legLoc[1] + 0.05) * (Usr[2] - Usr[1]), 
+            Usr[3] + legLoc[2] * (Usr[4] - Usr[3]), legUnits, 
+            cex = 0.9)
+        text(Usr[1] + legLoc[1] * (Usr[2] - Usr[1]), Usr[3] + 
+            (legLoc[2] - 0.03) * (Usr[4] - Usr[3]), "+")
+        text(Usr[1] + (legLoc[1] + 0.125) * (Usr[2] - Usr[1]), 
+            Usr[3] + (legLoc[2] - 0.03) * (Usr[4] - Usr[3]), 
+            format(0, nsmall = legNsmall), adj = 1, cex = 0.9)
+        circle.f(Usr[1] + legLoc[1] * (Usr[2] - Usr[1]), Usr[3] + 
+            (legLoc[2] - 0.075) * (Usr[4] - Usr[3]), maxsize * 
+            sqrt(Small)/max(xyzSqrt[, 3], na.rm = T), fill.col = col.alpha(legCol, 
+            legAlpha))
+        text(Usr[1] + (legLoc[1] + 0.125) * (Usr[2] - Usr[1]), 
+            Usr[3] + (legLoc[2] - 0.075) * (Usr[4] - Usr[3]), 
+            format(Small, nsmall = legNsmall), adj = 1, cex = 0.9)
+        circle.f(Usr[1] + legLoc[1] * (Usr[2] - Usr[1]), Usr[3] + 
+            (legLoc[2] - 0.115) * (Usr[4] - Usr[3]), maxsize * 
+            sqrt(Mid)/max(xyzSqrt[, 3], na.rm = T), fill.col = col.alpha(legCol, 
+            legAlpha))
+        text(Usr[1] + (legLoc[1] + 0.125) * (Usr[2] - Usr[1]), 
+            Usr[3] + (legLoc[2] - 0.115) * (Usr[4] - Usr[3]), 
+            format(Mid, nsmall = legNsmall), adj = 1, cex = 0.9)
+        circle.f(Usr[1] + legLoc[1] * (Usr[2] - Usr[1]), Usr[3] + 
+            (legLoc[2] - 0.175) * (Usr[4] - Usr[3]), maxsize * 
+            sqrt(Large)/max(xyzSqrt[, 3], na.rm = T), fill.col = col.alpha(legCol, 
+            legAlpha))
+        text(Usr[1] + (legLoc[1] + 0.125) * (Usr[2] - Usr[1]), 
+            Usr[3] + (legLoc[2] - 0.175) * (Usr[4] - Usr[3]), 
+            format(Large, nsmall = legNsmall), adj = 1, cex = 0.9)
     }
     invisible()
 }
