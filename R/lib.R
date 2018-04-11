@@ -26,7 +26,7 @@ lib <- function (Package, Package.Name = NULL, require = TRUE, quiet = TRUE,
         devtools::install_github(Package, quiet = quiet, force = force)
         if (!any(installed.packages()[, 1] %in% Package.Name)) 
             stop(paste0("R '", Package.Name, "' package from Github is not installed. Note that the R package name may not be the same 
-			        as the GitHub directory name, if so, use the Package.Name argument. Find the R package name using quiet = FALSE."))
+            as the GitHub directory name, if so, use the Package.Name argument. Find the R package name using quiet = FALSE."))
         if (require) 
             require(Package.Name, character.only = TRUE)
     }
