@@ -1,5 +1,5 @@
 lib <- function (Package, Package.Name = NULL, require = TRUE, quiet = TRUE, 
-    force = FALSE, autoAddRepo = TRUE) 
+    force = FALSE, autoAddRepo = TRUE, ...) 
 {
     if (autoAddRepo & options()$repos[names(options()$repos) %in% 
         "CRAN"] %in% "@CRAN@") 
@@ -34,7 +34,7 @@ lib <- function (Package, Package.Name = NULL, require = TRUE, quiet = TRUE,
         if (any(installed.packages()[, 1] %in% Package)) {
             update.packages(Package, ask = FALSE)
         }
-        else install.packages(Package, quiet = quiet)
+        else install.packages(Package, quiet = quiet, ...)
         if (!any(installed.packages()[, 1] %in% Package)) 
             stop(paste("CRAN", Package, "package is not installed; an attempt to install failed (check for internet access)"))
         if (require) 
