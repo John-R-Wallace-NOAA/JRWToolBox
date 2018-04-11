@@ -1,4 +1,4 @@
-HA <- function (repo) 
+SHA <- function (repo) 
 {
     SHA <- packageDescription(repo)$RemoteSha
     if (is.null(SHA)) 
