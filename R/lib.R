@@ -14,7 +14,8 @@ lib <- function (Package, Package.Name = NULL, require = TRUE, quiet = TRUE,
     if (grepl("/", Package)) {
         if (any(installed.packages()[, 1] %in% "devtools")) {
             update.packages("devtools", ask = FALSE)
-        } else install.packages("devtools", quiet = quiet)
+        }
+        else install.packages("devtools", quiet = quiet)
         if (!any(installed.packages()[, 1] %in% "devtools")) 
             stop(paste("CRAN devtools package is not installed; an attempt to install failed (check for internet access)"))
         if (require) 
@@ -22,11 +23,10 @@ lib <- function (Package, Package.Name = NULL, require = TRUE, quiet = TRUE,
         if (!(is.character(substitute(Package.Name)))) 
             Package.Name <- deparse(substitute(Package.Name))
         if (Package.Name == "NULL") 
-            Package.Name <- get.subs(Package, "/")[[2]]
+            Package.Name <- get.subs(Package, "/")[[length(get.subs(Package, "/"))]]
         devtools::install_github(Package, quiet = quiet, force = force)
         if (!any(installed.packages()[, 1] %in% Package.Name)) 
-            stop(paste0("R '", Package.Name, "' package from Github is not installed. Note that the R package name may not be the same 
-            as the GitHub directory name, if so, use the Package.Name argument. Find the R package name using quiet = FALSE."))
+            stop(paste0("R '", Package.Name, "' package from Github is not installed. Note that the R package name may not be the same \n            as the GitHub directory name, if so, use the Package.Name argument. Find the R package name using quiet = FALSE."))
         if (require) 
             require(Package.Name, character.only = TRUE)
     }
