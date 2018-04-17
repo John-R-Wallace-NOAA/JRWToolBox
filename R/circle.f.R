@@ -28,10 +28,10 @@ function(cx, cy, r, fill.col = NULL, border.col = fill.col, yaxis = T, facets.nu
 	if(is.null(fill.col)) {
 		if(neg.flag)
 			lines(x, y, lwd = lwd, lty = lty.neg, ...)
-		else lines(x, y, lwd = lwd, ...)
+		else lines(x, y, lwd = lwd, col = border.col, ...)
 	}
 	else {
-		polygon(x, y, lty = 1, lwd = lwd, col = fill.col, ...)
+		polygon(x, y, lty = 1, lwd = lwd, border = NA, col = fill.col, ...)
 		lines(x, y, lty = 1, lwd = lwd, col = border.col)
 		if(neg.flag)
 			circle.f(cx, cy, r * 0.5, fill.col = 0, yaxis = yaxis, facets.num = facets.num)
