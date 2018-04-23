@@ -13,12 +13,13 @@ askNum <- function (msg, verify = TRUE)
             text(Pos, label = N)
             Num <- c(Num, N)
         }
-        Num <- as.numeric(na.omit(as.numeric(paste(Num, collapse = ""))))
+        Num <- as.numeric(paste(Num, collapse = ""))
+		Num <- if(is.na(Num)) NULL else Num
         if (verify) {
             cat("\nIs this the correct number: ", Num, "\nClick zero for FALSE or 1-9 for TRUE\n")
             plot(0:9, rep(5, 10))
             text(3, 6, "Click zero for FALSE or 1-9 for TRUE")
-            flush.console()
+			flush.console()
             Pos <- locator(1)
             N <- round(Pos$x)
             text(Pos, label = ifelse(N == 0, "FALSE", "TRUE"))
