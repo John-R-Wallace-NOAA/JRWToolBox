@@ -1,9 +1,9 @@
 plot.bubble.zero.cross <- function (xyzOrg, group = rep("A", nrow(xyz)), maxsize = scale.size * 
-    diff(range(xyzOrg[, 2])), scale.size = 0.07, add = F, xlab = dimnames(xyz)[[2]][1], 
+    diff(range(xyzOrg[, 2])), scale.size = 0.07, largestSqrtZ = max(xyzSqrt[, 3], na.rm = T), add = F, xlab = dimnames(xyz)[[2]][1], 
     ylab = dimnames(xyz)[[2]][2], main = NULL, range.bump = F, 
     cross.cex = 1, adj = NULL, fill.col = c("green", "red", "blue", 
-        "cyan", "black"), fill.col.alpha = 0.2, border.col = "black", border.col.alpha = fill.col.alpha,
-    cross.col = {
+        "cyan", "black"), fill.col.alpha = 0.2, border.col = "black", 
+    border.col.alpha = fill.col.alpha, cross.col = {
         if (is.null(fill.col)) {
             border.col
         }
@@ -38,7 +38,7 @@ plot.bubble.zero.cross <- function (xyzOrg, group = rep("A", nrow(xyz)), maxsize
     xyzSqrt <- xyzOrg
     xyzSqrt[, 3] <- sign(xyzSqrt[, 3]) * sqrt(abs(xyzSqrt[, 3]))
     xyz <- xyzSqrt
-    xyz[, 3] <- (maxsize * xyzSqrt[, 3])/max(xyzSqrt[, 3], na.rm = T)
+    xyz[, 3] <- (maxsize * xyzSqrt[, 3])/largestSqrtZ
     tf <- !apply(xyz, 1, function(x) any(is.na(x)))
     xyz <- xyz[tf, ]
     group <- group[tf]
