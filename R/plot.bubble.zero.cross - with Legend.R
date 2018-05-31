@@ -1,9 +1,10 @@
 plot.bubble.zero.cross <- function (xyzOrg, group = rep("A", nrow(xyz)), maxsize = scale.size * 
-    diff(range(xyzOrg[, 2])), scale.size = 0.07, largestSqrtZ = max(xyzSqrt[, 3], na.rm = T), add = F, xlab = dimnames(xyz)[[2]][1], 
-    ylab = dimnames(xyz)[[2]][2], main = NULL, range.bump = F, 
-    cross.cex = 1, adj = NULL, fill.col = c("green", "red", "blue", 
-        "cyan", "black"), fill.col.alpha = 0.2, border.col = "black", 
-    border.col.alpha = fill.col.alpha, cross.col = {
+    diff(range(xyzOrg[, 2])), scale.size = 0.07, largestSqrtZ = max(xyzSqrt[, 
+    3], na.rm = T), add = F, xlab = dimnames(xyz)[[2]][1], ylab = dimnames(xyz)[[2]][2], 
+    main = NULL, range.bump = F, cross.cex = 1, adj = NULL, fill.col = c("green", 
+        "red", "blue", "cyan", "black"), fill.col.alpha = 0.2, 
+    border.col = "black", border.col.alpha = fill.col.alpha, 
+    cross.col = {
         if (is.null(fill.col)) {
             border.col
         }
@@ -13,7 +14,7 @@ plot.bubble.zero.cross <- function (xyzOrg, group = rep("A", nrow(xyz)), maxsize
     }, cross.col.alpha = ifelse(fill.col.alpha + 0.65 > 1, 1, 
         fill.col.alpha + 0.5), border.lwd = 1.25, Grid.circle = F, 
     legend = TRUE, legLoc = c(0.1, 0.25), legCol = "grey4", legAlpha = 0.5, 
-    legUnits = "Metric Tons", legNsmall = 1, ...) 
+    legUnits = "Metric Tons", legNsmall = 1, Extra.Group.Size = rep(1, N), ...) 
 {
     " **** Data is proportional to the area of the circle **** "
     "%r1%" <- function(e1, e2) ifelse(e1%%e2 == 0, e2, e1%%e2)
@@ -44,7 +45,7 @@ plot.bubble.zero.cross <- function (xyzOrg, group = rep("A", nrow(xyz)), maxsize
     group <- group[tf]
     Groups <- unique(group)
     N <- length(Groups)
-    if (!add) {
+	if (!add) {
         if (range.bump) {
             xlim <- c(min(xyz[, 1], na.rm = T) - 0.2 * diff(range(xyz[, 
                 1], na.rm = T)), max(xyz[, 1], na.rm = T) + 0.2 * 
@@ -67,9 +68,9 @@ plot.bubble.zero.cross <- function (xyzOrg, group = rep("A", nrow(xyz)), maxsize
                   lwd = 1)
             else {
                 if (Grid.circle) 
-                  grid.circle(XYZ[i, 1], XYZ[i, 2], XYZ[i, 3], 
+                  grid.circle(XYZ[i, 1], XYZ[i, 2], XYZ[i, 3] * Extra.Group.Size[j], 
                     default.units = "native")
-                else circle.f(XYZ[i, 1], XYZ[i, 2], XYZ[i, 3], 
+                else circle.f(XYZ[i, 1], XYZ[i, 2], XYZ[i, 3] * Extra.Group.Size[j], 
                   adj = adj, fill.col = fill.col[j %r1% length(fill.col)], 
                   lwd = border.lwd[j %r1% length(border.lwd)], 
                   border.col = border.col[j %r1% length(border.col)], 
