@@ -5,7 +5,7 @@
             base::load(file)
             if (str. == TRUE) {
                 Names <- base::ls()
-                for (i in Names) {
+                for (i in Names[-grep('%', Names)]) {
                    OBJ <- eval(parse(text = i))
                    cat("\n", i, ":\n\n", sep = "")
                    str(OBJ, list.len = list.len)
