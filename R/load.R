@@ -6,7 +6,7 @@ load <- function (file, str. = TRUE, list.len = 15, nrow = 5, ...)
             base::load(file)
             if (str. == TRUE) {
                 Names <- base::ls()
-                for (i in Names[-grep("%", Names)]) {
+                for (i in Names[!grepl("%", Names)]) {
                   OBJ <- eval(parse(text = i))
                   cat("\n", i, ":\n\n", sep = "")
                   str(OBJ, list.len = list.len)
