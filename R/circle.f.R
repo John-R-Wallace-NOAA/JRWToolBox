@@ -7,7 +7,7 @@ function(cx, cy, r, fill.col = NULL, border.col = fill.col, yaxis = T, facets.nu
 #   DATE WRITTEN:  1994      LAST REVISED:   19 Jan 2005
 #   AUTHOR:  John R. Wallace (John.Wallace@noaa.gov)
 #
-	if(r == 0) return(invisible())
+	if (!is.finite(r) | r == 0)  return(invisible())
 	if(r < 0)
 		neg.flag <- T
 	else neg.flag <- F
