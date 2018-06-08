@@ -19,7 +19,7 @@ Install or upgrade the package with:
     # Get devtools if you don't already have it.
     if (!any(installed.packages()[, 1] %in% "devtools"))  install.packages('devtools')  
     
-    devtools::install_github("John-R-Wallace/R-ToolBox")
+    devtools::install_github("John-R-Wallace/JRWToolBox")
 
 If you then want to load the package into R use:
 
