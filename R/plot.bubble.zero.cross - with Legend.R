@@ -70,7 +70,7 @@ plot.bubble.zero.cross <- function (xyzOrg, group = rep("A", nrow(xyz)), maxsize
                 if (Grid.circle) 
                   grid.circle(XYZ[i, 1], XYZ[i, 2], XYZ[i, 3] * Extra.Group.Size[j], 
                     default.units = "native")
-                else circle.f(XYZ[i, 1], XYZ[i, 2], XYZ[i, 3] * Extra.Group.Size[j], 
+                else JRWToolBox::circle.f(XYZ[i, 1], XYZ[i, 2], XYZ[i, 3] * Extra.Group.Size[j], 
                   adj = adj, fill.col = fill.col[j %r1% length(fill.col)], 
                   lwd = border.lwd[j %r1% length(border.lwd)], 
                   border.col = border.col[j %r1% length(border.col)], 
