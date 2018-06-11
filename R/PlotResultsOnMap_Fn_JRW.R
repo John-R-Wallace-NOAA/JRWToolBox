@@ -194,7 +194,7 @@ PlotResultsOnMap_Fn_JRW <- function (plot_set = 3, MappingDetails, Report, Sdrep
             }
             if (add == FALSE) 
                 par(mfrow = mfrow)
-            Return = PlotMap_Fn_JRW(MappingDetails = MappingDetails, 
+            Return = JRWToolBox::PlotMap_Fn_JRW(MappingDetails = MappingDetails, 
                 Mat = Mat_xt[, Years2Include, drop = F], PlotDF = PlotDF, 
                 MapSizeRatio = MapSizeRatio, Xlim = Xlim, Ylim = Ylim, 
                 FileName = paste0(FileName, plot_codes[plot_num], 
