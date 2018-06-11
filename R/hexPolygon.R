@@ -1,7 +1,7 @@
 
 hexPolygon <- function (x, y, hexC = hexbin::hexcoords(dx, dy, n = 1), dx, dy = NULL, border = 0, ...) 
 {
-       require(hexbin)
+       JRWToolBox::lib(hexbin)
        n <- length(x)
        stopifnot(length(y) == n)
        stopifnot(is.list(hexC) && is.numeric(hexC$x) && is.numeric(hexC$y))
