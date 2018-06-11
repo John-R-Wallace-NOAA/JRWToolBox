@@ -1,6 +1,6 @@
 
-updateTools <- function(force = FALSE) {
+updateTools <- function(...) {
 
-   JRWToolBox::lib("John-R-Wallace/JRWToolBox", force = force)
+   JRWToolBox::lib("John-R-Wallace/JRWToolBox", ...)
    
 }
