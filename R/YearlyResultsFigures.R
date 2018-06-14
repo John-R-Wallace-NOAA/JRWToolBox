@@ -79,7 +79,7 @@ YearlyResultsFigures <- function(eastLongitude = -160.5, longitudeDelta = 2.6, S
     Index$LatSD_mt <- rev((48 - 34.2)/(max(Index$Estimate_metric_tons) - min(Index$Estimate_metric_tons)) * Index$SD_mt)
     
  '  # It appears that calls to text() need to be before things get changed by using subplot() below.  '	
-    text(-118.5, 37.50, 'Kg per Hectare', cex = 0.85)     
+    text(-118.5, 37.50, 'Grams per Hectare', cex = 0.80)     
 	
 	if(exists('Ages') & exists('LenMin') & exists('LenMax')) {
        if(length(Ages) == 1) {
@@ -112,7 +112,7 @@ YearlyResultsFigures <- function(eastLongitude = -160.5, longitudeDelta = 2.6, S
         x=grconvertX(c(0.10, 0.89), from='npc'), y=grconvertY(c(0, 0.190), from='npc'), type='fig', pars=list( mar=c(1.5,4,0,0) + 0.1) )
     }
     
-    TeachingDemos::subplot( { par(cex = 5); color.bar(Col(100), r(min(exp(SP.Results.Dpth.[,-(1:4)])), 3), r(max(exp(SP.Results.Dpth.[,-(1:4)])), 3), nticks = 6) },
+    TeachingDemos::subplot( { par(cex = 5); color.bar(Col(100), round(min(exp(SP.Results.Dpth.[,-(1:4)])), 3), round(max(exp(SP.Results.Dpth.[,-(1:4)])), 3), nticks = 6) },
          x=grconvertX(c(0.83, 0.87), from='npc'), y=grconvertY(c(0.5, 0.75), from='npc'), type='fig', pars=list( mar=c(0,0,1,0) + 0.1) )    
         
     dev.off()
