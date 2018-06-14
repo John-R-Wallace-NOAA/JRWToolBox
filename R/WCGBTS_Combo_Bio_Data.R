@@ -23,7 +23,7 @@ WCGBTS_Combo_Bio_Data <- function (Species = "Sebastes pinniger", YearRange = c(
     if (length(YearRange) == 1) 
         YearRange <- c(YearRange, YearRange)
     " "
-    Vars <- c("scientific_name", "year", "vessel", "pass", "tow", "date_dim$full_date", "depth_ftm", "weight_kg", "length_cm", "sex", "age_years", "latitude_dd", "longitude_dd")
+    Vars <- c("trawl_id", "scientific_name", "year", "vessel", "pass", "tow", "date_dim$full_date", "depth_ftm", "weight_kg", "length_cm", "sex", "age_years", "latitude_dd", "longitude_dd")
     " # Available, but not used: project, performance (not output, only used as a filter below)  "
     " # species and performance=Satisfactory added; went with a year range approach for the years to select  "
     UrlText <- paste0("https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.individual_fact/selection.json?filters=project=Groundfish%20Slope%20and%20Shelf%20Combination%20Survey,", 
@@ -40,11 +40,11 @@ WCGBTS_Combo_Bio_Data <- function (Species = "Sebastes pinniger", YearRange = c(
     if(verbose) { print(SP[1:4,]); cat("\n\n") }
     " # SP.Before <<- SP  "
     " "
-    SP <- rename_columns(SP, newname = c("Year", "Vessel", "Pass", "Scientific_Name", "Tow", "Date", "Depth_ftm", "Weight_kg", "Length_cm", "Sex", "Age", "Latitude_dd", "Longitude_dd"))
+    SP <- rename_columns(SP, newname = c("Trawl_id", "Year", "Vessel", "Pass", "Scientific_Name", "Tow", "Date", "Depth_ftm", "Weight_kg", "Length_cm", "Sex", "Age", "Latitude_dd", "Longitude_dd"))
     if(verbose) { print(SP[1:4,]); cat("\n\n") }
     "  # SP.After <<- SP  "
     " "
-    SP <- SP[, c("Year", "Vessel", "Pass", "Tow", "Date", "Depth_ftm", "Scientific_Name", "Weight_kg", "Length_cm", "Sex", "Age", "Latitude_dd", "Longitude_dd")]
+    SP <- SP[, c("Trawl_id", "Year", "Vessel", "Pass", "Tow", "Date", "Depth_ftm", "Scientific_Name", "Weight_kg", "Length_cm", "Sex", "Age", "Latitude_dd", "Longitude_dd")]
     SP$Date <- chron::chron(format(as.POSIXlt(SP$Date, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"), format = "y-m-d", out.format = "YYYY-m-d")
     " "
     if(verbose) { print(SP[1:4,]); cat("\n\n") }
