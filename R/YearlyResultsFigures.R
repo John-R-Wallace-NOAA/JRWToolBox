@@ -1,5 +1,5 @@
 YearlyResultsFigures <- function(eastLongitude = -160.5, longitudeDelta = 2.6, SP.Results.Dpth. = NULL, MapDetails_List. = MapDetails_List, Report. = Report, Opt. = Opt, 
-                                 DateFile. = DateFile, Year_Set. = Year_Set, Years2Include. = Years2Include) {
+                                 DateFile. = DateFile, Year_Set. = Year_Set, Years2Include. = Years2Include, LatMin. = strata.limits$south_border[1]) {
   
     if (!any(installed.packages()[, 1] %in% "devtools")) 
         install.packages("devtools")
@@ -81,23 +81,35 @@ YearlyResultsFigures <- function(eastLongitude = -160.5, longitudeDelta = 2.6, S
  '  # It appears that calls to text() need to be before things get changed by using subplot() below.  '	
     text(-118.5, 37.50, 'Kg per Hectare', cex = 0.85)     
 	
-    if(length(Ages) == 1) {
-       text(-161.7, 34, paste('Age:', Ages), cex = 0.75, adj = 0)    
-    } else
-       text(-161.7, 34, paste('Ages:', min(Ages), "-", max(Ages)), cex = 0.75, adj = 0) 
-       
-    text(-161.7, 33, paste('Length range (cm):', LenMin, "-", LenMax), cex = 0.75, adj = 0)
+	if(exists('Ages') & exists('LenMin') & exists('LenMax')) {
+       if(length(Ages) == 1) {
+          text(-161.7, 34, paste('Age:', Ages), cex = 0.75, adj = 0)    
+       } else
+          text(-161.7, 34, paste('Ages:', min(Ages), "-", max(Ages)), cex = 0.75, adj = 0) 
 
-    if(LatMin >= 33.8) {
+	   text(-161.7, 33, paste('Length range (cm):', LenMin, "-", LenMax), cex = 0.75, adj = 0)
+    }
+	
+    if(LatMin. >= 33.8) {
         text(-119.8, 33.29, "Sum", cex = 0.80)
-        TeachingDemos::subplot( {par(cex = 5); JRWToolBox::plotCI.jrw3(Index$Year, Index$Estimate_metric_tons,  Index$SD_mt, type = 'b', sfrac=0, xlab='Year', ylab = 'Abundance (metric tons)', 
+        TeachingDemos::subplot( {par(cex = 5); JRWToolBox::plotCI.jrw3(Index$Year, Index$Estimate_metric_tons,  Index$SD_mt, type = 'b', sfrac=0, xlab='Year', ylab = 'Abundance (mt)', 
         col = 'red', lwd = 7, cex =1, xaxt = "n", bty = 'n');  axis(3, Year_Set, lwd = 5); axis(side = 2, lwd = 5)}, 
         x=grconvertX(c(0.08, 0.87), from='npc'), y=grconvertY(c(0.02, 0.28), from='npc'), type='fig', pars=list( mar=c(1.5,4,0,0) + 0.1) )
-    } else {
+    
+	} 
+	
+	if(LatMin. > 32.25 & LatMin. < 33.8) {
         text(-118.7, 32.053, "Sum", cex = 0.85)
-        TeachingDemos::subplot( {par(cex = 5); JRWToolBox::plotCI.jrw3(Index$Year, Index$Estimate_metric_tons,  Index$SD_mt, type = 'b', sfrac=0, xlab='Year', ylab = 'Abundance (metric tons)', 
+        TeachingDemos::subplot( {par(cex = 5); JRWToolBox::plotCI.jrw3(Index$Year, Index$Estimate_metric_tons,  Index$SD_mt, type = 'b', sfrac=0, xlab='Year', ylab = 'Abundance (mt)', 
         col = 'red', lwd = 7, cex =1, xaxt = "n", bty = 'n');  axis(3, 2003:2015, lwd = 5); axis(side = 2, lwd = 5)}, 
         x=grconvertX(c(0.10, 0.89), from='npc'), y=grconvertY(c(0, 0.225), from='npc'), type='fig', pars=list( mar=c(1.5,4,0,0) + 0.1) )
+    }
+	
+	if(LatMin. <=32.25) {
+        text(-118.7, 31.266, "Sum", cex = 0.85)
+        TeachingDemos::subplot( {par(cex = 5); JRWToolBox::plotCI.jrw3(Index$Year, Index$Estimate_metric_tons,  Index$SD_mt, type = 'b', sfrac=0, xlab='Year', ylab = 'Abundance (mt)', 
+        col = 'red', lwd = 7, cex =1, xaxt = "n", bty = 'n');  axis(3, 2003:2015, lwd = 5); axis(side = 2, lwd = 5)}, 
+        x=grconvertX(c(0.10, 0.89), from='npc'), y=grconvertY(c(0, 0.190), from='npc'), type='fig', pars=list( mar=c(1.5,4,0,0) + 0.1) )
     }
     
     TeachingDemos::subplot( { par(cex = 5); color.bar(Col(100), r(min(exp(SP.Results.Dpth.[,-(1:4)])), 3), r(max(exp(SP.Results.Dpth.[,-(1:4)])), 3), nticks = 6) },
