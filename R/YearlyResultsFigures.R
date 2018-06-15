@@ -6,7 +6,7 @@ YearlyResultsFigures <- function(eastLongitude = -160.5, longitudeDelta = 2.6, S
     if (!any(installed.packages()[, 1] %in% "JRWToolBox")) 
         devtools::install_github("John-R-Wallace/JRWToolBox")
         
-	JRWToolBox::lib(TeachingDemos)  
+	JRWToolBox::lib(TeachingDemos, pos=1000)   # Put in back search position because of a conflict with %<=% function in my tool box.
 	    
 	color.bar <- function(lut, min, max=-min, nticks=11, ticks=seq(min, max, len=nticks), title='', ...) {
           scale = (length(lut)-1)/(max-min)
@@ -44,7 +44,7 @@ YearlyResultsFigures <- function(eastLongitude = -160.5, longitudeDelta = 2.6, S
           
  '  # ------------- VAST Species Results by Year Figure -------------   '
                 
-    JRWToolBox::catf("\n\nCreating the species results by year figure using hexagon shapes [hexbin R package used by JRWToolBox::hexPolygon()]\n\n")
+	JRWToolBox::catf("\n\nCreating the species results by year figure using hexagon shapes (hexbin R package)\n\n")
      
     '   # 13 Colors   '	 
     SP.Results <- SP.Results.Dpth.[,-(1:2)]
@@ -112,7 +112,7 @@ YearlyResultsFigures <- function(eastLongitude = -160.5, longitudeDelta = 2.6, S
         x=grconvertX(c(0.10, 0.89), from='npc'), y=grconvertY(c(0, 0.190), from='npc'), type='fig', pars=list( mar=c(1.5,4,0,0) + 0.1) )
     }
     
-    TeachingDemos::subplot( { par(cex = 5); color.bar(Col(100), round(min(exp(SP.Results.Dpth.[,-(1:4)])), 3), round(max(exp(SP.Results.Dpth.[,-(1:4)])), 3), nticks = 6) },
+    TeachingDemos::subplot( { par(cex = 5); color.bar(Col(100), JRWToolBox::r(min(exp(SP.Results.Dpth.[,-(1:4)])), 3), JRWToolBox::r(max(exp(SP.Results.Dpth.[,-(1:4)])), 3), nticks = 6) },
          x=grconvertX(c(0.83, 0.87), from='npc'), y=grconvertY(c(0.5, 0.75), from='npc'), type='fig', pars=list( mar=c(0,0,1,0) + 0.1) )    
         
     dev.off()
