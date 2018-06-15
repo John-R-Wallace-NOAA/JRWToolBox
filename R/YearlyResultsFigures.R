@@ -44,7 +44,7 @@ YearlyResultsFigures <- function(eastLongitude = -160.5, longitudeDelta = 2.6, S
           
  '  # ------------- VAST Species Results by Year Figure -------------   '
                 
-	JRWToolBox::catf("\n\nCreating the species results by year figure using hexagon shapes (hexbin R package)\n\n")
+    JRWToolBox::catf("\n\nCreating the species results by year figure using hexagon shapes [hexbin R package used by JRWToolBox::hexPolygon()]\n\n")
      
     '   # 13 Colors   '	 
     SP.Results <- SP.Results.Dpth.[,-(1:2)]
