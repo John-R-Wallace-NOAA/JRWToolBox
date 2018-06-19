@@ -1,4 +1,4 @@
-
+ 
         #  Save all the objects in both a function and the global environment and load them all back into the global env.
         
         test <- function() {
