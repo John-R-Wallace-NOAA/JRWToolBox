@@ -40,8 +40,7 @@ dataWareHouseTrawlBio <- function (Species = "Sebastes pinniger", YearRange = c(
         stop("No project selected"), "AFSC.Shelf","AFSC.Slope","WCGBTS.Combo","WCGBTS.Shelf","WCGBTS.Slope","WCGBTS.Hypoxia","WCGBTS.Santa.Barb.Basin","WCGBTS.Shelf.Rockfish","WCGBTS.Video")
         cat("\n\nTo avoid this menu, the (quoted) project name shown above may be entered into the project argument.\n")
         cat("\nAll extracted data contains a Project column and therefore projects may be stacked [using rbind()], if desired.\n")
-        cat("\nNote that providing a wrong year range for a given project will result in an error. The default year range will give all years within the project.\n\n"); flush.console()	
-    }
+     }
     " "
     project <- projectNames$longProject[projectNames$shortProject %in% projectShort]
  
@@ -62,7 +61,11 @@ dataWareHouseTrawlBio <- function (Species = "Sebastes pinniger", YearRange = c(
     " "
     if (verbose) cat("\n\nURL Text for the species:\n\n", UrlText, "\n\n")
     " "
-    SP <- jsonlite::fromJSON(UrlText)
+    SP <- try(jsonlite::fromJSON(UrlText))
+    if(!is.data.frame(SP)) {
+         warning("\n\nNo data returned by the Warehouse for the filters given. (NULL is being returned.)\n\n")
+         return(NULL)
+    }
     if(verbose) { print(SP[1:4,]); cat("\n\n") }
     " # SP.Before <<- SP  "
     " "
