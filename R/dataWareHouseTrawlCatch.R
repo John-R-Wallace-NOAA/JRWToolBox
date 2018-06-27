@@ -65,7 +65,7 @@ dataWareHouseTrawlCatch <- function (Species = "Sebastes pinniger", YearRange = 
         paste0(Vars, collapse = ","))
     " "
     if (verbose) 
-        cat("\n\nURL Text for the species:\n\n", UrlText, "\n\n")
+        cat("\n\nURL text for the species:\n\n", UrlText, "\n\n")
     " "
     SP <- jsonlite::fromJSON(UrlText)
     if (verbose) {
@@ -97,7 +97,7 @@ dataWareHouseTrawlCatch <- function (Species = "Sebastes pinniger", YearRange = 
         YearRange[2], "&variables=", paste0(Vars, collapse = ","))
     " "
     if (verbose) 
-        cat("\n\nURL Text for all tows (needed for zero catch tows):\n\n", 
+        cat("\n\nURL text for all tows (needed for zero catch tows):\n\n", 
             UrlText, "\n\n")
     " "
     All.Tows <- jsonlite::fromJSON(UrlText)
