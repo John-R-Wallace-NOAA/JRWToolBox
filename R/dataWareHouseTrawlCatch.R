@@ -30,11 +30,11 @@ dataWareHouseTrawlCatch <- function (Species = "Sebastes pinniger", YearRange = 
        'Groundfish Slope and Shelf Combination Survey'                 WCGBTS.Combo
                              'Groundfish Shelf Survey'                 WCGBTS.Shelf 
                              'Groundfish Slope Survey'                 WCGBTS.Slope
-       					                       'Hypoxia Study'               WCGBTS.Hypoxia
-       					           'Santa Barbara Basin Study'      WCGBTS.Santa.Barb.Basin
-       					          'Shelf Rockfish [2004-2015]'        WCGBTS.Shelf.Rockfish
-       					                         'Video Study'                 WCGBTS.Video
-    ")					   
+                                       'Hypoxia Study'               WCGBTS.Hypoxia
+                           'Santa Barbara Basin Study'      WCGBTS.Santa.Barb.Basin
+                          'Shelf Rockfish [2004-2015]'        WCGBTS.Shelf.Rockfish
+                                         'Video Study'                 WCGBTS.Video
+    ") 
     " "  
     if(	projectShort %in% c('Ask', 'ask'))  {
         cat("\n\nSelect a project [enter 0 (zero) to abort]:\n\n"); flush.console()
