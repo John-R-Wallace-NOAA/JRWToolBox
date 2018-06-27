@@ -60,7 +60,7 @@ dataWareHouseTrawlBio <- function (Species = "Sebastes pinniger", YearRange = c(
         YearRange[1], ",date_dim$year<=", YearRange[2], "&variables=", 
         paste0(Vars, collapse = ","))
     " "
-    if (verbose) cat("\n\nURL text for the species:\n\n", UrlText, "\n\n")
+    if (verbose) cat("\n\nURL Text for the species:\n\n", UrlText, "\n\n")
     " "
     SP <- jsonlite::fromJSON(UrlText)
     if(verbose) { print(SP[1:4,]); cat("\n\n") }
@@ -74,9 +74,10 @@ dataWareHouseTrawlBio <- function (Species = "Sebastes pinniger", YearRange = c(
     SP$Date <- chron::chron(format(as.POSIXlt(SP$Date, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"), format = "y-m-d", out.format = "YYYY-m-d")
     " "
     if(verbose) {
-       cat("\n\nFirst few rows of returned data:\n\n") 
+       cat("\n\nFirst few rows of returned data:\n\n")
        print(SP[1:4,])
        cat("\n\n")
+       if(projectShort == "WCGBTS.Combo" & any(YearRange[1]:YearRange[2] %in% 2012))  cat("\nNote: the Noah's Ark was chartered for both passes in 2012.\n")
        print(table(SP$Vessel, SP$Year, useNA = "ifany"))
        cat("\n\n")
     }
