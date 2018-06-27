@@ -4,6 +4,6 @@ scanIn <- function(text, header = TRUE, ncol = 2) {
        names(Out) <- Out[1,]
 	     Out <- Out[-1,]
     }
-    Out
+    JRWToolBox::renum(Out)
 }
 
