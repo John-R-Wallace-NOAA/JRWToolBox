@@ -42,7 +42,7 @@ dataWareHouseTrawlCatch <- function (Species = "Sebastes pinniger", YearRange = 
         stop("No project selected"), "AFSC.Shelf","AFSC.Slope","WCGBTS.Combo","WCGBTS.Shelf","WCGBTS.Slope","WCGBTS.Hypoxia","WCGBTS.Santa.Barb.Basin","WCGBTS.Shelf.Rockfish","WCGBTS.Video")
         cat("\n\nTo avoid this menu, the (quoted) project name shown above may be entered into the project argument.\n")
         cat("\nAll extracted data contains a Project column and therefore projects may be stacked [using rbind()], if desired.\n")
-        cat("\nNote that providing a wrong year range for a given project will result in an error. The default year range will work if there is any data within the project.\n\n"); flush.console()	
+        cat("\nNote that providing a wrong year range for a given project will result in an error. The default year range will give all years within the project.\n\n"); flush.console()	
     }
     " "
 	project <- projectNames$longProject[projectNames$shortProject %in% projectShort]
