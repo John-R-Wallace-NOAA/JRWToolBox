@@ -132,6 +132,7 @@ dataWareHouseTrawlCatch <- function (Species = "Sebastes pinniger", YearRange = 
         "%Y-%m-%d"), format = "y-m-d", out.format = "YYYY-m-d")
     Out$Project <- projectShort
     if (verbose) {
+       cat("\n")
        print(Out[1:4, ])
        cat("\n\n")
        print(table(Out$Vessel, Out$Year, useNA = "ifany"))
