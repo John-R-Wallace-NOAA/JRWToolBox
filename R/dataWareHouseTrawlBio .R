@@ -73,7 +73,8 @@ dataWareHouseTrawlBio <- function (Species = "Sebastes pinniger", YearRange = c(
     SP <- SP[, c("Trawl_id", "Year", "Vessel", "Pass", "Tow", "Date", "Depth_ftm", "Scientific_Name", "Weight_kg", "Length_cm", "Sex", "Age", "Latitude_dd", "Longitude_dd")]
     SP$Date <- chron::chron(format(as.POSIXlt(SP$Date, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"), format = "y-m-d", out.format = "YYYY-m-d")
     " "
-    if(verbose) { 
+    if(verbose) {
+       cat("\n") 
        print(SP[1:4,])
        cat("\n\n")
        print(table(SP$Vessel, SP$Year, useNA = "ifany"))
