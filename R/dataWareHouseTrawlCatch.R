@@ -35,7 +35,7 @@ dataWareHouseTrawlCatch <- function (Species = "Sebastes pinniger", YearRange = 
                           'Shelf Rockfish [2004-2015]'        WCGBTS.Shelf.Rockfish
                                          'Video Study'                 WCGBTS.Video
     ") 
-    " "  
+    " "
     if(	projectShort %in% c('Ask', 'ask'))  {
         cat("\n\nSelect a project [enter 0 (zero) to abort]:\n\n"); flush.console()
         projectShort <- switch(menu(c("AFSC.Shelf","AFSC.Slope","WCGBTS.Combo","WCGBTS.Shelf","WCGBTS.Slope","WCGBTS.Hypoxia","WCGBTS.Santa.Barb.Basin","WCGBTS.Shelf.Rockfish","WCGBTS.Video")) + 1,
@@ -68,7 +68,7 @@ dataWareHouseTrawlCatch <- function (Species = "Sebastes pinniger", YearRange = 
     " "
     SP <- try(jsonlite::fromJSON(UrlText))
     if(!is.data.frame(SP)) {
-         warning("\n\nNo data returned by the Warehouse for the filters given. (NULL is being returned.)\n\n")
+         warning("\n\nNo data returned by the Warehouse for the filters given.  Make sure the year range is correct for the project selected. (NULL is being returned.)\n\n")
          return(NULL)
     }
     if (verbose) {
