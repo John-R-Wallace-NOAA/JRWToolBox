@@ -28,7 +28,7 @@ dataWareHouseTrawlCatch <- function (Species = "Sebastes pinniger", YearRange = 
                    'Groundfish Triennial Shelf Survey'                   AFSC.Shelf
                                                    NA                    AFSC.Slope
        'Groundfish Slope and Shelf Combination Survey'                 WCGBTS.Combo
-                             'Groundfish Shelf Survey'                 WCGBTS.Shelf 
+                             'Groundfish Shelf Survey'                 WCGBTS.Shelf
                              'Groundfish Slope Survey'                 WCGBTS.Slope
                                        'Hypoxia Study'               WCGBTS.Hypoxia
                            'Santa Barbara Basin Study'      WCGBTS.Santa.Barb.Basin
@@ -42,10 +42,10 @@ dataWareHouseTrawlCatch <- function (Species = "Sebastes pinniger", YearRange = 
         stop("No project selected"), "AFSC.Shelf","AFSC.Slope","WCGBTS.Combo","WCGBTS.Shelf","WCGBTS.Slope","WCGBTS.Hypoxia","WCGBTS.Santa.Barb.Basin","WCGBTS.Shelf.Rockfish","WCGBTS.Video")
         cat("\n\nTo avoid this menu, the (quoted) project name shown above may be entered into the project argument.\n")
         cat("\nAll extracted data contains a Project column and therefore projects may be stacked [using rbind()], if desired.\n")
-        cat("\nNote that providing a wrong year range for a given project will result in an error. The default year range will give all years within the project.\n\n"); flush.console()	
+        cat("\nNote that providing a wrong year range for a given project will result in an error. The default year range will work if there is any data within the project.\n\n"); flush.console()	
     }
     " "
-	project <- projectNames$longProject[projectNames$shortProject %in% projectShort]
+    project <- projectNames$longProject[projectNames$shortProject %in% projectShort]
  
     " "
     if (length(YearRange) == 1) 
@@ -65,7 +65,7 @@ dataWareHouseTrawlCatch <- function (Species = "Sebastes pinniger", YearRange = 
         paste0(Vars, collapse = ","))
     " "
     if (verbose) 
-        cat("\n\nURL text for the species:\n\n", UrlText, "\n\n")
+        cat("\n\nURL Text for the species:\n\n", UrlText, "\n\n")
     " "
     SP <- jsonlite::fromJSON(UrlText)
     if (verbose) {
@@ -97,8 +97,7 @@ dataWareHouseTrawlCatch <- function (Species = "Sebastes pinniger", YearRange = 
         YearRange[2], "&variables=", paste0(Vars, collapse = ","))
     " "
     if (verbose) 
-        cat("\n\nURL text for all tows (needed for zero catch tows):\n\n", 
-            UrlText, "\n\n")
+        cat("\n\nURL Text for all tows (needed for zero catch tows):\n\n", UrlText, "\n\n")
     " "
     All.Tows <- jsonlite::fromJSON(UrlText)
     if (verbose) {
@@ -135,6 +134,7 @@ dataWareHouseTrawlCatch <- function (Species = "Sebastes pinniger", YearRange = 
        cat("\n\nFirst few rows of returned data:\n\n")
        print(Out[1:4, ])
        cat("\n\n")
+       if(projectShort == "WCGBTS.Combo" & any(YearRange[1]:YearRange[2] %in% 2012))  cat("\nNote: the Noah's Ark was chartered for both passes in 2012.\n")
        print(table(Out$Vessel, Out$Year, useNA = "ifany"))
        cat("\n\n")
     }
