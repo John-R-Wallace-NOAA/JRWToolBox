@@ -60,7 +60,7 @@ dataWareHouseTrawlBio <- function (Species = "Sebastes pinniger", YearRange = c(
         YearRange[1], ",date_dim$year<=", YearRange[2], "&variables=", 
         paste0(Vars, collapse = ","))
     " "
-    if (verbose) cat("\n\nURL Text for the species:\n\n", UrlText, "\n\n")
+    if (verbose) cat("\n\nURL text for the species:\n\n", UrlText, "\n\n")
     " "
     SP <- jsonlite::fromJSON(UrlText)
     if(verbose) { print(SP[1:4,]); cat("\n\n") }
