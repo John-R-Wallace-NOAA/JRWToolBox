@@ -1,5 +1,5 @@
 YearlyResultsFigures <- function(eastLongitude = -160.5, longitudeDelta = 2.6, SP.Results.Dpth. = NULL, MapDetails_List. = MapDetails_List, Report. = Report, Opt. = Opt, 
-                                 DateFile. = DateFile, Year_Set. = Year_Set, Years2Include. = Years2Include, LatMin. = strata.limits$south_border[1]) {
+                                 DateFile. = DateFile, Year_Set. = Year_Set, Years2Include. = Years2Include, LatMin. = strata.limits$south_border[1], HomeDir = ".") {
   
     if (!any(installed.packages()[, 1] %in% "devtools")) 
         install.packages("devtools")
