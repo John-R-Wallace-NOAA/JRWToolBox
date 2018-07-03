@@ -54,7 +54,7 @@ YearlyResultsFigures <- function(eastLongitude = -160.5, longitudeDelta = 2.6, S
     SP.Results$Rescaled.Sum <- SP.Results$Rescaled.Sum - min(SP.Results$Rescaled.Sum)
     SP.Results$Rescaled.Sum <- SP.Results$Rescaled.Sum * 12/max(SP.Results$Rescaled.Sum) + 1
     
-    Index <- read.csv(paste0(DateFile., "Table_for_SS3.csv"))[Years2Include, ]
+    Index <- read.csv(paste0(DateFile., "Table_for_SS3.csv"))[Years2Include., ]
       
     png(paste0(DateFile., "SpResults 6000 Rez.png"),  width = 6000, height = 6000, bg = 'white')
     par(cex = 6)    
