@@ -1,6 +1,6 @@
 
 YearlyResultsFigures <- function(eastLongitude = -160.5, longitudeDelta = 2.6, SP.Results.Dpth. = NULL, MapDetails_List. = MapDetails_List, Report. = Report, Opt. = Opt, 
-                                 DateFile. = DateFile, Year_Set. = Year_Set, Years2Include. = Years2Include, Ages. = Ages, LenMin. = LenMin, LenMax. = LenMax, strata.limits. = strata.limits, HomeDir = ".") {
+                                 DateFile. = DateFile, Year_Set. = Year_Set, Years2Include. = Years2Include, Ages. = NULL, LenMin. = NULL, LenMax. = NULL, strata.limits. = strata.limits, HomeDir = ".") {
   
     if (!any(installed.packages()[, 1] %in% "devtools")) 
         install.packages("devtools")
@@ -84,14 +84,15 @@ YearlyResultsFigures <- function(eastLongitude = -160.5, longitudeDelta = 2.6, S
  '  # It appears that calls to text() need to be before things get changed by using subplot() below.  '	
     text(-118.5, 37.50, 'Grams per Hectare', cex = 0.80)     
 
-    if(!is.na(Ages.) & !is.na(LenMin.) & !is.na(LenMax.)) {
-       if(length(Ages.) == 1) {
+    if(!is.null(Ages.)) {
+       if(length(Ages.) == 1) 
           text(-161.7, 34, paste('Age:', Ages), cex = 0.75, adj = 0)    
-       } else
+       else
           text(-161.7, 34, paste('Ages:', min(Ages), "-", max(Ages)), cex = 0.75, adj = 0) 
-
-       text(-161.7, 33, paste('Length range (cm):', LenMin., "-", LenMax.), cex = 0.75, adj = 0)
-    }
+     }  
+     if(!is.null(LenMin.) & !is.null(LenMax.)) 
+        text(-161.7, 33, paste('Length range (cm):', LenMin., "-", LenMax.), cex = 0.75, adj = 0)
+    
 
     LatMin. = strata.limits.$south_border[1]
     
