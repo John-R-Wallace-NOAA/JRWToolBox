@@ -1,5 +1,5 @@
 
-YearlyResultsFigures <- function(eastLongitude = -160.5, longitudeDelta = 2.6, SP.Results.Dpth. = NULL, MapDetails_List. = MapDetails_List, Report. = Report, Opt. = Opt, 
+YearlyResultsFigures <- function(eastLongitude = -160.5, longitudeDelta = 2.6, Index = NULL, SP.Results.Dpth. = NULL, MapDetails_List. = MapDetails_List, Report. = Report, Opt. = Opt, 
                                  DateFile. = DateFile, Year_Set. = Year_Set, Years2Include. = Years2Include, Ages. = NULL, LenMin. = NULL, LenMax. = NULL, strata.limits. = strata.limits, HomeDir = ".") {
   
     if (!any(installed.packages()[, 1] %in% "devtools")) 
@@ -57,7 +57,8 @@ YearlyResultsFigures <- function(eastLongitude = -160.5, longitudeDelta = 2.6, S
     SP.Results$Rescaled.Sum <- SP.Results$Rescaled.Sum - min(SP.Results$Rescaled.Sum)
     SP.Results$Rescaled.Sum <- SP.Results$Rescaled.Sum * 12/max(SP.Results$Rescaled.Sum) + 1
     
-    Index <- read.csv(paste0(DateFile., "Table_for_SS3.csv"))[Years2Include., ]
+    if(is.null(Index)) {
+        Index <- read.csv(paste0(DateFile., "Table_for_SS3.csv"))[Years2Include., ]
       
     png(paste0(DateFile., "SpResults 6000 Rez.png"),  width = 6000, height = 6000, bg = 'white')
     par(cex = 6)    
