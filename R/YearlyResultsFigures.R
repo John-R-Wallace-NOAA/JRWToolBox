@@ -87,9 +87,9 @@ YearlyResultsFigures <- function(eastLongitude = -160.5, longitudeDelta = 2.6, I
 
     if(!is.null(Ages.)) {
        if(length(Ages.) == 1) 
-          text(-161.7, 34, paste('Age:', Ages), cex = 0.75, adj = 0)    
+          text(-161.7, 34, paste('Age:', Ages.), cex = 0.75, adj = 0)    
        else
-          text(-161.7, 34, paste('Ages:', min(Ages), "-", max(Ages)), cex = 0.75, adj = 0) 
+          text(-161.7, 34, paste('Ages:', min(Ages.), "-", max(Ages.)), cex = 0.75, adj = 0) 
      }  
      if(!is.null(LenMin.) & !is.null(LenMax.)) 
         text(-161.7, 33, paste('Length range (cm):', LenMin., "-", LenMax.), cex = 0.75, adj = 0)
