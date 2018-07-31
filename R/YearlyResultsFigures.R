@@ -59,11 +59,11 @@ YearlyResultsFigures <- function(eastLongitude = -160.5, longitudeDelta = 2.6, I
     
     if(is.null(Index)) 
         Index <- read.csv(paste0(DateFile., "Table_for_SS3.csv"))[Years2Include., ]
-      
+
     png(paste0(DateFile., "SpResults 6000 Rez.png"),  width = 6000, height = 6000, bg = 'white')
     par(cex = 6)    
     
-    Imap::imap(longlat = list(Imap::world.h.land, Imap::world.h.borders), col= c("black", "cyan"), poly = c("grey40", NA), longrange = c(eastLongitude, -117), latrange = c(27, 48.2), zoom= F, bg = "white")  
+    Imap::imap(longlat = list(Imap::world.h.land, Imap::world.h.borders), col= c("black", "cyan"), poly = c("grey40", NA), longrange = c(eastLongitude, -117), latrange = c(27, 48.2), zoom= FALSE, bg = "white")  
     box(lwd = 5)
     
     Col <- colorRampPalette(colors = c("blue", "dodgerblue", "cyan", "green", "orange", "red", "red3"))
@@ -109,14 +109,14 @@ YearlyResultsFigures <- function(eastLongitude = -160.5, longitudeDelta = 2.6, I
     } 
 
     if(LatMin. > 32.25 & LatMin. < 33.8) {
-        text(-118.7, 32.053, "All", cex = 0.85)
-        text(-118.7, 32.053 - yearDelta, "Years", cex = 0.85)
+        text(-118.0, 32.053, "All", cex = 0.85)
+        text(-118.0, 32.053 - yearDelta, "Years", cex = 0.85)
         TeachingDemos::subplot( {par(cex = 5); JRWToolBox::plotCI.jrw3(Index$Year, Index$Estimate_metric_tons,  Index$SD_mt, type = 'b', sfrac=0, xlab='Year', ylab = 'Abundance (mt)', 
         col = 'red', lwd = 7, cex =1, xaxt = "n", bty = 'n');  axis(3, 2003:2015, lwd = 5); axis(side = 2, lwd = 5)}, 
-        x=grconvertX(c(0.10, 0.89), from='npc'), y=grconvertY(c(0, 0.225), from='npc'), type='fig', pars=list( mar=c(1.5,4,0,0) + 0.1) )
+        x=grconvertX(c(0.10, 0.915), from='npc'), y=grconvertY(c(0, 0.225), from='npc'), type='fig', pars=list( mar=c(1.5,4,0,0) + 0.1) )
     }
 
-    if(LatMin. <=32.25) {
+    if(LatMin. <= 32.25) {
         text(-118.7, 31.266, "All", cex = 0.85)
         text(-118.7, 31.266 - yearDelta, "Years", cex = 0.85)
         TeachingDemos::subplot( {par(cex = 5); JRWToolBox::plotCI.jrw3(Index$Year, Index$Estimate_metric_tons,  Index$SD_mt, type = 'b', sfrac=0, xlab='Year', ylab = 'Abundance (mt)', 
@@ -131,4 +131,6 @@ YearlyResultsFigures <- function(eastLongitude = -160.5, longitudeDelta = 2.6, I
   
     invisible(SP.Results.Dpth.)  
  }
+ 
+
  
