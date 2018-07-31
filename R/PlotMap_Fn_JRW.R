@@ -71,7 +71,7 @@ PlotMap_Fn_JRW <- function (MappingDetails, Mat, PlotDF, MapSizeRatio = c(`Width
                 "Lon"], Y = PlotDF[Which, "Lat"], Mat[Which, 
                 ]))
             tmpUTM = TmpLL
-            tmpUTM[, c("X", "Y")] = as.matrix(SpatialDeltaGLMM::Convert_LL_to_UTM_Fn(Lon = TmpLL[, 
+            tmpUTM[, c("X", "Y")] = as.matrix(FishStatsUtils::Convert_LL_to_UTM_Fn(Lon = TmpLL[, 
                 "X"], Lat = TmpLL[, "Y"], zone = zone, flip_around_dateline = ifelse(MappingDetails[[1]] %in% 
                 c("world2", "world2Hires"), TRUE, FALSE))[, c("X", 
                 "Y")])
