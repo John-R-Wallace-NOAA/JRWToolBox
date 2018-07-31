@@ -1,5 +1,5 @@
 
-YearlyResultsFigures <- function(eastLongitude = -160.5, longitudeDelta = 2.6, Index = NULL, SP.Results.Dpth. = NULL, MapDetails_List. = MapDetails_List, Report. = Report, Opt. = Opt, 
+YearlyResultsFigures <- function(eastLongitude = -160.5, longitudeDelta = 2.6, Index = NULL, SP.Results.Dpth. = NULL, MapDetails_List. = MapDetails_List, Report. = Report, Opt. = Opt, spShortName. = NULL, 
                                  DateFile. = DateFile, Year_Set. = Year_Set, Years2Include. = Years2Include, Ages. = NULL, LenMin. = NULL, LenMax. = NULL, strata.limits. = strata.limits, HomeDir = ".") {
   
     if (!any(installed.packages()[, 1] %in% "devtools")) 
@@ -60,7 +60,10 @@ YearlyResultsFigures <- function(eastLongitude = -160.5, longitudeDelta = 2.6, I
     if(is.null(Index)) 
         Index <- read.csv(paste0(DateFile., "Table_for_SS3.csv"))[Years2Include., ]
 
-    png(paste0(DateFile., "SpResults 6000 Rez.png"),  width = 6000, height = 6000, bg = 'white')
+	if(is.null(spShortName.))  
+	    png(paste0(DateFile., "SpResults 6000 Rez.png"),  width = 6000, height = 6000, bg = 'white') else
+	    png(paste0(DateFile., "SpResults ", spShortName., " .png"),  width = 6000, height = 6000, bg = 'white')
+		   
     par(cex = 6)    
     
     Imap::imap(longlat = list(Imap::world.h.land, Imap::world.h.borders), col= c("black", "cyan"), poly = c("grey40", NA), longrange = c(eastLongitude, -117), latrange = c(27, 48.2), zoom= FALSE, bg = "white")  
