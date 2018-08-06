@@ -90,12 +90,12 @@ YearlyResultsFigures <- function(eastLongitude = -160.5, longitudeDelta = 2.6, I
 
     if(!is.null(Ages.)) {
        if(length(Ages.) == 1) 
-          text(-161.7, 34, paste('Age:', Ages.), cex = 0.75, adj = 0)    
+          text(-161.7, 33 paste('Age:', Ages.), cex = 0.75, adj = 0)    
        else
-          text(-161.7, 34, paste('Ages:', min(Ages.), "-", max(Ages.)), cex = 0.75, adj = 0) 
+          text(-161.7, 33 paste('Ages:', min(Ages.), "-", max(Ages.)), cex = 0.75, adj = 0) 
      }  
      if(!is.null(LenMin.) & !is.null(LenMax.)) 
-        text(-161.7, 33, paste('Length range (cm):', LenMin., "-", LenMax.), cex = 0.75, adj = 0)
+        text(-161.7, 32 paste('Length range (cm):', LenMin., "-", LenMax.), cex = 0.75, adj = 0)
     
 
     LatMin. = strata.limits.$south_border[1]
@@ -115,7 +115,7 @@ YearlyResultsFigures <- function(eastLongitude = -160.5, longitudeDelta = 2.6, I
         text(-118.0, 32.053, "All", cex = 0.85)
         text(-118.0, 32.053 - yearDelta, "Years", cex = 0.85)
         TeachingDemos::subplot( {par(cex = 5); JRWToolBox::plotCI.jrw3(Index$Year, Index$Estimate_metric_tons,  Index$SD_mt, type = 'b', sfrac=0, xlab='Year', ylab = 'Abundance (mt)', 
-        col = 'red', lwd = 7, cex =1, xaxt = "n", bty = 'n');  axis(3, 2003:2015, lwd = 5); axis(side = 2, lwd = 5)}, 
+        col = 'red', lwd = 7, cex =1, xaxt = "n", bty = 'n');  axis(3, Year_Set, lwd = 5); axis(side = 2, lwd = 5)}, 
         x=grconvertX(c(0.10, 0.915), from='npc'), y=grconvertY(c(0, 0.225), from='npc'), type='fig', pars=list( mar=c(1.5,4,0,0) + 0.1) )
     }
 
@@ -123,7 +123,7 @@ YearlyResultsFigures <- function(eastLongitude = -160.5, longitudeDelta = 2.6, I
         text(-118.7, 31.266, "All", cex = 0.85)
         text(-118.7, 31.266 - yearDelta, "Years", cex = 0.85)
         TeachingDemos::subplot( {par(cex = 5); JRWToolBox::plotCI.jrw3(Index$Year, Index$Estimate_metric_tons,  Index$SD_mt, type = 'b', sfrac=0, xlab='Year', ylab = 'Abundance (mt)', 
-        col = 'red', lwd = 7, cex =1, xaxt = "n", bty = 'n');  axis(3, 2003:2015, lwd = 5); axis(side = 2, lwd = 5)}, 
+        col = 'red', lwd = 7, cex =1, xaxt = "n", bty = 'n');  axis(3, Year_Set, lwd = 5); axis(side = 2, lwd = 5)}, 
         x=grconvertX(c(0.10, 0.89), from='npc'), y=grconvertY(c(0, 0.190), from='npc'), type='fig', pars=list( mar=c(1.5,4,0,0) + 0.1) )
     }
     
