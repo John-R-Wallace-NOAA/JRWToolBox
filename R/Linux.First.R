@@ -101,7 +101,7 @@ Linux.First <- function() {
        # if(exists(".Random.seed")) { rm(.Random.seed, pos=1) } 	# deletes the random number seed if it exists
         
        try(lib(Imap))
-	   try(lib(JRWToolBox))
+       try(lib('John-R-Wallace/JRWToolBox', force = TRUE, quiet = FALSE))
              
        Mydata<- list(a=1)
        attach(Mydata,2)  
