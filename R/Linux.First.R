@@ -91,8 +91,6 @@ Linux.First <- function() {
   
     options(help_type = "html", stringsAsFactors = FALSE)
 	
-    grDevices::windows.options(width = 10, height = 10, record=T)
-     
     # lattice::lattice.options(default.theme = "standard.theme")
    
     Sys.setenv("R_HISTSIZE"=99999) # Longest possible history file
