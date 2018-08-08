@@ -40,53 +40,44 @@ Linux.First <- function() {
    
     cat("\nDone with package updates.\n"); flush.console()
     
-    Mydata<- list(a=1)
-    attach(Mydata, 2)  
-  	
-	try(lib(Formula, pos = 4))
-	try(lib(RColorBrewer, pos = 4))
-	try(lib(splines, pos = 4))
-	try(lib(foreach, pos = 4))
-	try(lib(survival, pos = 4))
-	try(lib(ggplot2, pos = 4))
-    try(lib(datasets, pos = 4))
-	try(lib(stats4, pos = 4))
-    try(lib(stats, pos = 4))
-    try(lib(methods, pos = 4))
-    try(lib(graphics, pos = 4))
-    try(lib(chron, pos = 4))
-    try(lib(foreign, pos = 4))
-    try(lib(grid, pos = 4))
-    try(lib(grDevices, pos = 4))
-    try(lib(sp, pos = 4))
-    # try(lib(rgeos, pos = 4))
-    try(lib(lattice, pos = 4))
-    try(lib(latticeExtra, pos = 4))	
-    try(lib(akima, pos = 4))
+	try(lib(datasets))
+	try(lib(stats4))
+    try(lib(stats))
+    try(lib(methods))
+    try(lib(graphics))
+    try(lib(chron))
+    try(lib(foreign))
+    try(lib(grid))
+    try(lib(grDevices))
+    try(lib(sp))
+    # try(lib(rgeos))
+    try(lib(lattice))
+    try(lib(latticeExtra))	
+    try(lib(akima))
     
-    try(lib(gdata, pos = 4))
-    try(lib(gplots, pos = 4))
-    try(lib(gstat, pos = 4))
-    try(lib(gtools, pos = 4))
-    # try(lib(stashR, pos = 4))
-    try(lib(gam, pos = 4))
-    try(lib(Hmisc, pos = 4))
-    try(lib(coda, pos = 4))
-    # try(lib(MCMCpack, pos = 4))
-    try(lib(MASS, pos = 4))
-    try(lib(RODBC, pos = 4))
-    # try(lib(mvbutils, pos = 4))
+    try(lib(gdata))
+    try(lib(gplots))
+    try(lib(gstat))
+    try(lib(gtools))
+    # try(lib(stashR))
+    try(lib(gam))
+    try(lib(Hmisc))
+    try(lib(coda))
+    # try(lib(MCMCpack))
+    try(lib(MASS))
+    try(lib(RODBC))
+    # try(lib(mvbutils))
     
-    try(lib(mvtnorm, pos = 4))
-    try(lib(numDeriv, pos = 4))
-    try(lib(bbmle, pos = 4))
-    try(lib(Matrix, pos = 4))
-    try(lib(devtools, pos = 4))
-    try(lib(data.table, pos = 4))
-    try(lib(TMB, pos = 4))
-    try(lib(TMBhelper, pos = 4))
-    try(lib(TMBdebug, pos = 4))
-    try(lib(r4ss, pos = 4))
+    try(lib(mvtnorm))
+    try(lib(numDeriv))
+    try(lib(bbmle))
+    try(lib(Matrix))
+    try(lib(devtools))
+    try(lib(data.table))
+    try(lib(TMB))
+    try(lib(TMBhelper))
+    try(lib(TMBdebug))
+    try(lib(r4ss))
   
     # Load packages when called
   
@@ -97,7 +88,7 @@ Linux.First <- function() {
    
   	
     cat("\nDone with lib and autoloads.\n"); flush.console()  
-  
+ 
     # lattice::lattice.options(default.theme = "standard.theme")
    
     Sys.setenv("R_HISTSIZE"=99999) # Longest possible history file
@@ -106,8 +97,14 @@ Linux.First <- function() {
        if(exists(".SavedPlots"))  rm(.SavedPlots, pos = 1) 		# if there is a plotting history, delete it
        if(exists(".Traceback", 1, inherits = FALSE))  rm(.Traceback, pos = 1) 	# if there is an error history, delete it
        # if(exists(".Random.seed")) { rm(.Random.seed, pos=1) } 	# deletes the random number seed if it exists
-        
-       try(lib(Imap, pos = 4))
+   
+       Mydata <- list(a = 1)
+       attach(Mydata, 2)     
+	   
+       try(lib(Imap))
+	   detach(pos = grep('JRWToolBox', search())) 
+	   library(JRWToolBox, pos = 3)
+
        # try(updateTools(quiet = TRUE, force = TRUE)) # Move tools to position 2 on search path
              
       
