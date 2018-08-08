@@ -9,7 +9,8 @@ Linux.First <- function() {
     lib(utils)
      
     cat("\nChanging CRAN repository away from the Revolution Analytics frozen mirror (see .../MRO/MRO-X.X.X/etc/Rprofile.site).\n\n")
-    options(repos=c(CRAN="http://www.stats.ox.ac.uk/pub/RWin", CRANextra = "https://cran.cnr.berkeley.edu"))
+    options(width = 160, help_type = "html", stringsAsFactors = FALSE, 
+	    repos=c(CRAN="http://www.stats.ox.ac.uk/pub/RWin", CRANextra = "https://cran.cnr.berkeley.edu"))
     
     switch(menu("Check for package updates?") + 1,
            cat("\n"), update.packages())
