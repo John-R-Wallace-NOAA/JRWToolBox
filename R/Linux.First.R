@@ -60,8 +60,8 @@ Linux.First <- function() {
     try(lib(grDevices, pos = 4))
     try(lib(sp, pos = 4))
     # try(lib(rgeos, pos = 4))
-	try(lib(latticeExtra, pos = 4))
     try(lib(lattice, pos = 4))
+    try(lib(latticeExtra, pos = 4))	
     try(lib(akima, pos = 4))
     
     try(lib(gdata, pos = 4))
