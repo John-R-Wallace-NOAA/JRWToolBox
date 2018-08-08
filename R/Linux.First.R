@@ -97,8 +97,8 @@ Linux.First <- function() {
     Sys.setenv("R_HISTSIZE"=99999) # Longest possible history file
   
    # .First on PC
-       if(exists(".SavedPlots")) { rm(.SavedPlots, pos=1) }		# if there is a plotting history, delete it
-       if(exists(".Traceback")) { rm(.Traceback, pos=1) } 		# if there is an error history, delete it
+       if(exists(".SavedPlots"))  rm(.SavedPlots, pos = 1) 		# if there is a plotting history, delete it
+       if(exists(".Traceback", 1, inherits = FALSE))  rm(.Traceback, pos = 1) 	# if there is an error history, delete it
        # if(exists(".Random.seed")) { rm(.Random.seed, pos=1) } 	# deletes the random number seed if it exists
         
        try(lib(Imap))
@@ -132,10 +132,10 @@ Linux.First <- function() {
       
       # Commands to clean up the working environment for next session.
       
-        rm(.SavedPlots,pos=1) 	 	        # if there is a plotting history, delete it
-        rm(.Traceback,pos=1) 		 	        # if there is an error history, delete it
+        rm(.SavedPlots, pos = 1) 	 	        # if there is a plotting history, delete it
+        rm(.Traceback, pos = 1) 		 	        # if there is an error history, delete it
         # rm(.Random.seed,pos=1) 		        # deletes the random number seed if it exists
-        rm(.Last,pos=1) 			        # .Last file deletes itself
+        rm(.Last, pos = 1) 			        # .Last file deletes itself
   }
   
   cat("\nDone with .Rprofile.\n")
