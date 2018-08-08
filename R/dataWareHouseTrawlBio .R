@@ -74,6 +74,7 @@ dataWareHouseTrawlBio <- function (Species = "Sebastes pinniger", YearRange = c(
     "  # SP.After <<- SP  "
     " "
     SP <- SP[, c("Project", "Trawl_id", "Year", "Vessel", "Pass", "Tow", "Date", "Depth_ftm", "Scientific_Name", "Weight_kg", "Length_cm", "Sex", "Age", "Latitude_dd", "Longitude_dd")]
+    SP$Project <- projectShort
     SP$Date <- chron::chron(format(as.POSIXlt(SP$Date, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"), format = "y-m-d", out.format = "YYYY-m-d")
     " "
     if(verbose) {
