@@ -50,7 +50,7 @@ Linux.First <- function() {
     try(lib(grid))
     try(lib(grDevices))
     try(lib(sp))
-    try(lib(rgeos))
+    # try(lib(rgeos))
     try(lib(lattice))
     try(lib(latticeExtra))
              
