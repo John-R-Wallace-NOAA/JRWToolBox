@@ -108,7 +108,7 @@ Linux.First <- function() {
        attach(Mydata,2)  
   
   
-  .Last <- function () {
+  .Last <<- function () {
   
       ###########################################
           # Purpose: this is my core .Last file
