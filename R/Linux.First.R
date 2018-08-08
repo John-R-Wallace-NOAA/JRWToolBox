@@ -102,7 +102,7 @@ Linux.First <- function() {
        # if(exists(".Random.seed")) { rm(.Random.seed, pos=1) } 	# deletes the random number seed if it exists
         
        try(lib(Imap))
-       try(updateTools(force = TRUE)) # Move tools to position 2 on search path
+       try(updateTools(quiet = TRUE, force = TRUE)) # Move tools to position 2 on search path
              
        Mydata<- list(a=1)
        attach(Mydata,2)  
@@ -122,12 +122,9 @@ Linux.First <- function() {
       
       # Save ASCII version of all functions
         save.functions()
-      
-      # Save toolbox (including ASCII versions)
-        saveToolbox()
-      
+           
       # Save history
-      #  savehistory()
+      # savehistory()
       
       
       # Commands to clean up the working environment for next session.
