@@ -1,4 +1,3 @@
-
 dataWareHouseTrawlCatch <- function (Species = "Sebastes pinniger", YearRange = c(1000, 5000), projectShort = "Ask", verbose = FALSE, optionDigitsAtLeast11 = TRUE) 
 {
     if(options()$digits < 11)  options(digits = 11)
@@ -43,10 +42,10 @@ dataWareHouseTrawlCatch <- function (Species = "Sebastes pinniger", YearRange = 
         cat("\n\nTo avoid this menu, the (quoted) project name shown above may be entered into the project argument.\n")
         cat("\nAll extracted data contains a Project column and therefore projects may be stacked [using rbind()], if desired.\n")
     }
-	OutAll <- NULL
-	for (P in projectShort) {
-	    ""
-		cat("\n\nDownloading data from the", P, "survey\n"); flush.console()
+    OutAll <- NULL
+    for (P in projectShort) {
+        " "
+        cat("\n\nDownloading data from the", P, "survey\n"); flush.console()
         " "
         project <- projectNames$longProject[projectNames$shortProject %in% P]
         " "
@@ -123,7 +122,8 @@ dataWareHouseTrawlCatch <- function (Species = "Sebastes pinniger", YearRange = 
            print(table(Out$Vessel, Out$Year, useNA = "ifany"))
            cat("\n\n")
         }
-	    OutAll <- rbind(OutAll, JRWToolBox::sort.f(Out, 2:5))
-	}
+        OutAll <- rbind(OutAll, JRWToolBox::sort.f(Out, 2:5))
+    }
+    cat("\n")
     invisible(OutAll)
 }
