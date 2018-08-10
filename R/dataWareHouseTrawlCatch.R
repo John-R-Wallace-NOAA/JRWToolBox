@@ -65,7 +65,7 @@ dataWareHouseTrawlCatch <- function (Species = "Sebastes pinniger", YearRange = 
         " "
         SP <- try(jsonlite::fromJSON(UrlText))
         if(!is.data.frame(SP)) {
-             warning("\nNo data returned by the Warehouse for the filters given.  Make sure the year range is correct for the project selected. (NULL is being returned.)\n\n")
+             warning("\nNo data returned by the Warehouse for the filters given.  Make sure the year range is correct for the project selected. (NULL is being returned.)\n\n", immediate. = TRUE)
              Out <- NULL
         } else {
             if (verbose) {
