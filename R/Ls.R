@@ -1,6 +1,4 @@
-Ls  <- 
-function(pattern = "[!.]*", pos = 1, all = F, long = F, wild = T, mode = "any", open = F, fix = F, 
-	...)
+Ls  <- function(pattern = "[!.]*", pos = 1, all = FALSE, long = FALSE, wild = TRUE, mode = "any", open = F, fix = FALSE, ...)
 {
 #
 #   DATE WRITTEN:  February 1995      LAST REVISED:   03 November 2005
@@ -44,16 +42,16 @@ function(pattern = "[!.]*", pos = 1, all = F, long = F, wild = T, mode = "any", 
 		this <- paste("[[", 1:xlen, "]]", sep = "")
 		for(i in 1:xlen) {
 			if(length(out[[i]]) > 0) {
-				if(is.data.frame(out[[i]]) == T) {
+				if(is.data.frame(out[[i]]) == TRUE) {
 				  if(dim(out[[i]])[1] > 0) {
 				    cat(this[i], ":\n", sep = "")
-				    print(out[[i]], prefix = this[i], q = F)
+				    print(out[[i]], prefix = this[i], q = FALSE)
 				    cat("\n")
 				  }
 				}
 				else {
 				  cat(this[i], ":\n", sep = "")
-				  print(out[[i]], prefix = this[i], q = F)
+				  print(out[[i]], prefix = this[i], q = FALSE)
 				  cat("\n")
 				}
 			}
@@ -65,8 +63,8 @@ function(pattern = "[!.]*", pos = 1, all = F, long = F, wild = T, mode = "any", 
 			print(eval(parse(text = out[i])))
 		}
 	}
-	if(length(out) == 1 & fix == T)
-		assign(substitute(out), edit(eval(parse(text = out))), w = 1)
+	if(length(out) == 1 & fix == TRUE)
+		assign(substitute(out), edit(eval(parse(text = out))), pos = 1)
 	invisible(out)
 }
 
