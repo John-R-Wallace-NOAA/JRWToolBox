@@ -65,64 +65,66 @@ dataWareHouseTrawlCatch <- function (Species = "Sebastes pinniger", YearRange = 
         " "
         SP <- try(jsonlite::fromJSON(UrlText))
         if(!is.data.frame(SP)) {
-             warning("\n\nNo data returned by the Warehouse for the filters given.  Make sure the year range is correct for the project selected. (NULL is being returned.)\n\n")
-             return(NULL)
+             warning("\nNo data returned by the Warehouse for the filters given.  Make sure the year range is correct for the project selected. (NULL is being returned.)\n\n")
+             Out <- NULL
+        } else {
+            if (verbose) {
+                print(SP[1:4, ])
+                cat("\n\n")
+            }
+            "  # SP.Before <<- SP  "
+            SP <- rename_columns(SP, newname = c("Year", "Vessel", "Tow", "Scientific_Name", "Subsample_count", "Subsample_wt_kg", "Total_sp_numbers", "Total_sp_wt_kg"))
+            if (verbose) {
+                print(SP[1:4, ])
+                cat("\n\n")
+            }
+            " # SP.After <<- SP  "
+            SP <- SP[, c("Year", "Vessel", "Tow", "Scientific_Name", "Subsample_count", "Subsample_wt_kg", "Total_sp_numbers", "Total_sp_wt_kg")]
+            " "
+            " # Match SP to all tows to get the zeros "
+            " "
+            Vars <- c("project", "year", "vessel", "pass", "tow", "date_dim$full_date", "depth_m", "longitude_dd", "latitude_dd", "area_swept_ha_der", "trawl_id")
+            UrlText <- paste0("https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.operation_haul_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",", 
+                "actual_station_design_dim$stn_invalid_for_trawl_date_whid=0,", "performance=Satisfactory,", "depth_ftm>=30,depth_ftm<=700,", 
+                "date_dim$year>=", YearRange[1], ",date_dim$year<=", YearRange[2], "&variables=", paste0(Vars, collapse = ","))
+            " "
+            if (verbose) 
+                cat("\n\nURL Text for all tows (needed for zero catch tows):\n\n", UrlText, "\n\n")
+            " "
+            All.Tows <- jsonlite::fromJSON(UrlText)
+            if (verbose) {
+                print(All.Tows[1:4, ])
+                cat("\n\n")
+            }
+            All.Tows <- rename_columns(All.Tows, newname = c("Project", "Trawl_id", "Year", "Pass", "Vessel", "Tow", "Date", "Depth_m", "Longitude_dd", "Latitude_dd", "Area_Swept_ha"))
+            if (verbose) {
+                print(All.Tows[1:4, ])
+                cat("\n\n")
+            }
+            " # There should be no duplicates "
+            All.Tows <- All.Tows[!duplicated(paste(All.Tows$Year, All.Tows$Pass, 
+                All.Tows$Vessel, All.Tows$Tow)), c("Project", "Trawl_id", "Year", "Pass", "Vessel", "Tow", "Date", "Depth_m", "Longitude_dd", "Latitude_dd", "Area_Swept_ha")]
+            " # Note that tow number is within vessel and within year, but not within pass (the Noahs Ark did both passes in 2012 and the tow number max is ~ twice the one pass per year total)  "
+            Out <- JRWToolBox::match.f(All.Tows, SP, c("Year", "Vessel", "Tow"), c("Year", "Vessel", "Tow"), c("Scientific_Name", "Subsample_count", "Subsample_wt_kg", "Total_sp_numbers", "Total_sp_wt_kg"))
+            Out$Total_sp_wt_kg[is.na(Out$Total_sp_wt_kg)] <- 0
+            " "
+            Out$Area_Swept_ha[is.na(Out$Area_Swept_ha)] <- mean(Out$Area_Swept_ha, 
+                trim = 0.05, na.rm = TRUE)
+            " # Scientific Name is missing after the matching when Total_sp_wt_kg is zero  "
+            Out$Scientific_Name <- Species
+            Out$Date <- chron(format(as.POSIXlt(Out$Date, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"), format = "y-m-d", out.format = "YYYY-m-d")
+            Out$Project <- P
+            if (verbose) {
+               cat("\n\nFirst few rows of returned data:\n\n")
+               print(Out[1:4, ])
+               cat("\n\n")
+               if(P == "WCGBTS.Combo" & any(YearRange[1]:YearRange[2] %in% 2012))  cat("\nNote: the Noah's Ark was chartered for both passes in 2012.\n")
+               print(table(Out$Vessel, Out$Year, useNA = "ifany"))
+               cat("\n\n")
+            }
+            Out <- JRWToolBox::sort.f(Out, 2:5)
         }
-        if (verbose) {
-            print(SP[1:4, ])
-            cat("\n\n")
-        }
-        "  # SP.Before <<- SP  "
-        SP <- rename_columns(SP, newname = c("Year", "Vessel", "Tow", "Scientific_Name", "Subsample_count", "Subsample_wt_kg", "Total_sp_numbers", "Total_sp_wt_kg"))
-        if (verbose) {
-            print(SP[1:4, ])
-            cat("\n\n")
-        }
-        " # SP.After <<- SP  "
-        SP <- SP[, c("Year", "Vessel", "Tow", "Scientific_Name", "Subsample_count", "Subsample_wt_kg", "Total_sp_numbers", "Total_sp_wt_kg")]
-        " "
-        " # Match SP to all tows to get the zeros "
-        " "
-        Vars <- c("project", "year", "vessel", "pass", "tow", "date_dim$full_date", "depth_m", "longitude_dd", "latitude_dd", "area_swept_ha_der", "trawl_id")
-        UrlText <- paste0("https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.operation_haul_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",", 
-            "actual_station_design_dim$stn_invalid_for_trawl_date_whid=0,", "performance=Satisfactory,", "depth_ftm>=30,depth_ftm<=700,", 
-            "date_dim$year>=", YearRange[1], ",date_dim$year<=", YearRange[2], "&variables=", paste0(Vars, collapse = ","))
-        " "
-        if (verbose) 
-            cat("\n\nURL Text for all tows (needed for zero catch tows):\n\n", UrlText, "\n\n")
-        " "
-        All.Tows <- jsonlite::fromJSON(UrlText)
-        if (verbose) {
-            print(All.Tows[1:4, ])
-            cat("\n\n")
-        }
-        All.Tows <- rename_columns(All.Tows, newname = c("Project", "Trawl_id", "Year", "Pass", "Vessel", "Tow", "Date", "Depth_m", "Longitude_dd", "Latitude_dd", "Area_Swept_ha"))
-        if (verbose) {
-            print(All.Tows[1:4, ])
-            cat("\n\n")
-        }
-        " # There should be no duplicates "
-        All.Tows <- All.Tows[!duplicated(paste(All.Tows$Year, All.Tows$Pass, 
-            All.Tows$Vessel, All.Tows$Tow)), c("Project", "Trawl_id", "Year", "Pass", "Vessel", "Tow", "Date", "Depth_m", "Longitude_dd", "Latitude_dd", "Area_Swept_ha")]
-        " # Note that tow number is within vessel and within year, but not within pass (the Noahs Ark did both passes in 2012 and the tow number max is ~ twice the one pass per year total)  "
-        Out <- JRWToolBox::match.f(All.Tows, SP, c("Year", "Vessel", "Tow"), c("Year", "Vessel", "Tow"), c("Scientific_Name", "Subsample_count", "Subsample_wt_kg", "Total_sp_numbers", "Total_sp_wt_kg"))
-        Out$Total_sp_wt_kg[is.na(Out$Total_sp_wt_kg)] <- 0
-        " "
-        Out$Area_Swept_ha[is.na(Out$Area_Swept_ha)] <- mean(Out$Area_Swept_ha, 
-            trim = 0.05, na.rm = TRUE)
-        " # Scientific Name is missing after the matching when Total_sp_wt_kg is zero  "
-        Out$Scientific_Name <- Species
-        Out$Date <- chron(format(as.POSIXlt(Out$Date, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"), format = "y-m-d", out.format = "YYYY-m-d")
-        Out$Project <- P
-        if (verbose) {
-           cat("\n\nFirst few rows of returned data:\n\n")
-           print(Out[1:4, ])
-           cat("\n\n")
-           if(P == "WCGBTS.Combo" & any(YearRange[1]:YearRange[2] %in% 2012))  cat("\nNote: the Noah's Ark was chartered for both passes in 2012.\n")
-           print(table(Out$Vessel, Out$Year, useNA = "ifany"))
-           cat("\n\n")
-        }
-        OutAll <- rbind(OutAll, JRWToolBox::sort.f(Out, 2:5))
+        OutAll <- rbind(OutAll, Out)
     }
     cat("\n")
     invisible(OutAll)
