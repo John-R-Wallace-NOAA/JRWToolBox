@@ -34,8 +34,8 @@ function(x, y, type = "p", cex = plot.symbol$cex, pch = plot.symbol$pch, font =
 		x.ok.max <- max(x.ok)
 		fudge <- (x.ok.max - x.ok.min)/40
 		assign("x.new", c(x.ok.min - fudge, seq(x.ok.min, x.ok.min, 
-			length = 30), x.ok.max + fudge), frame = 1)
-		assign("x.ok", x.ok, frame = 1)
+			length = 30), x.ok.max + fudge), pos = 1)
+		assign("x.ok", x.ok, pos = 1)
 		lm.pred <- predict.gam(lm.fit, data.frame(x.ok = x.new), type = 
 			"response", se.fit = T)
 		""
@@ -62,10 +62,10 @@ function(x, y, type = "p", cex = plot.symbol$cex, pch = plot.symbol$pch, font =
 			alpha/2, lm.pred$df))[order(x.ok),  ]
 		conf.upper <- cbind(x.ok, lm.pred$fit + lm.pred$se.fit * qt(1 - 
 			alpha/2, lm.pred$df))[order(x.ok),  ]
-		if(T)
+		if(TRUE)
 			polygon(c(conf.lower[, 1], rev(conf.upper[, 1])), c(
 				conf.lower[, 2], rev(conf.upper[, 2])), col = 3)
-		if(F) {
+		if(FALSE) {
 			lines(conf.lower[, 1], conf.lower[, 2], col = 1)
 			lines(conf.upper[, 1], conf.upper[, 2], col = 1)
 		}
