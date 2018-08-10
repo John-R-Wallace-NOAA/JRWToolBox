@@ -1,2 +1,3 @@
-recode.factor <- function (x, new, old = levels(x)) 
-as.factor(recode(as.character(x), new, old, nomatch = NA))
+recode.factor  <- function (x, new, old = levels(x)) {
+    factor(JRWToolBox::recode.simple(as.character(x), data.frame(old, new)))
+}  
