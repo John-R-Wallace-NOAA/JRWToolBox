@@ -81,7 +81,14 @@ https://stackoverflow.com/questions/10586652/r-preserve-order-when-using-matchin
       Downloading GitHub repo John-R-Wallace/JRWToolBox@278e298b805ef862065d8e5e733e96d54c1b3e9c ...
       ...
       
-       packageDescription('JRWToolBox')$RemoteSha
+      packageDescription('JRWToolBox')$RemoteSha
+
+
+- Ls() is a replacement for ls() to avoid the quotes on the object names. Setting the argument all=TRUE will list all object names in the search() path consistent with the search pattern given (find(..., simple=F) only gives back items in the search list, not the object names themselves).
+
+- dir.use() is a wrapper function which creates the path of a sub-directory within a function call, if it doesn't already exist, and then returns the path: some.function(..., path = dir.use('c:/create_this_path_if_needed')
+
+- showObject() shows an R object in an editor, edit the function to change the default editor for ease of use.
 
 ============================   
 All functions were written by me except for (this list is under construction):
@@ -93,8 +100,4 @@ All functions were written by me except for (this list is under construction):
 - Symbols is an old version of pchShow given in the help of the points function.
  
    
-Comments on functions:
 
-- Ls() is a replacement for ls() to avoid seeing all the quotes on the object names.
-- dir.use() is a wrapper function which creates a path of sub-directory given, if it doesn't already exist and then returns the      path: some.function(..., path = dir.use('c:/create_this_path_if_needed')
-- showObject() shows an R object in an editor, edit the function to change the default editor for ease of use.
