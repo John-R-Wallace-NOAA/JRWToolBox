@@ -12,6 +12,7 @@ This fix appears to work on my machine:
  
          devtools::install_github("dracodoc/devtools", ref = "sha-checking")
  
+============================
 
 Prologue
 
