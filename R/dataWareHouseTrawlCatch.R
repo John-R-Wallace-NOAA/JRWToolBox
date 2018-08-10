@@ -5,6 +5,8 @@ dataWareHouseTrawlCatch <- function (Species = "Sebastes pinniger", YearRange = 
     }
     if (!any(installed.packages()[, 1] %in% "JRWToolBox")) 
         devtools::install_github("John-R-Wallace/JRWToolBox")
+    " # Next call is for updating the toolbox when needed"
+    JRWToolBox::lib("John-R-Wallace/JRWToolBox", quiet = FALSE)
     JRWToolBox::lib("jsonlite")
     JRWToolBox::lib("chron")
     
@@ -74,13 +76,13 @@ dataWareHouseTrawlCatch <- function (Species = "Sebastes pinniger", YearRange = 
                 print(SP[1:4, ])
                 cat("\n\n")
             }
-            "  # SP.Before <<- SP  "
+            " # SP.Before <<- SP "
             SP <- rename_columns(SP, newname = c("Year", "Vessel", "Tow", "Scientific_Name", "Subsample_count", "Subsample_wt_kg", "Total_sp_numbers", "Total_sp_wt_kg"))
             if (verbose) {
                 print(SP[1:4, ])
                 cat("\n\n")
             }
-            " # SP.After <<- SP  "
+            " # SP.After <<- SP "
             SP <- SP[, c("Year", "Vessel", "Tow", "Scientific_Name", "Subsample_count", "Subsample_wt_kg", "Total_sp_numbers", "Total_sp_wt_kg")]
             
             " # Match SP to all tows to get the zeros "
