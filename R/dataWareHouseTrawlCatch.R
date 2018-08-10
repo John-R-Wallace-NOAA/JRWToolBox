@@ -1,8 +1,10 @@
 dataWareHouseTrawlCatch <- function (Species = "Sebastes pinniger", YearRange = c(1000, 5000), projectShort = "Ask", verbose = FALSE, optionDigitsAtLeast11 = TRUE) 
 {
-    if(options()$digits < 11)  options(digits = 11)
+    if(optionDigitsAtLeast11)  {
+         if(options()$digits < 11)  options(digits = 11)
+    }
     if (!any(installed.packages()[, 1] %in% "JRWToolBox")) 
-        devtools::install_github("John-R-Wallace/R-ToolBox")
+        devtools::install_github("John-R-Wallace/JRWToolBox")
     JRWToolBox::lib("jsonlite")
     JRWToolBox::lib("chron")
     
