@@ -3,8 +3,12 @@ dataWareHouseTrawlBio <- function (Species = "Sebastes pinniger", YearRange = c(
     if(optionDigitsAtLeast11)  {
          if(options()$digits < 11)  options(digits = 11)
     }
+    if (!any(installed.packages()[, 1] %in% "devtools"))  
+        install.packages('devtools')  
     if (!any(installed.packages()[, 1] %in% "JRWToolBox")) 
         devtools::install_github("John-R-Wallace/JRWToolBox")
+    " # Next call is for updating the toolbox when needed"
+    JRWToolBox::lib("John-R-Wallace/JRWToolBox")
     JRWToolBox::lib("jsonlite")
     JRWToolBox::lib("chron")   
     
