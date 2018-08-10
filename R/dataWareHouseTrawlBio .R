@@ -38,8 +38,8 @@ dataWareHouseTrawlBio <- function (Species = "Sebastes pinniger", YearRange = c(
         cat("\n\nSelect a project [enter 0 (zero) to abort]:\n\n"); flush.console()
         projectShort <- switch(menu(c("AFSC.Shelf","AFSC.Slope","WCGBTS.Combo","WCGBTS.Shelf","WCGBTS.Slope","WCGBTS.Hypoxia","WCGBTS.Santa.Barb.Basin","WCGBTS.Shelf.Rockfish","WCGBTS.Video")) + 1,
         stop("No project selected"), "AFSC.Shelf","AFSC.Slope","WCGBTS.Combo","WCGBTS.Shelf","WCGBTS.Slope","WCGBTS.Hypoxia","WCGBTS.Santa.Barb.Basin","WCGBTS.Shelf.Rockfish","WCGBTS.Video")
-        cat("\n\nTo avoid this menu, the (quoted) project name shown above may be entered into the project argument.\n")
-        cat("\nAll extracted data contains a Project column and therefore projects may be stacked [using rbind()], if desired.\n")
+        cat("\n\nTo avoid this menu, the (quoted) project names shown above may be entered into the project argument.\n")
+        cat("\nOne project name or a vector of project names may be entered.  A warning will be shown if a project has no data for the filters given.\n")
      }
     
     SpAll <- NULL
