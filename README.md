@@ -40,18 +40,20 @@ If you then want to load the package into R use:
 ============================   
 Highlights and Comments
 
-- The function lib() will install and update both GitHub and CRAN packages only if needed and regardless will load the package into the R session, if require = TRUE (the default).
+- lib() function will install and update both GitHub and CRAN packages only if needed and regardless will load the package into the R session, if require = TRUE (the default).
 
 Code to put on the top of a function to start using lib() and other functions in JRWToolBox would look like:
 
-    if (!any(installed.packages()[, 1] %in% "devtools"))  install.packages('devtools')  
+    if (!any(installed.packages()[, 1] %in% "devtools"))  
+        install.packages('devtools')  
 	
-	devtools::install_github("John-R-Wallace/JRWToolBox", quiet = T)
-	if (!any(installed.packages()[, 1] %in% "JRWToolBox"))
-	    stop('JRWToolBox is not installed, an attempt to install failed (check for internet access)')
+    if (!any(installed.packages()[, 1] %in% "JRWToolBox")) 
+        devtools::install_github("John-R-Wallace/JRWToolBox")
     require(JRWToolBox)
+    
+    lib("John-R-Wallace/JRWToolBox")  # For keeping the toolbox updated
      
-    # Examples 
+    # Install other packages as needed from either GitHub or CRAN
     lib("John-R-Wallace/Imap") # GitHub
     lib(plyr) # CRAN
 
