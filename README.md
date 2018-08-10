@@ -40,7 +40,7 @@ If you then want to load the package into R use:
 ============================   
 Highlights and Comments
 
-The function lib() will install and update both GitHub and CRAN packages only if needed and regardless will load the package into the R session, if require = TRUE (the default).
+- The function lib() will install and update both GitHub and CRAN packages only if needed and regardless will load the package into the R session, if require = TRUE (the default).
 
 Code to put on the top of a function to start using lib() and other functions in JRWToolBox would look like:
 
@@ -61,28 +61,27 @@ https://stackoverflow.com/questions/10586652/r-preserve-order-when-using-matchin
 
 - gitHub_SHA() shows the current (full) SHA for a given repo.  A call is also given that can be used to revert to that commit in the future. Saving these calls for each relevant package with your current code insures you are using the commits that your code works with and that your results are reproducible. The date and call are also invisibly returned and hence can be used to install the commit at any time in the future:
       
-      JRWToolBox.Commit <- gitHub_SHA("John-R-Wallace/R-ToolBox")
-
-      SHA: a5820d8c1bc0b62e523440b847e027a8af655f81 from reference: master
-
-      Current date and time and the call to revert to this Commit in the future:
-
-      2017-11-17 14:29:23
-      devtools::install_github('John-R-Wallace/R-ToolBox', ref = 'a5820d8c1bc0b62e523440b847e027a8af655f81')
-
-
-      JRWToolBox.Commit
-      $Date
-      [1] "2017-11-17 14:29:23 PST"
-
-      $Call
-      [1] "devtools::install_github('John-R-Wallace/R-ToolBox', ref = 'a5820d8c1bc0b62e523440b847e027a8af655f81')"
-
-
-      eval(parse(text = JRWToolBox.Commit$Call))
-      Downloading GitHub repo John-R-Wallace/R-ToolBox@a5820d8c1bc0b62e523440b847e027a8af655f81 ...
+      JRWToolBox.Commit <- SHA("JRWToolBox")
       
-      packageDescription('Imap')$RemoteSHA
+      SHA: 278e298b805ef862065d8e5e733e96d54c1b3e9c
+      
+      Current call to revert to this Commit in the future with build date and time:
+      
+      devtools::install_github('John-R-Wallace/JRWToolBox', ref = '278e298b805ef862065d8e5e733e96d54c1b3e9c')  # R 3.5.0; ; 2018-08-10 21:53:30 UTC; windows
+      
+      
+      JRWToolBox.Commit 
+      $`Build`
+      [1] "R 3.5.0; ; 2018-08-10 21:53:30 UTC; windows"
+      
+      $Call
+      [1] "devtools::install_github('John-R-Wallace/JRWToolBox', ref = '278e298b805ef862065d8e5e733e96d54c1b3e9c')"
+      
+      eval(parse(text = JRWToolBox.Commit$Call))
+      Downloading GitHub repo John-R-Wallace/JRWToolBox@278e298b805ef862065d8e5e733e96d54c1b3e9c ...
+      ...
+      
+       packageDescription('JRWToolBox')$RemoteSha
 
 ============================   
 All functions were written by me except for (this list is under construction):
