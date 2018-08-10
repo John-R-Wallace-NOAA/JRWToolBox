@@ -56,11 +56,10 @@ dataWareHouseTrawlBio <- function (Species = "Sebastes pinniger", YearRange = c(
         Vars <- c("project", "trawl_id", "scientific_name", "year", "vessel", "pass", "tow", "date_dim$full_date", "depth_ftm", "weight_kg", "length_cm", "sex", "age_years", "latitude_dd", "longitude_dd")
         " # Available, but not used: project, performance (not output, only used as a filter below)  "
         " # species and performance=Satisfactory added; went with a year range approach for the years to select  "
-        UrlText <- paste0("https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.individual_fact/selection.json?filters=project=", paste(strsplit(project, )[[1]], collapse = "%20"),",", 
+        UrlText <- paste0("https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.individual_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",", 
             "actual_station_design_dim$stn_invalid_for_trawl_date_whid=0,", 
             "performance=Satisfactory,", "depth_ftm>=30,depth_ftm<=700,", 
-            "field_identified_taxonomy_dim$scientific_name=", paste(strsplit(Species, 
-                )[[1]], collapse = "%20"), ",date_dim$year>=", 
+            "field_identified_taxonomy_dim$scientific_name=", paste(strsplit(Species, " ")[[1]], collapse = "%20"), ",date_dim$year>=", 
             YearRange[1], ",date_dim$year<=", YearRange[2], "&variables=", 
             paste0(Vars, collapse = ","))
         
