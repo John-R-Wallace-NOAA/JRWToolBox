@@ -55,9 +55,9 @@ dataWareHouseTrawlCatch <- function (Species = "Sebastes pinniger", YearRange = 
         Vars <- c("scientific_name", "year", "subsample_count", "subsample_wt_kg", "total_catch_numbers", "total_catch_wt_kg", "vessel", "tow")
         " # Available, but not used: cpue_numbers_per_ha_der, project, performance (as an output column)"
         " # species and performance=Satisfactory added; went with a year range approach for the years to select "
-        UrlText <- paste0("https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.catch_fact/selection.json?filters=project=", paste(strsplit(project, )[[1]], collapse = "%20"),",", 
+        UrlText <- paste0("https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.catch_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",", 
             "actual_station_design_dim$stn_invalid_for_trawl_date_whid=0,", "performance=Satisfactory,", "depth_ftm>=30,depth_ftm<=700,", 
-            "field_identified_taxonomy_dim$scientific_name=", paste(strsplit(Species, )[[1]], collapse = "%20"), ",date_dim$year>=", 
+            "field_identified_taxonomy_dim$scientific_name=", paste(strsplit(Species, " ")[[1]], collapse = "%20"), ",date_dim$year>=", 
             YearRange[1], ",date_dim$year<=", YearRange[2], "&variables=", paste0(Vars, collapse = ","))
         
         if (verbose) 
@@ -84,7 +84,7 @@ dataWareHouseTrawlCatch <- function (Species = "Sebastes pinniger", YearRange = 
             " # Match SP to all tows to get the zeros "
             
             Vars <- c("project", "year", "vessel", "pass", "tow", "date_dim$full_date", "depth_m", "longitude_dd", "latitude_dd", "area_swept_ha_der", "trawl_id")
-            UrlText <- paste0("https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.operation_haul_fact/selection.json?filters=project=", paste(strsplit(project, )[[1]], collapse = "%20"),",", 
+            UrlText <- paste0("https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.operation_haul_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",", 
                 "actual_station_design_dim$stn_invalid_for_trawl_date_whid=0,", "performance=Satisfactory,", "depth_ftm>=30,depth_ftm<=700,", 
                 "date_dim$year>=", YearRange[1], ",date_dim$year<=", YearRange[2], "&variables=", paste0(Vars, collapse = ","))
             
