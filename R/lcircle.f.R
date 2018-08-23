@@ -1,5 +1,6 @@
 lcircle.f <- 
-function(cx, cy, r, fill.col = NULL, border.col = fill.col, yaxis = T, facets.num = 40, lty.neg = 2, lwd = ifelse(is.null(fill.col), 0, 2), ...)
+function(cx, cy, r, fill.col = NULL, border.col = ifelse(is.null(fill.col), 'black', fill.col), yaxis = TRUE, 
+	 facets.num = 40, lty.neg = 2, lwd = ifelse(is.null(fill.col), 0, 2), ...)
 {
 #   cx, cy, coordinates for centre; r is radius
 #   yaxis = T, radius is correct on the y axis
