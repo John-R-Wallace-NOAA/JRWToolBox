@@ -28,8 +28,6 @@ plot.bubble.zero.cross <- function (xyzOrg, group = rep("A", nrow(xyz)), maxsize
             length(alpha)])
         col
     }
-    if (PCH) 
-        require(grid)
     if (!is.null(fill.col)) 
         fill.col <- col.alpha(fill.col, fill.col.alpha)
     if (!is.null(border.col)) 
@@ -39,7 +37,7 @@ plot.bubble.zero.cross <- function (xyzOrg, group = rep("A", nrow(xyz)), maxsize
     xyzSqrt <- xyzOrg
     xyzSqrt[, 3] <- sign(xyzSqrt[, 3]) * sqrt(abs(xyzSqrt[, 3]))
     xyz <- xyzSqrt
-    xyz[, 3] <- (maxsize * xyzSqrt[, 3])/largestSqrtZ
+    xyz[, 3] <- (maxsize * xyzSqrt[, 3])/ifelse(largestSqrtZ %in% 0, 1, largestSqrtZ)
     tf <- !apply(xyz, 1, function(x) any(is.na(x)))
     xyz <- xyz[tf, ]
     group <- group[tf]
@@ -62,6 +60,7 @@ plot.bubble.zero.cross <- function (xyzOrg, group = rep("A", nrow(xyz)), maxsize
     for (j in 1:N) {
         XYZ <- xyz[group %in% Groups[j], ]
         if(PCH){
+            # Alpha level < 1 made the PNG output very slow????
             # points(XYZ[XYZ[, 3] %in% 0, 1:2], pch = 3, col = cross.col[j %r1% length(cross.col)], cex = cross.cex, lwd = 1)
             # catf("\n", cross.col, "\n")
             points(XYZ[XYZ[, 3] %in% 0, 1:2], pch = 3, col = cross.col, cex = cross.cex, lwd = 1)
