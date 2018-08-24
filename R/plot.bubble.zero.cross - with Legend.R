@@ -63,7 +63,7 @@ plot.bubble.zero.cross <- function (xyzOrg, group = rep("A", nrow(xyz)), maxsize
         XYZ <- xyz[group %in% Groups[j], ]
         if(PCH){
             # points(XYZ[XYZ[, 3] %in% 0, 1:2], pch = 3, col = cross.col[j %r1% length(cross.col)], cex = cross.cex, lwd = 1)
-            catf("\n", cross.col, "\n")
+            # catf("\n", cross.col, "\n")
             points(XYZ[XYZ[, 3] %in% 0, 1:2], pch = 3, col = cross.col, cex = cross.cex, lwd = 1)
             TF <- XYZ[, 3] %>>% 0
             if(any(TF)) 
