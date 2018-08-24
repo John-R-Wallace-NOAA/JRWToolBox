@@ -1,9 +1,6 @@
-plot.bubble.zero.cross <- function (xyzOrg, group = rep("A", nrow(xyz)), maxsize = scale.size * 
-    diff(range(xyzOrg[, 2])), scale.size = 0.07, largestSqrtZ = max(xyzSqrt[, 
-    3], na.rm = T), add = F, xlab = dimnames(xyz)[[2]][1], ylab = dimnames(xyz)[[2]][2], 
-    main = NULL, range.bump = F, cross.cex = 1, adj = NULL, fill.col = c("green", 
-        "red", "blue", "cyan", "black"), fill.col.alpha = 0.2, 
-    border.col = "black", border.col.alpha = fill.col.alpha, 
+plot.bubble.zero.cross <- function (xyzOrg, group = rep("A", nrow(xyz)), maxsize = scale.size * diff(range(xyzOrg[, 2])), scale.size = 0.07, largestSqrtZ = max(xyzSqrt[, 
+    3], na.rm = T), add = F, xlab = dimnames(xyz)[[2]][1], ylab = dimnames(xyz)[[2]][2], main = NULL, range.bump = F, cross.cex = 1, adj = NULL, 
+    fill.col = c("green", "red", "blue", "cyan", "black"), fill.col.alpha = 0.2,  border.col = "black", border.col.alpha = fill.col.alpha, 
     cross.col = {
         if (is.null(fill.col)) {
             border.col
@@ -11,11 +8,14 @@ plot.bubble.zero.cross <- function (xyzOrg, group = rep("A", nrow(xyz)), maxsize
         else {
             fill.col
         }
-    }, cross.col.alpha = ifelse(fill.col.alpha + 0.65 > 1, 1, 
-        fill.col.alpha + 0.5), border.lwd = 1.25, Grid.circle = F, 
-    legend = TRUE, legLoc = c(0.1, 0.25), legCol = "grey4", legAlpha = 0.5, 
-    legUnits = "Metric Tons", legNsmall = 1, Extra.Group.Size = rep(1, N), ...) 
+    }, cross.col.alpha = ifelse(fill.col.alpha + 0.65 > 1, 1, fill.col.alpha + 0.5), border.lwd = 1.25, PCH = FALSE, legend = TRUE, 
+    legLoc = c(0.1, 0.25), legCol = "grey4", legAlpha = 0.5, legUnits = "Metric Tons", legNsmall = 1, Extra.Group.Size = rep(1, N), ...) 
 {
+    " # Need to define below in case toolbox is not attached. "
+    '%>>%' <- function (x, y) {
+        x > y & !is.na(x)
+    }
+
     " **** Data is proportional to the area of the circle **** "
     "%r1%" <- function(e1, e2) ifelse(e1%%e2 == 0, e2, e1%%e2)
     col.alpha <- function(col, alpha = 0.5) {
@@ -28,7 +28,7 @@ plot.bubble.zero.cross <- function (xyzOrg, group = rep("A", nrow(xyz)), maxsize
             length(alpha)])
         col
     }
-    if (Grid.circle) 
+    if (PCH) 
         require(grid)
     if (!is.null(fill.col)) 
         fill.col <- col.alpha(fill.col, fill.col.alpha)
@@ -48,10 +48,10 @@ plot.bubble.zero.cross <- function (xyzOrg, group = rep("A", nrow(xyz)), maxsize
 	if (!add) {
         if (range.bump) {
             xlim <- c(min(xyz[, 1], na.rm = T) - 0.2 * diff(range(xyz[, 
-                1], na.rm = T)), max(xyz[, 1], na.rm = T) + 0.2 * 
+                1], na.rm = TRUE)), max(xyz[, 1], na.rm = T) + 0.2 * 
                 diff(range(xyz[, 1], na.rm = T)))
             ylim <- c(min(xyz[, 2], na.rm = T) - 0.2 * diff(range(xyz[, 
-                2], na.rm = T)), max(xyz[, 2], na.rm = T) + 0.2 * 
+                2], na.rm = TRUE)), max(xyz[, 2], na.rm = T) + 0.2 * 
                 diff(range(xyz[, 2], na.rm = T)))
             plot(xyz[, 1], xyz[, 2], type = "n", xlim = xlim, 
                 ylim = ylim, xlab = xlab, ylab = ylab, main = main)
@@ -61,21 +61,23 @@ plot.bubble.zero.cross <- function (xyzOrg, group = rep("A", nrow(xyz)), maxsize
     }
     for (j in 1:N) {
         XYZ <- xyz[group %in% Groups[j], ]
-        for (i in 1:nrow(XYZ)) {
-            if (XYZ[i, 3] == 0) 
-                points(XYZ[i, 1], XYZ[i, 2], pch = 3, cex = cross.cex, 
-                  col = cross.col[j %r1% length(cross.col)], 
-                  lwd = 1)
-            else {
-                if (Grid.circle) 
-                  grid.circle(XYZ[i, 1], XYZ[i, 2], XYZ[i, 3] * Extra.Group.Size[j], 
-                    default.units = "native")
-                else JRWToolBox::circle.f(XYZ[i, 1], XYZ[i, 2], XYZ[i, 3] * Extra.Group.Size[j], 
-                  adj = adj, fill.col = fill.col[j %r1% length(fill.col)], 
-                  lwd = border.lwd[j %r1% length(border.lwd)], 
-                  border.col = border.col[j %r1% length(border.col)], 
-                  ...)
-            }
+        if(PCH){
+            # points(XYZ[XYZ[, 3] %in% 0, 1:2], pch = 3, col = cross.col[j %r1% length(cross.col)], cex = cross.cex, lwd = 1)
+            catf("\n", cross.col, "\n")
+            points(XYZ[XYZ[, 3] %in% 0, 1:2], pch = 3, col = cross.col, cex = cross.cex, lwd = 1)
+            TF <- XYZ[, 3] %>>% 0
+            if(any(TF)) 
+                  points(XYZ[TF, 1:2], col = fill.col[j %r1% length(fill.col)], pch = 16, cex = XYZ[TF, 3])
+            # cat("\n", c(nrow(XYZ[XYZ[, 3] %in% 0, 1:2]), nrow(XYZ[TF, 1:2]), min(XYZ[TF, 3]), max(XYZ[TF, 3])), "\n")
+        } else {
+            for (i in 1:nrow(XYZ)) {
+               if (XYZ[i, 3] %in% 0) 
+                   points(XYZ[i, 1], XYZ[i, 2], pch = 3, cex = cross.cex, col = cross.col[j %r1% length(cross.col)], lwd = 1)
+               else {
+                    JRWToolBox::circle.f(XYZ[i, 1], XYZ[i, 2], XYZ[i, 3] * Extra.Group.Size[j], adj = adj, fill.col = fill.col[j %r1% length(fill.col)], 
+                        lwd = border.lwd[j %r1% length(border.lwd)], border.col = border.col[j %r1% length(border.col)], ...)
+               }
+           }
         }
     }
     if (legend) {
