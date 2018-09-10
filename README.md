@@ -23,7 +23,7 @@ For example use:
     gitAFile('https://raw.githubusercontent.com/John-R-Wallace/R-ToolBox/master/R/lib.R') 
     # lib() is saved to .GlobalEnv
 
-to download just the lib() function will install and update both GitHub and CRAN packages only if needed and regardless will load the package into the R session, if require = TRUE (the default).
+to download just the lib() function that will install and update both GitHub and CRAN packages only if needed and regardless will load the package into the R session, if require = TRUE (the default).
 
 Note, for the use of a raw GitHub URL see: http://rawgit.com/
 
