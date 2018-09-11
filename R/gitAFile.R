@@ -8,6 +8,8 @@ gitAFile <- function (URL, run = FALSE, show = !run, type = "function", File = N
     require(RCurl)
     Source <- function(file, ...) {
         ls.ext <- function(file) {
+        
+        
             local({
                 base::source(file, TRUE)
                 base::ls()
@@ -29,14 +31,14 @@ gitAFile <- function (URL, run = FALSE, show = !run, type = "function", File = N
         if(delete.R.Object)
            on.exit(file.remove(File.ASCII))
      }
+     
      if(type %in% "function") {
            s.name <- Source(File.ASCII)
-           if(run)
+           if(run) 
              eval(parse(text = s.name))()
            if(show)
                  print(eval(parse(text = s.name)))
-             else
-                 s.name
+           return(invisible(eval(parse(text = s.name))))
       }
       if(type %in% "script") {
          if(run)
