@@ -1,4 +1,4 @@
-movePolygon <- function (xy, colLine = "red", colPoly = "purple", alpha = 0.25, closePoly = TRUE, lty = 1, 
+adjustPolygon <- function (xy, colLine = "red", colPoly = "purple", alpha = 0.25, closePoly = TRUE, lty = 1, 
     colBg = par()$bg, ...) 
 {
     lines(xy$x, xy$y, col = colLine, lty = lty, type = "o", ...)
