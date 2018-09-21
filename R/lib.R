@@ -1,4 +1,4 @@
-lib <- function (Package, Package.Name = NULL, attach = TRUE, pos = 2, quiet = TRUE, 
+lib <- function (Package, Package.Name = NULL, attach = TRUE, pos = 2, quiet = ifelse(sys.nframe() < 2, FALSE, TRUE), 
     force = FALSE, autoAddRepo = TRUE, ...) 
 {
     if (autoAddRepo & options()$repos[names(options()$repos) %in% 
