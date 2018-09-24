@@ -86,7 +86,7 @@ YearlyResultsFigures <- function(eastLongitude = -160.5, longitudeDelta = 2.6, I
     Index$LatSD_mt <- rev((48 - 34.2)/(max(Index$Estimate_metric_tons) - min(Index$Estimate_metric_tons)) * Index$SD_mt)
     
  '  # It appears that calls to text() need to be before things get changed by using subplot() below.  '	
-    text(-118.5, 37.50, 'Grams per Hectare', cex = 0.80)     
+    text(-118.5, 37.50, 'Kg per Hectare', cex = 0.85)     
 
     if(!is.null(Ages.)) {
        if(length(Ages.) == 1) 
