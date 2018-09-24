@@ -1,6 +1,7 @@
 
 YearlyResultsFigures <- function(eastLongitude = -160.5, longitudeDelta = 2.6, Index = NULL, SP.Results.Dpth. = NULL, MapDetails_List. = MapDetails_List, Report. = Report, Opt. = Opt, spShortName. = NULL, 
-                                 DateFile. = DateFile, Year_Set. = Year_Set, Years2Include. = Years2Include, Ages. = NULL, LenMin. = NULL, LenMax. = NULL, strata.limits. = strata.limits, HomeDir = ".") {
+                                 DateFile. = DateFile, Year_Set. = Year_Set, Years2Include. = Years2Include, Ages. = NULL, LenMin. = NULL, LenMax. = NULL, strata.limits. = strata.limits, HomeDir = ".",
+                                 changeUnitsUnder1Kg = TRUE) {
   
     if (!any(installed.packages()[, 1] %in% "devtools")) 
         install.packages("devtools")
@@ -85,21 +86,36 @@ YearlyResultsFigures <- function(eastLongitude = -160.5, longitudeDelta = 2.6, I
     Index$LatPlotValues <- rev((48 - 34.2) * (Index$Estimate_metric_tons - min(Index$Estimate_metric_tons))/max(Index$Estimate_metric_tons) + 34.2)
     Index$LatSD_mt <- rev((48 - 34.2)/(max(Index$Estimate_metric_tons) - min(Index$Estimate_metric_tons)) * Index$SD_mt)
     
- '  # It appears that calls to text() need to be before things get changed by using subplot() below.  '	
-    text(-118.5, 37.50, 'Kg per Hectare', cex = 0.85)     
-
-    if(!is.null(Ages.)) {
-       if(length(Ages.) == 1) 
-          text(-161.7, 33, paste('Age:', Ages.), cex = 0.75, adj = 0)    
-       else
-          text(-161.7, 33, paste('Ages:', min(Ages.), "-", max(Ages.)), cex = 0.75, adj = 0) 
-     }  
-     if(!is.null(LenMin.) & !is.null(LenMax.)) 
-        text(-161.7, 32, paste('Length range (cm):', LenMin., "-", LenMax.), cex = 0.75, adj = 0)
-    
+ '  # It appears that calls to text() need to be before things get changed by using subplot() below. '	
+ 
+    GRAMS <- max(exp(SP.Results.Dpth.[,-(1:4)])) < 1 &  changeUnitsUnder1Kg   # Auto change to grams under 1 kg
+    if(GRAMS)
+        text(-118.5, 37.50, 'Grams per Hectare', cex = 0.80)    
+    else
+        text(-118.5, 37.50, 'Kg per Hectare', cex = 0.85) 
 
     LatMin. = strata.limits.$south_border[1]
     
+    if(LatMin. >= 33.8)
+           ageLat <- 34
+           
+    if(LatMin. > 32.25 & LatMin. < 33.8)
+           ageLat <- 33
+           
+    if(LatMin. <= 32.25)    
+           ageLat <- 32  
+    
+    
+    if(!is.null(Ages.)) {
+       if(length(Ages.) == 1) 
+          text(-161.7, ageLat, paste('Age:', Ages.), cex = 0.75, adj = 0)    
+       else
+          text(-161.7, ageLat, paste('Ages:', min(Ages.), "-", max(Ages.)), cex = 0.75, adj = 0) 
+    }  
+    
+    if(!is.null(LenMin.) & !is.null(LenMax.))        
+          text(-161.7, ageLat - 1, paste('Length range (cm):', LenMin., "-", LenMax.), cex = 0.75, adj = 0)
+       
     yearDelta <- 0.5
 
     if(LatMin. >= 33.8) {
@@ -127,8 +143,13 @@ YearlyResultsFigures <- function(eastLongitude = -160.5, longitudeDelta = 2.6, I
         x=grconvertX(c(0.10, 0.89), from='npc'), y=grconvertY(c(0, 0.190), from='npc'), type='fig', pars=list( mar=c(1.5,4,0,0) + 0.1) )
     }
     
-    TeachingDemos::subplot( { par(cex = 5); color.bar(Col(100), JRWToolBox::r(min(exp(SP.Results.Dpth.[,-(1:4)])), 3), JRWToolBox::r(max(exp(SP.Results.Dpth.[,-(1:4)])), 3), nticks = 6) },
-         x=grconvertX(c(0.83, 0.87), from='npc'), y=grconvertY(c(0.5, 0.75), from='npc'), type='fig', pars=list( mar=c(0,0,1,0) + 0.1) )    
+    if(GRAMS)
+        TeachingDemos::subplot( { par(cex = 5); color.bar(Col(100), JRWToolBox::r(1000 * min(exp(SP.Results.Dpth.[,-(1:4)])), 0), JRWToolBox::r(1000 * max(exp(SP.Results.Dpth.[,-(1:4)])), 0), nticks = 6) },
+            x=grconvertX(c(0.83, 0.87), from='npc'), y=grconvertY(c(0.5, 0.75), from='npc'), type='fig', pars=list( mar=c(0,0,1,0) + 0.1) )    
+    else 
+        TeachingDemos::subplot( { par(cex = 5); color.bar(Col(100), JRWToolBox::r(min(exp(SP.Results.Dpth.[,-(1:4)])), 3), JRWToolBox::r(max(exp(SP.Results.Dpth.[,-(1:4)])), 3), nticks = 6) },
+            x=grconvertX(c(0.83, 0.87), from='npc'), y=grconvertY(c(0.5, 0.75), from='npc'), type='fig', pars=list( mar=c(0,0,1,0) + 0.1) )    
+             
         
     dev.off()
   
