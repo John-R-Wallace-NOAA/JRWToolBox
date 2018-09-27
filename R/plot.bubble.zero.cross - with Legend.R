@@ -1,5 +1,5 @@
 plot.bubble.zero.cross <- function (xyzOrg, group = rep("A", nrow(xyz)), maxsize = scale.size * diff(range(xyzOrg[, 2])), scale.size = 0.07, largestSqrtZ = max(xyzSqrt[, 
-    3], na.rm = T), centerPoints = FALSE, add = F, xlab = dimnames(xyz)[[2]][1], ylab = dimnames(xyz)[[2]][2], main = NULL, range.bump = F, cross.cex = 1, adj = NULL, 
+    3], na.rm = T), center.points = FALSE, center.cex = 0.5, add = F, xlab = dimnames(xyz)[[2]][1], ylab = dimnames(xyz)[[2]][2], main = NULL, range.bump = F, cross.cex = 1, adj = NULL, 
     fill.col = c("green", "red", "blue", "cyan", "black"), fill.col.alpha = 0.2,  border.col = "black", border.col.alpha = fill.col.alpha, 
     cross.col = {
         if (is.null(fill.col)) {
@@ -75,10 +75,10 @@ plot.bubble.zero.cross <- function (xyzOrg, group = rep("A", nrow(xyz)), maxsize
                else {
                     JRWToolBox::circle.f(XYZ[i, 1], XYZ[i, 2], XYZ[i, 3] * Extra.Group.Size[j], adj = adj, fill.col = fill.col[j %r1% length(fill.col)], 
                         lwd = border.lwd[j %r1% length(border.lwd)], border.col = border.col[j %r1% length(border.col)], ...)
-                    if(centerPoints)    
-                        points(XYZ[i, 1], XYZ[i, 2], pch=16, cex = 0.5)   
-               }
-           }
+               }         
+               if(center.points)    
+                    points(XYZ[!XYZ[, 3] %in% 0, 1], XYZ[!XYZ[, 3] %in% 0, 2], pch=16, cex = center.cex)   
+            }
         }
     }
     if (legend) {
