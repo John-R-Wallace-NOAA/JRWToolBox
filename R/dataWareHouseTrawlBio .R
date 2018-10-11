@@ -97,7 +97,7 @@ dataWareHouseTrawlBio <- function (Species = "Sebastes pinniger", YearRange = c(
                cat("\n\n")
             }
         }
-        if (P == 'AFSC.Shelf') {
+        if (any(P %in% c('AFSC.Shelf', 'AFSC.Slope'))) {
         
             Vars <- c("project", "trawl_id", "scientific_name", "year", "vessel", "pass", "tow", "date_dim$full_date", "depth_ftm", "length_cm", "sex", "latitude_dd", "longitude_dd")
         
@@ -137,7 +137,7 @@ dataWareHouseTrawlBio <- function (Species = "Sebastes pinniger", YearRange = c(
             
         
             if(type3HaulsOnly) {
-               if(verbose) cat("\n\nOnly keeping Type 3 hauls, i.e. Standard Bottom Sample (pre-programmed station), from the AFSC Triennial Shelf Survey lengths and ages\n")
+               if(verbose) cat("\n\nOnly keeping Type 3 hauls, i.e. Standard Bottom Sample (pre-programmed station), from the AFSC lengths and ages\n")
                notType3Hauls <- JRWToolBox::scanIn("
                 
                   198606019330 198606019331 198606019332 198606019333 198606019334 198606019335 198006005268 198006005269 198006005270 198006005271 198006005272 198006005273
@@ -154,7 +154,7 @@ dataWareHouseTrawlBio <- function (Species = "Sebastes pinniger", YearRange = c(
              }   
             
             if(removeWaterHauls) {
-               if(verbose) cat("\n\nRemoving Water Hauls from the AFSC Triennial Shelf Survey lengths and ages\n")
+               if(verbose) cat("\n\nRemoving Water Hauls from AFSC lengths and ages\n")
                waterHauls <- JRWToolBox::scanIn("
                 
                    197706004001 197706004005 197706004011 198606019192 198006005113 198006005115 198006005116 198006005118 198006005119 198006005123 198006005124 198006005009
@@ -195,7 +195,7 @@ dataWareHouseTrawlBio <- function (Species = "Sebastes pinniger", YearRange = c(
            }
            
            if(noCanadianHauls) {
-                 if(verbose) cat("\n\nRemoving Canadian hauls\n")
+                 if(verbose) cat("\n\nRemoving Canadian hauls from the AFSC lengths and ages\n")
                  CanadianTows <- JRWToolBox::scanIn("
                   
                    198006005238 198006005239 198006005240 198006005241 198006005242 198006005243 198006005244 198006005246 198006005247 198006005248 198006005249 198006005250
@@ -241,9 +241,9 @@ dataWareHouseTrawlBio <- function (Species = "Sebastes pinniger", YearRange = c(
        }
        SpAll <- rbind(SpAll, SP)
     }
-    if (P == 'AFSC.Shelf') {
-        cat("\n\nThe object returned is a list with Lengths and Ages data frames since at least one of projects was from the AFSC.\n\n")
-        SpAll <- list(Lengths = LEN, Ages = SP)
+    if (any(projectShort %in% c('AFSC.Shelf', 'AFSC.Slope'))) {
+        cat("\n\nThe object returned is a list with data frames named 'Lengths' (AFSC) and 'Ages'(all projects) since at least one of projects was from the AFSC.\n\n")
+        SpAll <- list(Lengths = LEN, Ages = SpAll)
     }
     cat("\n")
     invisible(SpAll)
