@@ -133,7 +133,7 @@ dataWareHouseTrawlCatch <- function (Species = "Sebastes pinniger", YearRange = 
                }   
               
               if(removeWaterHauls) {
-                 if(verbose) cat("\n\nRemoving Water Hauls from the AFSC Triennial Shelf Survey catch\n")
+                 if(verbose) cat("\n\nRemoving Water Hauls from AFSC lengths and ages\n")
                  waterHauls <- JRWToolBox::scanIn("
                   
                    197706004001 197706004005 197706004011 198606019192 198006005113 198006005115 198006005116 198006005118 198006005119 198006005123 198006005124 198006005009
@@ -174,7 +174,7 @@ dataWareHouseTrawlCatch <- function (Species = "Sebastes pinniger", YearRange = 
               }
                  
               if(noCanadianHauls) {
-                 if(verbose) cat("\n\nRemoving Canadian hauls\n")
+                 if(verbose) cat("\n\nRemoving Canadian hauls from the AFSC lengths and ages\n")
                  CanadianTows <- JRWToolBox::scanIn("
                   
                    198006005238 198006005239 198006005240 198006005241 198006005242 198006005243 198006005244 198006005246 198006005247 198006005248 198006005249 198006005250
