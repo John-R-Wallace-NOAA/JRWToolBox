@@ -242,7 +242,7 @@ dataWareHouseTrawlBio <- function (Species = "Sebastes pinniger", YearRange = c(
        SpAll <- rbind(SpAll, SP)
     }
     if (any(projectShort %in% c('AFSC.Shelf', 'AFSC.Slope'))) {
-        cat("\n\nThe object returned is a list with data frames named 'Lengths' (AFSC) and 'Ages'(all projects) since at least one of projects was from the AFSC.\n\n")
+        cat("\n\nThe object returned is a list with data frames named 'Lengths' (AFSC) and 'Ages' (all projects) since at least one of projects was from the AFSC.\n\n")
         SpAll <- list(Lengths = LEN, Ages = SpAll)
     }
     cat("\n")
