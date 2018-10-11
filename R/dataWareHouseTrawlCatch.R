@@ -117,7 +117,7 @@ dataWareHouseTrawlCatch <- function (Species = "Sebastes pinniger", YearRange = 
                     
               if(type3HaulsOnly) {
                  if(verbose) cat("\n\nOnly keeping Type 3 hauls, i.e. Standard Bottom Sample (pre-programmed station), from the AFSC Triennial Shelf Survey catch\n")
-                 notType3Hauls.OLD <- JRWToolBox::scanIn("
+                 notType3Hauls <- JRWToolBox::scanIn("
                   
                     198606019330 198606019331 198606019332 198606019333 198606019334 198606019335 198006005268 198006005269 198006005270 198006005271 198006005272 198006005273
                     198006005274 198006005275 198006005276 198006005277 198006005278 198006005279 198006005280 198006005281 198006005282 198006005283 198006005284 198006005285
