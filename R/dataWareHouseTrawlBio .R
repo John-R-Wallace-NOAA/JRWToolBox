@@ -1,5 +1,6 @@
-dataWareHouseTrawlBio <- function (species = "Sebastes pinniger", yearRange = c(1000, 5000), projectShort = "Ask", verbose = FALSE, optionDigitsAtLeast11 = TRUE,
-                                   type3HaulsOnly = TRUE, removeWaterHauls = TRUE, noCanadianHauls = TRUE) 
+dataWareHouseTrawlBio <- function (species = "Sebastes pinniger", yearRange = c(1000, 5000), projectShort = c("Ask", "AFSC.Shelf", "AFSC.Slope", "WCGBTS.Combo", "WCGBTS.Shelf", 
+                            "WCGBTS.Slope", "WCGBTS.Hypoxia", "WCGBTS.Santa.Barb.Basin", "WCGBTS.Shelf.Rockfish", "WCGBTS.Video"), verbose = FALSE, optionDigitsAtLeast11 = TRUE,
+                            type3HaulsOnly = TRUE, removeWaterHauls = TRUE, noCanadianHauls = TRUE) 
 {
     if(optionDigitsAtLeast11)  {
          if(options()$digits < 11)  options(digits = 11)
