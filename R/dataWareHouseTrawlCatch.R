@@ -7,7 +7,7 @@ dataWareHouseTrawlCatch <- function (species = "Sebastes pinniger", yearRange = 
     }
     if (!any(installed.packages()[, 1] %in% "devtools"))  
         install.packages('devtools')  
-    devtools::install_github("John-R-Wallace/JRWToolBox")
+    devtools::install_github("John-R-Wallace/JRWToolBox", quiet = TRUE)
     " # lib() will download a function only if needed and then attach it"
     JRWToolBox::lib("jsonlite")
     JRWToolBox::lib("chron")
