@@ -1,15 +1,14 @@
-dataWareHouseTrawlCatch <- function (Species = "Sebastes pinniger", YearRange = c(1000, 5000), projectShort = "Ask", verbose = FALSE, optionDigitsAtLeast11 = TRUE,
-                                     type3HaulsOnly = TRUE, removeWaterHauls = TRUE, noCanadianHauls = TRUE) 
+dataWareHouseTrawlCatch <- function (species = "Sebastes pinniger", yearRange = c(1000, 5000), projectShort = c("Ask", "AFSC.Shelf", "AFSC.Slope", "WCGBTS.Combo", "WCGBTS.Shelf", 
+                            "WCGBTS.Slope", "WCGBTS.Hypoxia", "WCGBTS.Santa.Barb.Basin", "WCGBTS.Shelf.Rockfish", "WCGBTS.Video"), verbose = FALSE, 
+                            optionDigitsAtLeast11 = TRUE, type3HaulsOnly = TRUE, removeWaterHauls = TRUE, noCanadianHauls = TRUE) 
 {
     if(optionDigitsAtLeast11)  {
          if(options()$digits < 11)  options(digits = 11)
     }
     if (!any(installed.packages()[, 1] %in% "devtools"))  
         install.packages('devtools')  
-    if (!any(installed.packages()[, 1] %in% "JRWToolBox")) 
-        devtools::install_github("John-R-Wallace/JRWToolBox")
-    " # Next call is for updating the toolbox when needed"
-    JRWToolBox::lib("John-R-Wallace/JRWToolBox")
+    devtools::install_github("John-R-Wallace/JRWToolBox")
+    " # lib() will download a function only if needed and then attach it"
     JRWToolBox::lib("jsonlite")
     JRWToolBox::lib("chron")
     
@@ -42,7 +41,7 @@ dataWareHouseTrawlCatch <- function (Species = "Sebastes pinniger", YearRange = 
                                          'Video Study'                 WCGBTS.Video
     ") 
     
-    if(	projectShort[1] %in% c('Ask', 'ask'))  {
+    if(	projectShort[1] %in% c('Ask', 'ask', 'ASK'))  {
         cat("\n\nSelect a project [enter 0 (zero) to abort]:\n\n"); flush.console()
         projectShort <- switch(menu(c("AFSC.Shelf","AFSC.Slope","WCGBTS.Combo","WCGBTS.Shelf","WCGBTS.Slope","WCGBTS.Hypoxia","WCGBTS.Santa.Barb.Basin","WCGBTS.Shelf.Rockfish","WCGBTS.Video")) + 1,
         stop("No project selected"), "AFSC.Shelf","AFSC.Slope","WCGBTS.Combo","WCGBTS.Shelf","WCGBTS.Slope","WCGBTS.Hypoxia","WCGBTS.Santa.Barb.Basin","WCGBTS.Shelf.Rockfish","WCGBTS.Video")
@@ -56,16 +55,16 @@ dataWareHouseTrawlCatch <- function (Species = "Sebastes pinniger", YearRange = 
         
         project <- projectNames$longProject[projectNames$shortProject %in% P]
         
-        if (length(YearRange) == 1) 
-            YearRange <- c(YearRange, YearRange)
+        if (length(yearRange) == 1) 
+            yearRange <- c(yearRange, yearRange)
         
-        Vars <- c("scientific_name", "year", "subsample_count", "subsample_wt_kg", "total_catch_numbers", "total_catch_wt_kg", "vessel", "tow")
+        Vars <- c("common_name", "scientific_name", "year", "subsample_count", "subsample_wt_kg", "total_catch_numbers", "total_catch_wt_kg", "vessel", "tow")
         " # Available, but not used: cpue_numbers_per_ha_der, project, performance (as an output column)"
         " # species and performance=Satisfactory added; went with a year range approach for the years to select "
         UrlText <- paste0("https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.catch_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",", 
-            "actual_station_design_dim$stn_invalid_for_trawl_date_whid=0,", "performance=Satisfactory,", "depth_ftm>=30,depth_ftm<=700,", 
-            "field_identified_taxonomy_dim$scientific_name=", paste(strsplit(Species, " ")[[1]], collapse = "%20"), ",date_dim$year>=", 
-            YearRange[1], ",date_dim$year<=", YearRange[2], "&variables=", paste0(Vars, collapse = ","))
+            "actual_station_design_dim$stn_invalid_for_trawl_date_whid=0,", "performance=Satisfactory,", 
+            "field_identified_taxonomy_dim$scientific_name=", paste(strsplit(species, " ")[[1]], collapse = "%20"), ",date_dim$year>=", 
+            yearRange[1], ",date_dim$year<=", yearRange[2], "&variables=", paste0(Vars, collapse = ","))
         
         if (verbose) 
             cat("\n\nURL Text for the species:\n\n", UrlText, "\n\n")
@@ -80,20 +79,20 @@ dataWareHouseTrawlCatch <- function (Species = "Sebastes pinniger", YearRange = 
                 cat("\n\n")
             }
             " # SP.Before <<- SP "
-            SP <- rename_columns(SP, newname = c("Year", "Vessel", "Tow", "Scientific_Name", "Subsample_count", "Subsample_wt_kg", "Total_sp_numbers", "Total_sp_wt_kg"))
+            SP <- rename_columns(SP, newname = c("Year", "Vessel", "Tow", "Common_Name", "Scientific_Name", "Subsample_count", "Subsample_wt_kg", "Total_sp_numbers", "Total_sp_wt_kg"))
             if (verbose) {
                 print(SP[1:4, ])
                 cat("\n\n")
             }
             " # SP.After <<- SP "
-            SP <- SP[, c("Year", "Vessel", "Tow", "Scientific_Name", "Subsample_count", "Subsample_wt_kg", "Total_sp_numbers", "Total_sp_wt_kg")]
+            SP <- SP[, c("Year", "Vessel", "Tow", "Common_Name", "Scientific_Name", "Subsample_count", "Subsample_wt_kg", "Total_sp_numbers", "Total_sp_wt_kg")]
             
             " # Match SP to all tows to get the zeros "
             
             Vars <- c("project", "year", "vessel", "pass", "tow", "date_dim$full_date", "depth_m", "longitude_dd", "latitude_dd", "area_swept_ha_der", "trawl_id")
             UrlText <- paste0("https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.operation_haul_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",", 
-                "actual_station_design_dim$stn_invalid_for_trawl_date_whid=0,", "performance=Satisfactory,", "depth_ftm>=30,depth_ftm<=700,", 
-                "date_dim$year>=", YearRange[1], ",date_dim$year<=", YearRange[2], "&variables=", paste0(Vars, collapse = ","))
+                "actual_station_design_dim$stn_invalid_for_trawl_date_whid=0,", "performance=Satisfactory,", "date_dim$year>=", yearRange[1], ",date_dim$year<=", yearRange[2],
+                "&variables=", paste0(Vars, collapse = ","))
             
             if (verbose) 
                 cat("\n\nURL Text for all tows (needed for zero catch tows):\n\n", UrlText, "\n\n")
@@ -218,20 +217,20 @@ dataWareHouseTrawlCatch <- function (Species = "Sebastes pinniger", YearRange = 
               }   
             }
               
-            Out <- JRWToolBox::match.f(All.Tows, SP, c("Year", "Vessel", "Tow"), c("Year", "Vessel", "Tow"), c("Scientific_Name", "Subsample_count", "Subsample_wt_kg", "Total_sp_numbers", "Total_sp_wt_kg"))
+            Out <- JRWToolBox::match.f(All.Tows, SP, c("Year", "Vessel", "Tow"), c("Year", "Vessel", "Tow"), c("Common_Name", "Scientific_Name", "Subsample_count", "Subsample_wt_kg", "Total_sp_numbers", "Total_sp_wt_kg"))
             Out$Total_sp_wt_kg[is.na(Out$Total_sp_wt_kg)] <- 0
             
-            Out$Area_Swept_ha[is.na(Out$Area_Swept_ha)] <- mean(Out$Area_Swept_ha, 
-                trim = 0.05, na.rm = TRUE)
-            " # Scientific Name is missing after the matching when Total_sp_wt_kg is zero  "
-            Out$Scientific_Name <- Species
+            Out$Area_Swept_ha[is.na(Out$Area_Swept_ha)] <- mean(Out$Area_Swept_ha, trim = 0.05, na.rm = TRUE)
+            " # Common and Scientific names are missing after the matching when Total_sp_wt_kg is zero  "
+            Out$Common_Name <- unique(na.omit(Out$Common_Name))
+            Out$Scientific_Name <- species
             Out$Date <- chron(format(as.POSIXlt(Out$Date, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"), format = "y-m-d", out.format = "YYYY-m-d")
             Out$Project <- P
             if (verbose) {
                cat("\n\nFirst few rows of returned data:\n\n")
                print(Out[1:4, ])
                cat("\n\n")
-               if(P == "WCGBTS.Combo" & any(YearRange[1]:YearRange[2] %in% 2012))  cat("\nNote: the Noah's Ark was chartered for both passes in 2012.\n")
+               if(P == "WCGBTS.Combo" & any(yearRange[1]:yearRange[2] %in% 2012))  cat("\nNote: the Noah's Ark was chartered for both passes in 2012.\n")
                print(table(Out$Vessel, Out$Year, useNA = "ifany"))
                cat("\n\n")
             }
