@@ -1,4 +1,4 @@
-dataWareHouseTrawlBio <- function (Species = "Sebastes pinniger", YearRange = c(1000, 5000), projectShort = "Ask", verbose = FALSE, optionDigitsAtLeast11 = TRUE,
+dataWareHouseTrawlBio <- function (species = "Sebastes pinniger", yearRange = c(1000, 5000), projectShort = "Ask", verbose = FALSE, optionDigitsAtLeast11 = TRUE,
                                    type3HaulsOnly = TRUE, removeWaterHauls = TRUE, noCanadianHauls = TRUE) 
 {
     if(optionDigitsAtLeast11)  {
@@ -8,10 +8,10 @@ dataWareHouseTrawlBio <- function (Species = "Sebastes pinniger", YearRange = c(
         install.packages('devtools')  
     if (!any(installed.packages()[, 1] %in% "JRWToolBox")) 
         devtools::install_github("John-R-Wallace/JRWToolBox")
-    " # Next call is for updating the toolbox when needed"
-    JRWToolBox::lib("John-R-Wallace/JRWToolBox")
+    devtools::install_github("John-R-Wallace/JRWToolBox", quiet = TRUE)
+    " # lib() will download a function only if needed and then attach it"
     JRWToolBox::lib("jsonlite")
-    JRWToolBox::lib("chron")   
+    JRWToolBox::lib("chron")
     
     " # By using grep() and changing things around I fixed J. Thorson's rename_columns() function found inside the download_catch_rates() function from his FishData paackage "
     " # The updated function no longer requires the order of the names inside of newname and origname to be the same. "
@@ -57,17 +57,16 @@ dataWareHouseTrawlBio <- function (Species = "Sebastes pinniger", YearRange = c(
         project <- projectNames$longProject[projectNames$shortProject %in% P]
         
         
-        if (length(YearRange) == 1) 
-            YearRange <- c(YearRange, YearRange)
+        if (length(yearRange) == 1) 
+            yearRange <- c(yearRange, yearRange)
         
-        Vars <- c("project", "trawl_id", "scientific_name", "year", "vessel", "pass", "tow", "date_dim$full_date", "depth_ftm", "weight_kg", "length_cm", "sex", "age_years", "latitude_dd", "longitude_dd")
+        Vars <- c("project", "trawl_id", "common_name", "scientific_name", "year", "vessel", "pass", "tow", "date_dim$full_date", "depth_ftm", "weight_kg", "length_cm", "sex", "age_years", "latitude_dd", "longitude_dd")
         " # Available, but not used: project, performance (not output, only used as a filter below)  "
         " # species and performance=Satisfactory added; went with a year range approach for the years to select  "
         UrlText <- paste0("https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.individual_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",", 
-            "actual_station_design_dim$stn_invalid_for_trawl_date_whid=0,", 
-            "performance=Satisfactory,", "depth_ftm>=30,depth_ftm<=700,", 
-            "field_identified_taxonomy_dim$scientific_name=", paste(strsplit(Species, " ")[[1]], collapse = "%20"), ",date_dim$year>=", 
-            YearRange[1], ",date_dim$year<=", YearRange[2], "&variables=", 
+            "actual_station_design_dim$stn_invalid_for_trawl_date_whid=0,", "performance=Satisfactory,",
+            "field_identified_taxonomy_dim$scientific_name=", paste(strsplit(species, " ")[[1]], collapse = "%20"), ",date_dim$year>=", 
+            yearRange[1], ",date_dim$year<=", yearRange[2], "&variables=", 
             paste0(Vars, collapse = ","))
         
         if (verbose) cat("\n\nURL for the species:\n\n", UrlText, "\n\n")
@@ -80,11 +79,11 @@ dataWareHouseTrawlBio <- function (Species = "Sebastes pinniger", YearRange = c(
             if(verbose) { print(SP[1:4,]); cat("\n\n") }
             " # SP.Before <<- SP  "
             
-            SP <- rename_columns(SP, newname = c("Project", "Trawl_id", "Year", "Vessel", "Pass", "Scientific_Name", "Tow", "Date", "Depth_ftm", "Weight_kg", "Length_cm", "Sex", "Age", "Latitude_dd", "Longitude_dd"))
+            SP <- rename_columns(SP, newname = c("Project", "Trawl_id", "Year", "Vessel", "Pass", "Common_Name", "Scientific_Name", "Tow", "Date", "Depth_ftm", "Weight_kg", "Length_cm", "Sex", "Age", "Latitude_dd", "Longitude_dd"))
             if(verbose) { print(SP[1:4,]); cat("\n\n") }
             "  # SP.After <<- SP  "
             
-            SP <- SP[, c("Project", "Trawl_id", "Year", "Vessel", "Pass", "Tow", "Date", "Depth_ftm", "Scientific_Name", "Weight_kg", "Length_cm", "Sex", "Age", "Latitude_dd", "Longitude_dd")]
+            SP <- SP[, c("Project", "Trawl_id", "Year", "Vessel", "Pass", "Tow", "Date", "Depth_ftm", "Common_Name", "Scientific_Name", "Weight_kg", "Length_cm", "Sex", "Age", "Latitude_dd", "Longitude_dd")]
             SP$Project <- P
             SP$Date <- chron::chron(format(as.POSIXlt(SP$Date, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"), format = "y-m-d", out.format = "YYYY-m-d")
             
@@ -92,20 +91,18 @@ dataWareHouseTrawlBio <- function (Species = "Sebastes pinniger", YearRange = c(
                cat("\n\nFirst few rows of returned data:\n\n")
                print(SP[1:4,])
                cat("\n\n")
-               if(P == "WCGBTS.Combo" & any(YearRange[1]:YearRange[2] %in% 2012))  cat("\nNote: the Noah's Ark was chartered for both passes in 2012.\n")
+               if(P == "WCGBTS.Combo" & any(yearRange[1]:yearRange[2] %in% 2012))  cat("\nNote: the Noah's Ark was chartered for both passes in 2012.\n")
                print(table(SP$Vessel, SP$Year, useNA = "ifany"))
                cat("\n\n")
             }
         }
         if (any(P %in% c('AFSC.Shelf', 'AFSC.Slope'))) {
         
-            Vars <- c("project", "trawl_id", "scientific_name", "year", "vessel", "pass", "tow", "date_dim$full_date", "depth_ftm", "length_cm", "sex", "latitude_dd", "longitude_dd")
+            Vars <- c("project", "trawl_id", "common_name", "scientific_name", "year", "vessel", "pass", "tow", "date_dim$full_date", "depth_ftm", "length_cm", "sex", "latitude_dd", "longitude_dd")
         
             UrlText <- paste0("https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.triennial_length_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",", 
-                "actual_station_design_dim$stn_invalid_for_trawl_date_whid=0,", 
-                "performance=Satisfactory,", "depth_ftm>=30,depth_ftm<=700,", 
-                "field_identified_taxonomy_dim$scientific_name=", paste(strsplit(Species, " ")[[1]], collapse = "%20"), ",date_dim$year>=", 
-                YearRange[1], ",date_dim$year<=", YearRange[2], "&variables=", 
+                "actual_station_design_dim$stn_invalid_for_trawl_date_whid=0,", "performance=Satisfactory,", "field_identified_taxonomy_dim$scientific_name=", 
+                paste(strsplit(species, " ")[[1]], collapse = "%20"), ",date_dim$year>=", yearRange[1], ",date_dim$year<=", yearRange[2], "&variables=", 
                 paste0(Vars, collapse = ","))
                 
              # if (verbose) cat("\n\nURL for the species:\n\n", UrlText, "for AFSC.Shelf lengths\n\n")   
@@ -118,10 +115,10 @@ dataWareHouseTrawlBio <- function (Species = "Sebastes pinniger", YearRange = c(
              } else {
                 if(verbose) { print(LEN[1:4,]); cat("\n\n") }
                              
-                LEN <- rename_columns(LEN, newname = c("Project", "Trawl_id", "Year", "Vessel", "Pass", "Scientific_Name", "Tow", "Date", "Depth_ftm", "Length_cm", "Sex", "Latitude_dd", "Longitude_dd"))
+                LEN <- rename_columns(LEN, newname = c("Project", "Trawl_id", "Year", "Vessel", "Pass", "Common_Name", "Scientific_Name", "Tow", "Date", "Depth_ftm", "Length_cm", "Sex", "Latitude_dd", "Longitude_dd"))
                 if(verbose) { print(LEN[1:4,]); cat("\n\n") }
                                 
-                LEN <- LEN[, c("Project", "Trawl_id", "Year", "Vessel", "Pass", "Tow", "Date", "Depth_ftm", "Scientific_Name", "Length_cm", "Sex", "Latitude_dd", "Longitude_dd")]
+                LEN <- LEN[, c("Project", "Trawl_id", "Year", "Vessel", "Pass", "Tow", "Date", "Depth_ftm", "Common_Name", "Scientific_Name", "Length_cm", "Sex", "Latitude_dd", "Longitude_dd")]
                 LEN$Project <- P
                 LEN$Date <- chron::chron(format(as.POSIXlt(LEN$Date, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"), format = "y-m-d", out.format = "YYYY-m-d")
                 
@@ -129,7 +126,7 @@ dataWareHouseTrawlBio <- function (Species = "Sebastes pinniger", YearRange = c(
                    cat("\n\nFirst few rows of returned length data:\n\n")
                    print(LEN[1:4,])
                    cat("\n\n")
-                   if(P == "WCGBTS.Combo" & any(YearRange[1]:YearRange[2] %in% 2012))  cat("\nNote: the Noah's Ark was chartered for both passes in 2012.\n")
+                   if(P == "WCGBTS.Combo" & any(yearRange[1]:yearRange[2] %in% 2012))  cat("\nNote: the Noah's Ark was chartered for both passes in 2012.\n")
                    print(table(LEN$Vessel, LEN$Year, useNA = "ifany"))
                    cat("\n\n")
                }
