@@ -1,4 +1,4 @@
-lib <- function (Package, Package.Name = NULL, attach = TRUE, pos = 2, quiet = ifelse(sys.nframe() < 2, FALSE, TRUE), 
+lib <- function (Package, Package.Name = NULL, attach = TRUE, update = FALSE, pos = 2, quiet = ifelse(sys.nframe() < 2, FALSE, TRUE), 
     force = FALSE, autoAddRepo = TRUE, ...) 
 {
     if (autoAddRepo & options()$repos[names(options()$repos) %in% 
@@ -14,8 +14,7 @@ lib <- function (Package, Package.Name = NULL, attach = TRUE, pos = 2, quiet = i
     if (grepl("/", Package)) {
         if (any(installed.packages()[, 1] %in% "devtools")) {
             update.packages("devtools", ask = FALSE)
-        }
-        else install.packages("devtools", quiet = quiet)
+        } else install.packages("devtools", quiet = quiet)
         if (!any(installed.packages()[, 1] %in% "devtools")) 
             stop(paste("CRAN devtools package is not installed; an attempt to install failed (check for internet access)"))
         if (attach) 
@@ -32,7 +31,7 @@ lib <- function (Package, Package.Name = NULL, attach = TRUE, pos = 2, quiet = i
     }
     else {
         if (any(installed.packages()[, 1] %in% Package)) {
-            update.packages(Package, ask = FALSE)
+            if(update) update.packages(Package, ask = FALSE)
         }
         else install.packages(Package, quiet = quiet, ...)
         if (!any(installed.packages()[, 1] %in% Package)) 
