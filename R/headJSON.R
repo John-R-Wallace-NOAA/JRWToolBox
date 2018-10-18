@@ -1,4 +1,4 @@
-headJSON <- function (URL, Vec = 1:5, verbose = FALSE) 
+headJSON <- function (URL, rowNums = 1:5, verbose = FALSE) 
 {
  '  # Max number of rows downloaded varies by table.  '
  '  # Strangely, the pagesize argument appears ineffective here.  '
@@ -9,7 +9,7 @@ headJSON <- function (URL, Vec = 1:5, verbose = FALSE)
     on.exit(rm(list = tempObject, pos = 1), add = TRUE)
     jsonlite::stream_in(url(URL), handler = function(df) {
         for (i in 1) {
-            assign(tempObject, df[Vec, ], pos = 1)
+            assign(tempObject, df[rowNums, ], pos = 1)
             break
         }
     }, pagesize = 1, verbose = verbose)
