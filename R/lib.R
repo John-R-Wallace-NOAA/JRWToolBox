@@ -13,12 +13,11 @@ lib <- function (Package, Package.Name = NULL, attach = TRUE, update = FALSE, po
         Package <- deparse(substitute(Package))
     if (grepl("/", Package)) {
         if (any(installed.packages()[, 1] %in% "devtools")) {
-            update.packages("devtools", ask = FALSE)
-        } else install.packages("devtools", quiet = quiet)
+            if(update) update.packages("devtools", ask = FALSE)
+        } else 
+            install.packages("devtools", quiet = quiet)
         if (!any(installed.packages()[, 1] %in% "devtools")) 
             stop(paste("CRAN devtools package is not installed; an attempt to install failed (check for internet access)"))
-        if (attach) 
-            library("devtools", pos = pos, character.only = TRUE)
         if (!(is.character(substitute(Package.Name)))) 
             Package.Name <- deparse(substitute(Package.Name))
         if (Package.Name == "NULL") 
@@ -33,7 +32,8 @@ lib <- function (Package, Package.Name = NULL, attach = TRUE, update = FALSE, po
         if (any(installed.packages()[, 1] %in% Package)) {
             if(update) update.packages(Package, ask = FALSE)
         }
-        else install.packages(Package, quiet = quiet, ...)
+        else 
+            install.packages(Package, quiet = quiet, ...)
         if (!any(installed.packages()[, 1] %in% Package)) 
             stop(paste("CRAN", Package, "package is not installed; an attempt to install failed (check for internet access)"))
         if (attach) 
