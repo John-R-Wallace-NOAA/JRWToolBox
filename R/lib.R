@@ -1,4 +1,4 @@
-lib <- function (Package, Package.Name = NULL, attach = TRUE, update = FALSE, pos = 2, quiet = ifelse(sys.nframe() < 2, FALSE, TRUE), 
+lib <- function (Package, Package.Name = NULL, attach = TRUE, updateCRAN = FALSE, pos = 2, quiet = ifelse(sys.nframe() < 2, FALSE, TRUE), 
     force = FALSE, autoAddRepo = TRUE, ...) 
 {
     if (autoAddRepo & options()$repos[names(options()$repos) %in% 
@@ -13,7 +13,7 @@ lib <- function (Package, Package.Name = NULL, attach = TRUE, update = FALSE, po
         Package <- deparse(substitute(Package))
     if (grepl("/", Package)) {
         if (any(installed.packages()[, 1] %in% "devtools")) {
-            if(update) update.packages("devtools", ask = FALSE)
+            if(updateCRAN) update.packages("devtools", ask = FALSE)
         } else 
             install.packages("devtools", quiet = quiet)
         if (!any(installed.packages()[, 1] %in% "devtools")) 
@@ -30,7 +30,7 @@ lib <- function (Package, Package.Name = NULL, attach = TRUE, update = FALSE, po
     }
     else {
         if (any(installed.packages()[, 1] %in% Package)) {
-            if(update) update.packages(Package, ask = FALSE)
+            if(updateCRAN) update.packages(Package, ask = FALSE)
         }
         else 
             install.packages(Package, quiet = quiet, ...)
