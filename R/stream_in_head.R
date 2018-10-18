@@ -1,5 +1,5 @@
 
-stream_in_N <- function(URL, N = 1) {
+stream_in_head <- function(URL, N = 5) {
 
     JRWToolBox::lib(jsonlite, attach = FALSE)
     
@@ -13,7 +13,7 @@ stream_in_N <- function(URL, N = 1) {
     
     handler = function(df){
       for ( i in 1) {
-        assign(tempObject, df[N, ], pos = 1)
+        assign(tempObject, df[1:N, ], pos = 1)
         break
       }  
     }, pagesize = 1)
