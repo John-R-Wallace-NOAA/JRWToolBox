@@ -65,7 +65,7 @@ dataWareHouseTrawlBio <- function (commonName = "canary rockfish", species = NUL
         if (length(yearRange) == 1) 
             yearRange <- c(yearRange, yearRange)
         
-        Vars <- c("project", "trawl_id", "common_name", "scientific_name", "year", "vessel", "pass", "tow", "date_dim$full_date", "depth_ftm", "weight_kg", "length_cm", "sex", "age_years", "latitude_dd", "longitude_dd")
+        Vars <- c("project", "trawl_id", "common_name", "scientific_name", "year", "vessel", "pass", "tow", "date_dim$full_date", "depth_ftm", "weight_kg", "length_cm", "width_cm", "sex", "age_years", "latitude_dd", "longitude_dd")
         " # Available, but not used: project, performance (not output, only used as a filter below)  "
         " # species and performance=Satisfactory added; went with a year range approach for the years to select  "
         UrlText <- paste0("https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.individual_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",", 
@@ -90,11 +90,11 @@ dataWareHouseTrawlBio <- function (commonName = "canary rockfish", species = NUL
             if(verbose) { print(SP[1:4,]); cat("\n\n") }
             " # SP.Before <<- SP  "
             
-            SP <- rename_columns(SP, newname = c("Project", "Trawl_id", "Year", "Vessel", "Pass", "Common_Name", "Scientific_Name", "Tow", "Date", "Depth_ftm", "Weight_kg", "Length_cm", "Sex", "Age", "Latitude_dd", "Longitude_dd"))
+            SP <- rename_columns(SP, newname = c("Project", "Trawl_id", "Year", "Vessel", "Pass", "Common_Name", "Scientific_Name", "Tow", "Date", "Depth_ftm", "Weight_kg", "Length_cm", "Width_cm", "Sex", "Age", "Latitude_dd", "Longitude_dd"))
             if(verbose) { print(SP[1:4,]); cat("\n\n") }
             "  # SP.After <<- SP  "
             
-            SP <- SP[, c("Project", "Trawl_id", "Year", "Vessel", "Pass", "Tow", "Date", "Depth_ftm", "Common_Name", "Scientific_Name", "Weight_kg", "Length_cm", "Sex", "Age", "Latitude_dd", "Longitude_dd")]
+            SP <- SP[, c("Project", "Trawl_id", "Year", "Vessel", "Pass", "Tow", "Date", "Depth_ftm", "Common_Name", "Scientific_Name", "Weight_kg", "Length_cm", "Width_cm", "Sex", "Age", "Latitude_dd", "Longitude_dd")]
             SP$Project <- P
             SP$Date <- chron::chron(format(as.POSIXlt(SP$Date, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"), format = "y-m-d", out.format = "YYYY-m-d")
             
@@ -109,7 +109,7 @@ dataWareHouseTrawlBio <- function (commonName = "canary rockfish", species = NUL
         }
         if (any(P %in% c('AFSC.Shelf', 'AFSC.Slope'))) {
         
-            Vars <- c("project", "trawl_id", "common_name", "scientific_name", "year", "vessel", "pass", "tow", "date_dim$full_date", "depth_ftm", "length_cm", "sex", "latitude_dd", "longitude_dd")
+            Vars <- c("project", "trawl_id", "common_name", "scientific_name", "year", "vessel", "pass", "tow", "date_dim$full_date", "depth_ftm", "length_cm", "width_cm", "sex", "latitude_dd", "longitude_dd")
         
             UrlText <- paste0("https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.triennial_length_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",", 
                 "actual_station_design_dim$stn_invalid_for_trawl_date_whid=0,", "performance=Satisfactory,", "field_identified_taxonomy_dim$scientific_name=", 
@@ -132,10 +132,10 @@ dataWareHouseTrawlBio <- function (commonName = "canary rockfish", species = NUL
              } else {
                 if(verbose) { print(LEN[1:4,]); cat("\n\n") }
                              
-                LEN <- rename_columns(LEN, newname = c("Project", "Trawl_id", "Year", "Vessel", "Pass", "Common_Name", "Scientific_Name", "Tow", "Date", "Depth_ftm", "Length_cm", "Sex", "Latitude_dd", "Longitude_dd"))
+                LEN <- rename_columns(LEN, newname = c("Project", "Trawl_id", "Year", "Vessel", "Pass", "Common_Name", "Scientific_Name", "Tow", "Date", "Depth_ftm", "Length_cm", "Width_cm", "Sex", "Latitude_dd", "Longitude_dd"))
                 if(verbose) { print(LEN[1:4,]); cat("\n\n") }
                                 
-                LEN <- LEN[, c("Project", "Trawl_id", "Year", "Vessel", "Pass", "Tow", "Date", "Depth_ftm", "Common_Name", "Scientific_Name", "Length_cm", "Sex", "Latitude_dd", "Longitude_dd")]
+                LEN <- LEN[, c("Project", "Trawl_id", "Year", "Vessel", "Pass", "Tow", "Date", "Depth_ftm", "Common_Name", "Scientific_Name", "Length_cm", "Width_cm", "Sex", "Latitude_dd", "Longitude_dd")]
                 LEN$Project <- P
                 LEN$Date <- chron::chron(format(as.POSIXlt(LEN$Date, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"), format = "y-m-d", out.format = "YYYY-m-d")
                 
