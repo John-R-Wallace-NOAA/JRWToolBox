@@ -1,6 +1,6 @@
-dataWareHouseTrawlBio <- function (species = "Sebastes pinniger", yearRange = c(1000, 5000), projectShort = c("Ask", "AFSC.Shelf", "AFSC.Slope", "WCGBTS.Combo", "WCGBTS.Shelf", 
+dataWareHouseTrawlBio <- function (commonName = "canary rockfish", species = NULL, yearRange = c(1000, 5000), projectShort = c("Ask", "AFSC.Shelf", "AFSC.Slope", "WCGBTS.Combo", "WCGBTS.Shelf", 
                             "WCGBTS.Slope", "WCGBTS.Hypoxia", "WCGBTS.Santa.Barb.Basin", "WCGBTS.Shelf.Rockfish", "WCGBTS.Video"), verbose = FALSE, optionDigitsAtLeast11 = TRUE,
-                            type3HaulsOnly = TRUE, removeWaterHauls = TRUE, noCanadianHauls = TRUE) 
+                            type3HaulsOnly = TRUE, removeWaterHauls = TRUE, noCanadianHauls = TRUE, headOnly = FALSE) 
 {
     if(optionDigitsAtLeast11)  {
          if(options()$digits < 11)  options(digits = 11)
@@ -28,7 +28,12 @@ dataWareHouseTrawlBio <- function (species = "Sebastes pinniger", yearRange = c(
         }
         return(DF_new)
     }
-    
+     
+    if(is.null(species)) {        
+        species <- JRWToolBox::sciName(commonName)
+        if(verbose) cat("\n\nScientific Name =", species, "\n\n"); flush.console()
+    }
+        
     projectNames <- JRWToolBox::scanIn("
                                  longProject                            shortProject
                    'Groundfish Triennial Shelf Survey'                   AFSC.Shelf
@@ -56,8 +61,7 @@ dataWareHouseTrawlBio <- function (species = "Sebastes pinniger", yearRange = c(
         cat("\n\nDownloading data from the", P, "survey\n"); flush.console()
         
         project <- projectNames$longProject[projectNames$shortProject %in% P]
-        
-        
+                
         if (length(yearRange) == 1) 
             yearRange <- c(yearRange, yearRange)
         
@@ -72,9 +76,15 @@ dataWareHouseTrawlBio <- function (species = "Sebastes pinniger", yearRange = c(
         
         if (verbose) cat("\n\nURL for the species:\n\n", UrlText, "\n\n")
         
-        SP <- try(jsonlite::fromJSON(UrlText))
-        if(!is.data.frame(SP)) {
-             warning("\nNo data returned by the Warehouse for the filters given.  Make sure the year range is correct for the project selected. (NULL is being returned.)\n\n", immediate. = TRUE)
+        noColFlag <- FALSE
+        if(headOnly) {
+            SP <- try(JRWToolBox::headJSON(UrlText))
+            if(ncol(SP) == 0) noColFlag <- TRUE
+         } else 
+            SP <- try(jsonlite::fromJSON(UrlText))
+                  
+        if(!is.data.frame(SP) | is.null(ncol(SP)) | noColFlag) {
+             warning("\n\tNo data returned by the Warehouse for the filters given.  Make sure the year range is correct for the project selected. (NULL is being returned.)\n\n", immediate. = TRUE)
              SP <- NULL
         } else {
             if(verbose) { print(SP[1:4,]); cat("\n\n") }
@@ -106,10 +116,16 @@ dataWareHouseTrawlBio <- function (species = "Sebastes pinniger", yearRange = c(
                 paste(strsplit(species, " ")[[1]], collapse = "%20"), ",date_dim$year>=", yearRange[1], ",date_dim$year<=", yearRange[2], "&variables=", 
                 paste0(Vars, collapse = ","))
                 
-             # if (verbose) cat("\n\nURL for the species:\n\n", UrlText, "for AFSC.Shelf lengths\n\n")   
-             LEN <- try(jsonlite::fromJSON(UrlText))
+             if (verbose) cat("\n\nURL for AFSC.Shelf lengths:\n\n", UrlText, "\n\n")   
+              
+             noColFlag <- FALSE
+             if(headOnly) {
+                LEN <- try(JRWToolBox::headJSON(UrlText))
+                if(ncol(LEN) == 0) noColFlag <- TRUE
+             } else 
+                LEN <- try(jsonlite::fromJSON(UrlText))
              
-             if(!is.data.frame(LEN)) {
+             if(!is.data.frame(LEN) | is.null(ncol(LEN) | noColFlag)) {
                 warning("\nNo data returned by the Warehouse for the filters given for Triennial lengths.  Make sure the year range is correct for the project selected. (NULL is being returned.)\n\n", immediate. = TRUE)
                 LEN <- NULL
                 
@@ -147,8 +163,8 @@ dataWareHouseTrawlBio <- function (species = "Sebastes pinniger", yearRange = c(
                   198006019312 198006019313 198006019314 198006019291 198006019315 198006019316 198006019317 198006019318 199206083364
                 
                 ", header = FALSE, ncol = 1, matrix = FALSE, numeric = TRUE)
-               SP <- SP[!SP$Trawl_id %in% notType3Hauls, ]
-               LEN <- LEN[!LEN$Trawl_id %in% notType3Hauls, ]
+               if(!is.null(SP))   SP <- JRWToolBox::renum(SP[!SP$Trawl_id %in% notType3Hauls, ])
+               if(!is.null(LEN)) LEN <- JRWToolBox::renum(LEN[!LEN$Trawl_id %in% notType3Hauls, ])
              }   
             
             if(removeWaterHauls) {
@@ -188,8 +204,8 @@ dataWareHouseTrawlBio <- function (species = "Sebastes pinniger", yearRange = c(
                    199506016009 199506016036 197706620041 199506037069 199506016129 199506016137 199506016143 199506016144 199506016031 199506037187
                 
                 ", header = FALSE, ncol = 1, matrix = FALSE, numeric = TRUE)
-               SP <- SP[!SP$Trawl_id %in% waterHauls, ]
-               LEN <- LEN[!LEN$Trawl_id %in% waterHauls, ]
+               if(!is.null(SP))   SP <- JRWToolBox::renum(SP[!SP$Trawl_id %in% waterHauls, ])
+               if(!is.null(LEN)) LEN <- JRWToolBox::renum(LEN[!LEN$Trawl_id %in% waterHauls, ])
            }
            
            if(noCanadianHauls) {
@@ -233,8 +249,8 @@ dataWareHouseTrawlBio <- function (species = "Sebastes pinniger", yearRange = c(
                    200106149211
                   
                   ", header = FALSE, ncol = 1, matrix = FALSE, numeric = TRUE)
-                 SP <- SP[!SP$Trawl_id %in% CanadianTows, ]
-                LEN <- LEN[!LEN$Trawl_id %in% CanadianTows, ]
+                if(!is.null(SP))   SP <- JRWToolBox::renum(SP[!SP$Trawl_id %in% CanadianTows, ])
+                if(!is.null(LEN)) LEN <- JRWToolBox::renum(LEN[!LEN$Trawl_id %in% CanadianTows, ])
           }   
        }
        SpAll <- rbind(SpAll, SP)
@@ -243,8 +259,9 @@ dataWareHouseTrawlBio <- function (species = "Sebastes pinniger", yearRange = c(
         cat("\n\nThe object returned is a list with data frames named 'Lengths' (AFSC) and 'Ages' (all projects) since at least one of projects was from the AFSC.\n\n")
         SpAll <- list(Lengths = LEN, Ages = SpAll)
     }
+    
     cat("\n")
-    invisible(SpAll)
+    SpAll
 }
 
 
