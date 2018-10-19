@@ -1,6 +1,6 @@
-dataWareHouseTrawlCatch <- function (species = "Sebastes pinniger", yearRange = c(1000, 5000), projectShort = c("Ask", "AFSC.Shelf", "AFSC.Slope", "WCGBTS.Combo", "WCGBTS.Shelf", 
+dataWareHouseTrawlCatch <- function (commonName = "canary rockfish", species = NULL, yearRange = c(1000, 5000), projectShort = c("Ask", "AFSC.Shelf", "AFSC.Slope", "WCGBTS.Combo", "WCGBTS.Shelf", 
                             "WCGBTS.Slope", "WCGBTS.Hypoxia", "WCGBTS.Santa.Barb.Basin", "WCGBTS.Shelf.Rockfish", "WCGBTS.Video"), verbose = FALSE, 
-                            optionDigitsAtLeast11 = TRUE, type3HaulsOnly = TRUE, removeWaterHauls = TRUE, noCanadianHauls = TRUE) 
+                            optionDigitsAtLeast11 = TRUE, type3HaulsOnly = TRUE, removeWaterHauls = TRUE, noCanadianHauls = TRUE, headOnly = FALSE) 
 {
     if(optionDigitsAtLeast11)  {
          if(options()$digits < 11)  options(digits = 11)
@@ -28,6 +28,11 @@ dataWareHouseTrawlCatch <- function (species = "Sebastes pinniger", yearRange = 
         return(DF_new)
     }
     
+    if(is.null(species)) {        
+        species <- JRWToolBox::sciName(commonName)
+        if(verbose) cat("\n\nScientific Name =", species, "\n\n"); flush.console()
+    }
+     
     projectNames <- JRWToolBox::scanIn("
                                  longProject                            shortProject
                    'Groundfish Triennial Shelf Survey'                   AFSC.Shelf
@@ -48,6 +53,9 @@ dataWareHouseTrawlCatch <- function (species = "Sebastes pinniger", yearRange = 
         cat("\n\nTo avoid this menu, the (quoted) project names shown above may be entered into the project argument.\n")
         cat("\nOne project name or a vector of project names may be entered.  A warning will be shown if a project has no data for the filters given.\n")
     }
+    
+    if(headOnly) cat("\n\nWith headOnly = TRUE, only tows with positive catch are shown. (Project names and other columns are included later with the zero tows.)\n\n")
+    
     OutAll <- NULL
     for (P in projectShort) {
         
@@ -69,22 +77,29 @@ dataWareHouseTrawlCatch <- function (species = "Sebastes pinniger", yearRange = 
         if (verbose) 
             cat("\n\nURL Text for the species:\n\n", UrlText, "\n\n")
         
-        SP <- try(jsonlite::fromJSON(UrlText))
-        if(!is.data.frame(SP)) {
-             warning("\nNo data returned by the Warehouse for the filters given.  Make sure the year range is correct for the project selected. (NULL is being returned.)\n\n", immediate. = TRUE)
+        if(headOnly) {
+            SP <- try(JRWToolBox::headJSON(UrlText))
+            print(SP); flush.console()
+            next
+        }    
+        else 
+            SP <- try(jsonlite::fromJSON(UrlText))
+            
+        if(!is.data.frame(SP) | is.null(ncol(SP))) {
+             warning("\n\tNo data returned by the Warehouse for the filters given.  Make sure the year range is correct for the project selected. (NULL is being returned.)\n\n", immediate. = TRUE)
              Out <- NULL
         } else {
             if (verbose) {
                 print(SP[1:4, ])
                 cat("\n\n")
             }
-            " # SP.Before <<- SP "
+            
             SP <- rename_columns(SP, newname = c("Year", "Vessel", "Tow", "Common_Name", "Scientific_Name", "Subsample_count", "Subsample_wt_kg", "Total_sp_numbers", "Total_sp_wt_kg"))
             if (verbose) {
                 print(SP[1:4, ])
                 cat("\n\n")
             }
-            " # SP.After <<- SP "
+            
             SP <- SP[, c("Year", "Vessel", "Tow", "Common_Name", "Scientific_Name", "Subsample_count", "Subsample_wt_kg", "Total_sp_numbers", "Total_sp_wt_kg")]
             
             " # Match SP to all tows to get the zeros "
@@ -98,6 +113,7 @@ dataWareHouseTrawlCatch <- function (species = "Sebastes pinniger", yearRange = 
                 cat("\n\nURL Text for all tows (needed for zero catch tows):\n\n", UrlText, "\n\n")
             
             All.Tows <- jsonlite::fromJSON(UrlText)
+            
             if (verbose) {
                 print(All.Tows[1:4, ])
                 cat("\n\n")
@@ -127,7 +143,7 @@ dataWareHouseTrawlCatch <- function (species = "Sebastes pinniger", yearRange = 
                     198006019312 198006019313 198006019314 198006019291 198006019315 198006019316 198006019317 198006019318 199206083364
                   
                   ", header = FALSE, ncol = 1, matrix = FALSE, numeric = TRUE)
-                 All.Tows <- All.Tows[!All.Tows$Trawl_id %in% notType3Hauls, ]
+                 if(!is.null(All.Tows)) All.Tows <- JRWToolBox::renum(All.Tows[!All.Tows$Trawl_id %in% notType3Hauls, ])
                  
                }   
               
@@ -169,7 +185,7 @@ dataWareHouseTrawlCatch <- function (species = "Sebastes pinniger", yearRange = 
 
                   
                   ", header = FALSE, ncol = 1, matrix = FALSE, numeric = TRUE)
-                 All.Tows <- All.Tows[!All.Tows$Trawl_id %in% waterHauls, ]
+                 if(!is.null(All.Tows)) All.Tows <- JRWToolBox::renum(All.Tows[!All.Tows$Trawl_id %in% waterHauls, ])
               }
                  
               if(noCanadianHauls) {
@@ -213,7 +229,8 @@ dataWareHouseTrawlCatch <- function (species = "Sebastes pinniger", yearRange = 
                    200106149211
              
                   ", header = FALSE, ncol = 1, matrix = FALSE, numeric = TRUE)
-                 All.Tows <- All.Tows[!All.Tows$Trawl_id %in% CanadianTows, ]
+                 if(!is.null(All.Tows)) 
+                 All.Tows <- JRWToolBox::renum(All.Tows[!All.Tows$Trawl_id %in% CanadianTows, ])
               }   
             }
               
