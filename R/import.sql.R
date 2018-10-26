@@ -18,9 +18,9 @@ import.sql <- function (SQL, VAR = "", VAL = "", File = FALSE, dsn = 'PacFIN', u
         return(invisible())
     }
     if(Windows) {
-        CON <- odbcConnect(dsn, uid = uid, pwd = pwd)
-        on.exit(odbcClose(CON))
-        sqlQuery(CON, query = SQL.Parsed, stringsAsFactors = FALSE)
+        CON <- RODBC::odbcConnect(dsn, uid = uid, pwd = pwd)
+        on.exit(RODBC::odbcClose(CON))
+        RODBC::sqlQuery(CON, query = SQL.Parsed, stringsAsFactors = FALSE)
     } else {
         connect.string <- paste(
           "(DESCRIPTION=",
