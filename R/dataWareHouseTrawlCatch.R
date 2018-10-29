@@ -70,7 +70,7 @@ dataWareHouseTrawlCatch <- function (commonName = "canary rockfish", species = N
         " # Available, but not used: cpue_numbers_per_ha_der, project, performance (as an output column)"
         " # species and performance=Satisfactory added; went with a year range approach for the years to select "
         UrlText <- paste0("https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.catch_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",", 
-            "actual_station_design_dim$station_invalid=0,", "performance=Satisfactory,", 
+            "station_invalid=0,", "performance=Satisfactory,", 
             "field_identified_taxonomy_dim$scientific_name=", paste(strsplit(species, " ")[[1]], collapse = "%20"), ",date_dim$year>=", 
             yearRange[1], ",date_dim$year<=", yearRange[2], "&variables=", paste0(Vars, collapse = ","))
         
@@ -104,9 +104,9 @@ dataWareHouseTrawlCatch <- function (commonName = "canary rockfish", species = N
             
             " # Match SP to all tows to get the zeros "
             
-            Vars <- c("project", "year", "vessel", "pass", "tow", "date_dim$datetime_utc_iso", "depth_m", "longitude_dd", "latitude_dd", "area_swept_ha_der", "trawl_id")
+            Vars <- c("project", "year", "vessel", "pass", "tow", "datetime_utc_iso", "depth_m", "longitude_dd", "latitude_dd", "area_swept_ha_der", "trawl_id")
             UrlText <- paste0("https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.operation_haul_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",", 
-                "actual_station_design_dim$station_invalid=0,", "performance=Satisfactory,", "date_dim$year>=", yearRange[1], ",date_dim$year<=", yearRange[2],
+                "station_invalid=0,", "performance=Satisfactory,", "date_dim$year>=", yearRange[1], ",date_dim$year<=", yearRange[2],
                 "&variables=", paste0(Vars, collapse = ","))
             
             if (verbose) 
