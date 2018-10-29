@@ -65,11 +65,11 @@ dataWareHouseTrawlBio <- function (commonName = "canary rockfish", species = NUL
         if (length(yearRange) == 1) 
             yearRange <- c(yearRange, yearRange)
         
-        Vars <- c("project", "trawl_id", "common_name", "scientific_name", "year", "vessel", "pass", "tow", "date_dim$full_date", "depth_ftm", "weight_kg", "length_cm", "width_cm", "sex", "age_years", "latitude_dd", "longitude_dd")
+        Vars <- c("project", "trawl_id", "common_name", "scientific_name", "year", "vessel", "pass", "tow", "datetime_utc_iso", "depth_ftm", "weight_kg", "length_cm", "width_cm", "sex", "age_years", "latitude_dd", "longitude_dd")
         " # Available, but not used: project, performance (not output, only used as a filter below)  "
         " # species and performance=Satisfactory added; went with a year range approach for the years to select  "
         UrlText <- paste0("https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.individual_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",", 
-            "actual_station_design_dim$stn_invalid_for_trawl_date_whid=0,", "performance=Satisfactory,",
+            "station_invalid=0,", "performance=Satisfactory,",
             "field_identified_taxonomy_dim$scientific_name=", paste(strsplit(species, " ")[[1]], collapse = "%20"), ",date_dim$year>=", 
             yearRange[1], ",date_dim$year<=", yearRange[2], "&variables=", 
             paste0(Vars, collapse = ","))
@@ -109,10 +109,10 @@ dataWareHouseTrawlBio <- function (commonName = "canary rockfish", species = NUL
         }
         if (any(P %in% c('AFSC.Shelf', 'AFSC.Slope'))) {
         
-            Vars <- c("project", "trawl_id", "common_name", "scientific_name", "year", "vessel", "pass", "tow", "date_dim$full_date", "depth_ftm", "length_cm", "width_cm", "sex", "latitude_dd", "longitude_dd")
+            Vars <- c("project", "trawl_id", "common_name", "scientific_name", "year", "vessel", "pass", "tow", "datetime_utc_iso", "depth_ftm", "length_cm", "width_cm", "sex", "latitude_dd", "longitude_dd")
         
             UrlText <- paste0("https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.triennial_length_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",", 
-                "actual_station_design_dim$stn_invalid_for_trawl_date_whid=0,", "performance=Satisfactory,", "field_identified_taxonomy_dim$scientific_name=", 
+                "station_invalid=0,", "performance=Satisfactory,", "field_identified_taxonomy_dim$scientific_name=", 
                 paste(strsplit(species, " ")[[1]], collapse = "%20"), ",date_dim$year>=", yearRange[1], ",date_dim$year<=", yearRange[2], "&variables=", 
                 paste0(Vars, collapse = ","))
                 
