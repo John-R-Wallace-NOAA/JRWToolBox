@@ -84,7 +84,7 @@ dataWareHouseTrawlBio <- function (commonName = "canary rockfish", species = NUL
             SP <- try(jsonlite::fromJSON(UrlText))
                   
         if(!is.data.frame(SP) | is.null(ncol(SP)) | noColFlag) {
-             warning("\n\tNo data returned by the Warehouse for the filters given.  Make sure the year range is correct for the project selected. (NULL is being returned.)\n\n", immediate. = TRUE)
+             warning("\n\tNo age data returned by the Warehouse for the filters given.  Make sure the year range is correct for the project selected. (NULL is being returned.)\n\n", immediate. = TRUE)
              SP <- NULL
         } else {
             if(verbose) { print(SP[1:4,]); cat("\n\n") }
@@ -126,7 +126,7 @@ dataWareHouseTrawlBio <- function (commonName = "canary rockfish", species = NUL
                 LEN <- try(jsonlite::fromJSON(UrlText))
              
              if(!is.data.frame(LEN) | is.null(ncol(LEN) | noColFlag)) {
-                warning("\nNo data returned by the Warehouse for the filters given for Triennial lengths.  Make sure the year range is correct for the project selected. (NULL is being returned.)\n\n", immediate. = TRUE)
+                warning("\nNo length data returned by the Warehouse for the filters given for Triennial lengths.  Make sure the year range is correct for the project selected. (NULL is being returned.)\n\n", immediate. = TRUE)
                 LEN <- NULL
                 
              } else {
