@@ -7,11 +7,9 @@ change <- function (x, verbose = TRUE)
     }
     if(verbose) {
        if (is.data.frame(x)) 
-           cat("\nA data frame of size (", nrow(x), ", ", ncol(x), 
-               ") has been attached in position 2.\n\n", sep = "")
+           cat("\nA data frame of size (", nrow(x), ", ", ncol(x), ") has been attached in position 2.\n\n", sep = "")
        else {
-           cat("\nAn object with the following structure has been attached in position 2:\n\n", 
-               sep = "")
+           cat("\nAn object with the following structure has been attached in position 2:\n\n", sep = "")
            str(x)
            cat("\n")
        }
