@@ -1,18 +1,6 @@
 R-ToolBox
 ============================
-Current Issue
 
-My PC computer was having this reported problem:
-          install_github does not skip package installation with same SHA in case "ref" is defined 
-          
-Found here:          
-          https://github.com/r-lib/devtools/issues/1624
-          
-This fix appears to work on my machine:
- 
-         devtools::install_github("dracodoc/devtools", ref = "sha-checking")
- 
-============================
 
 Prologue
 
