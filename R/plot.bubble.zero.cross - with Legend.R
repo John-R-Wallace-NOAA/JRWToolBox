@@ -1,5 +1,5 @@
 plot.bubble.zero.cross <- function (xyzOrg, group = rep("A", nrow(xyz)), maxsize = scale.size * diff(range(xyzOrg[, 2])), scale.size = 0.07, largestSqrtZ = max(xyzSqrt[, 
-    3], na.rm = T), center.points = FALSE, center.cex = 0.5, add = F, xlab = dimnames(xyz)[[2]][1], ylab = dimnames(xyz)[[2]][2], main = NULL, range.bump = F, cross.cex = 1, adj = NULL, 
+    3], na.rm = T), center.points = FALSE, center.cex = 0.5, xDelta = 0, add = F, xlab = dimnames(xyz)[[2]][1], ylab = dimnames(xyz)[[2]][2], main = NULL, range.bump = F, cross.cex = 1, adj = NULL, 
     fill.col = c("green", "red", "blue", "cyan", "black"), fill.col.alpha = 0.2,  border.col = "black", border.col.alpha = fill.col.alpha, 
     cross.col = {
         if (is.null(fill.col)) {
@@ -9,7 +9,7 @@ plot.bubble.zero.cross <- function (xyzOrg, group = rep("A", nrow(xyz)), maxsize
             fill.col
         }
     }, cross.col.alpha = ifelse(fill.col.alpha + 0.65 > 1, 1, fill.col.alpha + 0.5), border.lwd = 1.25, PCH = FALSE, legend = TRUE, 
-    legLoc = c(0.1, 0.25), legCol = "grey4", legAlpha = 0.5, legUnits = "Metric Tons", legNsmall = 1, Extra.Group.Size = rep(1, N), ...) 
+    legLoc = c(0.1, 0.25), legCol = "grey4", legAlpha = 0.5, legUnits = "Metric Tons", legNsmall = 1, Extra.Group.Size = rep(1, N), verbose = FALSE, ...) 
 {
     " # Need to define below in case toolbox is not attached. "
     '%>>%' <- function (x, y) {
@@ -57,25 +57,38 @@ plot.bubble.zero.cross <- function (xyzOrg, group = rep("A", nrow(xyz)), maxsize
         else plot(xyz[, 1], xyz[, 2], type = "n", xlab = xlab, 
             ylab = ylab, main = main)
     }
+    
+    if(length(xDelta) == 1) {
+      if(xDelta == 0)
+         xDelta <- rep(0, N)
+      else 
+         xDelta <- seq(0, xDelta * (N - 1), by = xDelta)
+    }
+    
     for (j in 1:N) {
         XYZ <- xyz[group %in% Groups[j], ]
+        if(verbose) cat("\n\nGroup =", Groups[j], "\n")
+        XYZ[,1] <- XYZ[,1] + xDelta[j]
         if(PCH){
             # Alpha level < 1 made the PNG output very slow????
             # points(XYZ[XYZ[, 3] %in% 0, 1:2], pch = 3, col = cross.col[j %r1% length(cross.col)], cex = cross.cex, lwd = 1)
             # catf("\n", cross.col, "\n")
-            points(XYZ[XYZ[, 3] %in% 0, 1:2], pch = 3, col = cross.col, cex = cross.cex, lwd = 1)
+            if(cross.cex > 0)
+               points(XYZ[XYZ[, 3] %in% 0, 1:2], pch = 3, col = cross.col, cex = cross.cex, lwd = 1)
             TF <- XYZ[, 3] %>>% 0
             if(any(TF)) 
-                  points(XYZ[TF, 1:2], col = fill.col[j %r1% length(fill.col)], pch = 16, cex = XYZ[TF, 3])
+               points(XYZ[TF, 1:2], col = fill.col[j %r1% length(fill.col)], pch = 16, cex = XYZ[TF, 3])
             # cat("\n", c(nrow(XYZ[XYZ[, 3] %in% 0, 1:2]), nrow(XYZ[TF, 1:2]), min(XYZ[TF, 3]), max(XYZ[TF, 3])), "\n")
         } else {
             for (i in 1:nrow(XYZ)) {
-               if (XYZ[i, 3] %in% 0) 
+               if(verbose) JRWToolBox::bar(i, nrow(XYZ)) 
+               if (XYZ[i, 3] %in% 0 & cross.cex > 0) 
                    points(XYZ[i, 1], XYZ[i, 2], pch = 3, cex = cross.cex, col = cross.col[j %r1% length(cross.col)], lwd = 1)
-               else {
+               
+               if (XYZ[i, 3] %>>% 0)
                     JRWToolBox::circle.f(XYZ[i, 1], XYZ[i, 2], XYZ[i, 3] * Extra.Group.Size[j], adj = adj, fill.col = fill.col[j %r1% length(fill.col)], 
                         lwd = border.lwd[j %r1% length(border.lwd)], border.col = border.col[j %r1% length(border.col)], ...)
-               }         
+                       
                if(center.points)    
                     points(XYZ[!XYZ[, 3] %in% 0, 1], XYZ[!XYZ[, 3] %in% 0, 2], pch=16, cex = center.cex)   
             }
