@@ -1,7 +1,7 @@
 
-YearlyResultsFigures <- function(eastLongitude = -160.5, longitudeDelta = 2.6, Index = NULL, SP.Results.Dpth. = NULL, MapDetails_List. = MapDetails_List, Report. = Report, Opt. = Opt, spShortName. = NULL, 
-                                 DateFile. = DateFile, Year_Set. = Year_Set, Years2Include. = Years2Include, Ages. = NULL, LenMin. = NULL, LenMax. = NULL, strata.limits. = strata.limits, HomeDir = ".",
-                                 changeUnitsUnder1Kg = TRUE) {
+YearlyResultsFigures <- function(spShortName. = NULL, HomeDir = ".", eastLongitude = -160.5, longitudeDelta = 2.6, Index = NULL, SP.Results.Dpth. = NULL, MapDetails_List. = MapDetails_List, Report. = Report, Opt. = Opt, 
+                                 DateFile. = DateFile, Year_Set. = Year_Set, Years2Include. = Years2Include, strata.limits. = strata.limits, Ages. = NULL, LenMin. = NULL, LenMax. = NULL, 
+                                 yearDelta = 0.5, changeUnitsUnder1Kg = TRUE) {
   
     if (!any(installed.packages()[, 1] %in% "devtools")) 
         install.packages("devtools")
@@ -19,19 +19,25 @@ YearlyResultsFigures <- function(eastLongitude = -160.5, longitudeDelta = 2.6, I
              rect(0,y,10,y+1/scale, col=lut[i], border=NA)
           }
     }
-
-'  '
-          
- '  #  ------------- Create Yearly_Dens.png where the density is within year not over all years -------------  '
-                        
- '  # ******* If MapDetails_List is missing - it has to recreated here **********  '
- '  # MapDetails_List = SpatialDeltaGLMM::MapDetails_Fn( Region = Region, NN_Extrap = Spatial_List$PolygonList$NN_Extrap, Extrapolation_List = Extrapolation_List )  '
+ 
+    setwd(HomeDir) 
+      
+    #  ------------- Create Yearly_Dens.png where the density is within year not over all years -------------  
+                       
+    # ******* If MapDetails_List is missing - it can be recreated here **********  
+    # MapDetails_List = FishStatsUtils::make_map_info( Region = Region, NN_Extrap = Spatial_List$PolygonList$NN_Extrap, Extrapolation_List = Extrapolation_List )  
           
     graphics.off()
 
+    if(is.null(SP.Results.Dpth.) & exists('SP.Results.Dpth')) { 
+        SP.Results.Dpth. <- SP.Results.Dpth
+        cat("\n\nUsing the 'SP.Results.Dpth' found, delete or rename the file and rerun to have it recalculated. 'SP.Results.Dpth' is invisibly returned by this function.\n")
+        cat("\nRecalculation of 'SP.Results.Dpth' will also result in the 'Yearly_Dens.png' figure being recreated.\n\n")
+    }    
+    
     if(is.null(SP.Results.Dpth.)) {
 
- '     # First 2003 with add = FALSE  '
+       # First 2003 with add = FALSE
        SP.Results.Dpth. <- JRWToolBox::PlotResultsOnMap_Fn_JRW(plot_set = 3, MappingDetails=MapDetails_List.[["MappingDetails"]], Report=Report., Sdreport=Opt.$SD, PlotDF=MapDetails_List.[["PlotDF"]], 
                      MapSizeRatio=MapDetails_List.[["MapSizeRatio"]], Xlim=MapDetails_List.[["Xlim"]], Ylim=MapDetails_List.[["Ylim"]], FileName=paste0(DateFile.,"Yearly_"), 
                      Year_Set=Year_Set., Years2Include = Years2Include.[1], Rotate=MapDetails_List.[["Rotate"]], mar=c(0,0,2,0), oma=c(3.5,3.5,0,0), Cex=MapDetails_List.[["Cex"]], 
@@ -44,13 +50,13 @@ YearlyResultsFigures <- function(eastLongitude = -160.5, longitudeDelta = 2.6, I
             
        graphics.off()
     } 
-    setwd(HomeDir)
+    
           
- '  # ------------- VAST Species Results by Year Figure -------------   '
+    # ------------- VAST Species Results by Year Figure -------------   
                 
     JRWToolBox::catf("\n\nCreating the species results by year figure using hexagon shapes (hexbin R package)\n\n")
      
-    '   # 13 Colors   '	 
+    # 13 Colors 
     SP.Results <- SP.Results.Dpth.[,-(1:2)]
     SP.Results[,-(1:2)] <- SP.Results[,-(1:2)] - min(SP.Results[,-(1:2)])
     SP.Results[,-(1:2)] <- SP.Results[,-(1:2)] * 12/max(SP.Results[,-(1:2)]) + 1 
@@ -61,9 +67,11 @@ YearlyResultsFigures <- function(eastLongitude = -160.5, longitudeDelta = 2.6, I
     if(is.null(Index)) 
         Index <- read.csv(paste0(DateFile., "Table_for_SS3.csv"))[Years2Include., ]
 
-	if(is.null(spShortName.))  
-	    png(paste0(DateFile., "SpResults 6000 Rez.png"),  width = 6000, height = 6000, bg = 'white') else
-	    png(paste0(DateFile., "SpResults ", spShortName., " .png"),  width = 6000, height = 6000, bg = 'white')
+	if(is.null(spShortName.) & exists('spShortName'))  
+        spShortName. <- spShortName
+    if(is.null(spShortName.) & !exists('spShortName')) 
+         warning("No short species name given nor found.")
+	png(paste0(DateFile., "SpResults ", spShortName., ".png"),  width = 6000, height = 6000, bg = 'white')
 		   
     par(cex = 6)    
     
@@ -86,7 +94,7 @@ YearlyResultsFigures <- function(eastLongitude = -160.5, longitudeDelta = 2.6, I
     Index$LatPlotValues <- rev((48 - 34.2) * (Index$Estimate_metric_tons - min(Index$Estimate_metric_tons))/max(Index$Estimate_metric_tons) + 34.2)
     Index$LatSD_mt <- rev((48 - 34.2)/(max(Index$Estimate_metric_tons) - min(Index$Estimate_metric_tons)) * Index$SD_mt)
     
- '  # It appears that calls to text() need to be before things get changed by using subplot() below. '	
+    # It appears that calls to text() need to be before things get changed by using subplot() below.
  
     GRAMS <- max(exp(SP.Results.Dpth.[,-(1:4)])) < 1 &  changeUnitsUnder1Kg   # Auto change to grams under 1 kg
     if(GRAMS)
@@ -104,8 +112,7 @@ YearlyResultsFigures <- function(eastLongitude = -160.5, longitudeDelta = 2.6, I
            
     if(LatMin. <= 32.25)    
            ageLat <- 32  
-    
-    
+      
     if(!is.null(Ages.)) {
        if(length(Ages.) == 1) 
           text(-161.7, ageLat, paste('Age:', Ages.), cex = 0.75, adj = 0)    
@@ -116,8 +123,6 @@ YearlyResultsFigures <- function(eastLongitude = -160.5, longitudeDelta = 2.6, I
     if(!is.null(LenMin.) & !is.null(LenMax.))        
           text(-161.7, ageLat - 1, paste('Length range (cm):', LenMin., "-", LenMax.), cex = 0.75, adj = 0)
        
-    yearDelta <- 0.5
-
     if(LatMin. >= 33.8) {
         text(-120, 33.29, "All", cex = 0.80)
         text(-120, 33.29 - yearDelta, "Years", cex = 0.80)
@@ -149,7 +154,6 @@ YearlyResultsFigures <- function(eastLongitude = -160.5, longitudeDelta = 2.6, I
     else 
         TeachingDemos::subplot( { par(cex = 5); color.bar(Col(100), JRWToolBox::r(min(exp(SP.Results.Dpth.[,-(1:4)])), 3), JRWToolBox::r(max(exp(SP.Results.Dpth.[,-(1:4)])), 3), nticks = 6) },
             x=grconvertX(c(0.83, 0.87), from='npc'), y=grconvertY(c(0.5, 0.75), from='npc'), type='fig', pars=list( mar=c(0,0,1,0) + 0.1) )    
-             
         
     dev.off()
   
