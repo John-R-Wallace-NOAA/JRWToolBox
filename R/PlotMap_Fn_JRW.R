@@ -188,7 +188,7 @@ PlotMap_Fn_JRW <- function (MappingDetails, Mat, PlotDF, MapSizeRatio = c(`Width
         box()
     }
     if (Legend$use) {
-        smallPlot(SpatialDeltaGLMM:::Heatmap_Legend(colvec = Col(50), 
+        smallPlot(Heatmap_Legend(colvec = Col(50), 
             heatrange = list(range(Mat[Which, ], na.rm = TRUE), 
                 zlim)[[ifelse(is.null(zlim), 1, 2)]], dopar = FALSE), 
             x = Legend$x, y = Legend$y, mar = c(0, 0, 0, 0), 
@@ -219,7 +219,7 @@ PlotMap_Fn_JRW <- function (MappingDetails, Mat, PlotDF, MapSizeRatio = c(`Width
                 res = Res, units = "in")
         }
         if (Format %in% c("png", "jpg", "tif", "tiff")) {
-            SpatialDeltaGLMM:::Heatmap_Legend(colvec = Col(n = 50), 
+            Heatmap_Legend(colvec = Col(n = 50), 
                 heatrange = list(range(Mat, na.rm = TRUE), zlim)[[ifelse(is.null(zlim), 
                   1, 2)]], textmargin = textmargin)
             # dev.off()
