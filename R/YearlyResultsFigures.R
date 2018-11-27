@@ -141,7 +141,7 @@ YearlyResultsFigures <- function(spShortName. = NULL, HomeDir = ".", eastLongitu
         col = 'red', lwd = 7, cex =1, xaxt = "n", bty = 'n');  axis(3, Year_Set., lwd = 5); axis(side = 2, lwd = 5)}, 
         x=grconvertX(c(0.08, 0.87), from='npc'), y=grconvertY(c(0.02, 0.28), from='npc'), type='fig', pars=list( mar=c(1.5,4,0,0) + 0.1) )
     
-    # } 
+    } 
 
     if(LatMin. > 32.25 & LatMin. < 33.8) {
         text(-118.0, 32.053, "All", cex = 0.85)
