@@ -1,3 +1,22 @@
+#' @title
+#' Plot maps with areal results
+#'
+#' @description
+#' \code{PlotMap_Fn} is a hidden function to plot a map and fill in regions with colors to represent intensity in an areal-interpretion of model results
+#'
+#' @inheritParams plot_maps
+#' @param plot_legend_fig Boolean, whether to plot a separate figure for the heatmap legend or not
+#' @param land_color color for filling in land (use \code{land_color=rgb(0,0,0,alpha=0)} for transparent land)
+#' @param ... arguments passed to \code{par}
+#'
+#' @details
+#' This function was necessary to build because \code{mapproj::mapproject} as used in \code{maps::map} has difficulties with both rotations (for most projections) and
+#' truncating the cocuntry boundaries within the plotting region (which \code{mapproj::mapproject} appears to do prior to projection,
+#' so that the post-projection is often missing boundaries that are within the plotting rectangle).  I use rectangular projections by default, but Lamberts or Albers conformal
+#' projections would also be useful for many cases.
+#' @return A data frame with location information and predicted values, for the years given, for each grid point in the underlying extrapolation grid
+
+#' @export
 PlotMap_Fn_JRW <- function (MappingDetails, Mat, PlotDF, MapSizeRatio = c(`Width(in)` = 4, 
     `Height(in)` = 4), Xlim, Ylim, FileName = paste0(getwd(), 
     "/"), Year_Set, Rescale = FALSE, Rotate = 0, Format = "png", 
@@ -7,85 +26,6 @@ PlotMap_Fn_JRW <- function (MappingDetails, Mat, PlotDF, MapSizeRatio = c(`Width
         30)), mfrow = c(1, 1), plot_legend_fig = FALSE, land_color = "grey", 
     ignore.na = FALSE, ...) 
 {
-
-  smallPlot <- function (expr, x = c(5, 70), y = c(50, 100), x1, y1, x2, y2, 
-      mar = c(12, 14, 3, 3), mgp = c(1.8, 0.8, 0), bg = par("bg"), 
-      border = par("fg"), las = 1, resetfocus = TRUE, ...) 
-  {
-      if (missing(x1)) 
-          x1 <- min(x, na.rm = TRUE)
-      if (missing(x2)) 
-          x2 <- max(x, na.rm = TRUE)
-      if (missing(y1)) 
-          y1 <- max(y, na.rm = TRUE)
-      if (missing(y2)) 
-          y2 <- min(y, na.rm = TRUE)
-      if (x1 < 0) {
-          x1 <- 0
-          warning("x (", x1, ") set to 0.")
-      }
-      if (y2 < 0) {
-          y2 <- 0
-          warning("y (", y2, ") set to 0.")
-      }
-      if (x2 > 100) {
-          x2 <- 100
-          warning("x (", x2, ") set to 100.")
-      }
-      if (y1 > 100) {
-          y1 <- 100
-          warning("y (", y1, ") set to 100.")
-      }
-      if (diff(range(x, na.rm = TRUE)) < 1 | diff(range(y, na.rm = TRUE)) < 
-          1) {
-          stop("x or y was probably given as coodinates between 0 and 1. They must be between 0 and 100.")
-      }
-      op <- par(no.readonly = TRUE)
-      par(plt = c(x1, x2, y2, y1)/100, new = TRUE, mgp = mgp)
-      plot.new()
-      u <- par("usr")
-      rect(u[1], u[3], u[2], u[4], col = bg, border = border)
-      par(plt = c(x1 + mar[2], x2 - mar[4], y2 + mar[1], y1 - mar[3])/100, 
-          new = TRUE, las = las, ...)
-      expr
-      sp <- par(no.readonly = TRUE)
-      if (resetfocus) {
-          if (par("mfrow")[1] == 1 & par("mfrow")[2] == 1) {
-              par(op)
-          }
-          else {
-              par(plt = op$plt, new = op$new, mgp = op$mgp, las = op$las)
-          }
-      }
-      return(invisible(sp))
-  }
-  
-  Heatmap_Legend <- function (colvec, heatrange, textmargin = NULL, labeltransform = "uniform", 
-    dopar = TRUE, side = 4) 
-{
-    if (dopar == TRUE) 
-        par(xaxs = "i", yaxs = "i", mar = c(1, 0, 1, 2 + ifelse(is.null(textmargin), 
-            0, 1.5)), mgp = c(1.5, 0.25, 0), tck = -0.02)
-    N = length(colvec)
-    Y = seq(heatrange[1], heatrange[2], length = N + 1)
-    plot(1, type = "n", xlim = c(0, 1), ylim = heatrange, xlab = "", 
-        ylab = "", main = "", xaxt = "n", yaxt = "n", cex.main = 1.5, 
-        xaxs = "i", yaxs = "i")
-    for (i in 1:N) polygon(x = c(0, 1, 1, 0), y = Y[c(i, i, i + 
-        1, i + 1)], col = colvec[i], border = NA)
-    if (labeltransform == "uniform") 
-        Labels = pretty(heatrange)
-    if (labeltransform == "inv_log10") 
-        Labels = 10^pretty(heatrange)
-    axis(side = 4, at = pretty(heatrange), labels = Labels)
-    if (!is.null(textmargin)) 
-        mtext(side = side, text = textmargin, line = 2, cex = 1.5, 
-            las = 0)
-}
-
-
-# ------------------------------------------------------------------
-
     require(maps)
     require(mapdata)
     # on.exit(detach("package:mapdata"))
@@ -156,7 +96,7 @@ PlotMap_Fn_JRW <- function (MappingDetails, Mat, PlotDF, MapSizeRatio = c(`Width
                 "Y")])
             tmpUTM <- data.frame(tmpUTM)
             sp::coordinates(tmpUTM) = c("X", "Y")
-            tmpUTM_rotated <<- maptools::elide(tmpUTM, rotate = Rotate)
+            tmpUTM_rotated <- maptools::elide(tmpUTM, rotate = Rotate)
             plot(1, type = "n", xlim = range(tmpUTM_rotated@coords[-c(1:nrow(Tmp1)), 
                 "x"]), ylim = range(tmpUTM_rotated@coords[-c(1:nrow(Tmp1)), 
                 "y"]), xaxt = "n", yaxt = "n")
@@ -188,7 +128,7 @@ PlotMap_Fn_JRW <- function (MappingDetails, Mat, PlotDF, MapSizeRatio = c(`Width
         box()
     }
     if (Legend$use) {
-        smallPlot(Heatmap_Legend(colvec = Col(50), 
+        FishStatsUtils:::smallPlot(FishStatsUtils:::Heatmap_Legend(colvec = Col(50), 
             heatrange = list(range(Mat[Which, ], na.rm = TRUE), 
                 zlim)[[ifelse(is.null(zlim), 1, 2)]], dopar = FALSE), 
             x = Legend$x, y = Legend$y, mar = c(0, 0, 0, 0), 
@@ -219,7 +159,7 @@ PlotMap_Fn_JRW <- function (MappingDetails, Mat, PlotDF, MapSizeRatio = c(`Width
                 res = Res, units = "in")
         }
         if (Format %in% c("png", "jpg", "tif", "tiff")) {
-            Heatmap_Legend(colvec = Col(n = 50), 
+            FishStatsUtils:::Heatmap_Legend(colvec = Col(n = 50), 
                 heatrange = list(range(Mat, na.rm = TRUE), zlim)[[ifelse(is.null(zlim), 
                   1, 2)]], textmargin = textmargin)
             # dev.off()
