@@ -26,14 +26,15 @@ lib <- function (Package, Package.Name = NULL, attach = TRUE, updateCRAN = FALSE
             Package.Name <- get.subs(Package, "/")[[length(get.subs(Package, "/"))]]
         if (any(installed.packages()[, 1] %in% Package.Name))  
              SHA.OLD <- packageDescription(Package.Name)$RemoteSha         
-        unloadNamespace(Package.Name)     
         remotes::install_github(Package, quiet = quiet, force = force)
         if (!any(installed.packages()[, 1] %in% Package.Name)) 
             stop(paste0("R '", Package.Name, "' package from Github is not installed. Note that the R package name may not be the same \n            as the GitHub directory name, if so, use the Package.Name argument. Find the R package name using quiet = FALSE."))
-        if(packageDescription(Package.Name)$RemoteSha == SHA.OLD %in% !force)
+        if (packageDescription(Package.Name)$RemoteSha == SHA.OLD %in% !force)
             stop(paste0("R '", Package.Name, "' package's SHA number did not change"))        
-        if (attach) 
+        if (attach) {
+            unloadNamespace(Package.Name)   
             library(Package.Name, pos = pos, character.only = TRUE)
+        }    
     }
     else {
         if (any(installed.packages()[, 1] %in% Package)) {
