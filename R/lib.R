@@ -12,12 +12,12 @@ lib <- function (Package, Package.Name = NULL, attach = TRUE, updateCRAN = FALSE
     if (!(is.character(substitute(Package)))) 
         Package <- deparse(substitute(Package))
     if (grepl("/", Package)) {
-        if (any(installed.packages()[, 1] %in% "devtools")) {
-            if(updateCRAN) update.packages("devtools", ask = FALSE)
+        if (any(installed.packages()[, 1] %in% "remotes")) {
+            if(updateCRAN) update.packages("remotes", ask = FALSE)
         } else 
-            install.packages("devtools", quiet = quiet)
-        if (!any(installed.packages()[, 1] %in% "devtools")) 
-            stop(paste("CRAN devtools package is not installed; an attempt to install failed (check for internet access)"))
+            install.packages("remotes", quiet = quiet)
+        if (!any(installed.packages()[, 1] %in% "remotes")) 
+            stop(paste("CRAN remotes package is not installed; an attempt to install failed (check for internet access)"))
         if (!(is.character(substitute(Package.Name)))) 
             Package.Name <- deparse(substitute(Package.Name))
         if (Package.Name == "NULL") 
