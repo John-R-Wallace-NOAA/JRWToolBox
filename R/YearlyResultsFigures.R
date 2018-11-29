@@ -65,9 +65,12 @@ YearlyResultsFigures <- function(spShortName. = NULL, HomeDir = ".", eastLongitu
     SP.Results$Rescaled.Sum <- SP.Results$Rescaled.Sum * 12/max(SP.Results$Rescaled.Sum) + 1
     
     # Index <- read.csv(paste0(DateFile., "Table_for_SS3.csv"))[Years2Include., ]
-    if(is.null(Index.) & exists('Index'))
-        Index. <- Index$Table[Years2Include., ]
-
+    if(is.null(Index.) & exists('Index')) {
+        if(is.data.frame(Index))
+            Index. <- Index
+        else
+           Index. <- Index$Table[Years2Include., ]
+    }
 	if(is.null(spShortName.) & exists('spShortName'))  
         spShortName. <- spShortName
     if(is.null(spShortName.) & !exists('spShortName')) 
@@ -124,7 +127,11 @@ YearlyResultsFigures <- function(spShortName. = NULL, HomeDir = ".", eastLongitu
            
     if(LatMin. <= 32.25)    
            ageLat <- 32  
-      
+     
+    if(is.null(Ages.) & exists('Ages')) {
+          Ages. <- Ages
+          cat("\n\nUsing the 'Ages' found. Delete or rename the file to not use it.\n")
+    }     
     if(!is.null(Ages.)) {
        if(length(Ages.) == 1) 
           text(-161.7, ageLat, paste('Age:', Ages.), cex = 0.75, adj = 0)    
@@ -132,6 +139,14 @@ YearlyResultsFigures <- function(spShortName. = NULL, HomeDir = ".", eastLongitu
           text(-161.7, ageLat, paste('Ages:', min(Ages.), "-", max(Ages.)), cex = 0.75, adj = 0) 
     }  
     
+    if(is.null(LenMin.) & exists('LenMin')) {
+          LenMin. <- LenMin
+          cat("\n\nUsing the 'LenMin' found. Delete or rename the file to not use it.\n")
+    }
+    if(is.null(LenMax.) & exists('LenMax')) {
+          LenMax. <- LenMax
+          cat("\n\nUsing the 'LenMax' found. Delete or rename the file to not use it.\n\n")
+    }
     if(!is.null(LenMin.) & !is.null(LenMax.))        
           text(-161.7, ageLat - 1, paste('Length range (cm):', LenMin., "-", LenMax.), cex = 0.75, adj = 0)
        
@@ -166,8 +181,8 @@ YearlyResultsFigures <- function(spShortName. = NULL, HomeDir = ".", eastLongitu
         TeachingDemos::subplot( { par(cex = 5); color.bar(Col(100), JRWToolBox::r(1000 * min(exp(SP.Results.Dpth.[,-(1:4)])), 0), JRWToolBox::r(1000 * max(exp(SP.Results.Dpth.[,-(1:4)])), 0), nticks = 6) },
             x=grconvertX(c(0.83, 0.87), from='npc'), y=grconvertY(c(0.5, 0.75), from='npc'), type='fig', pars=list( mar=c(0,0,1,0) + 0.1) )    
     else 
-        TeachingDemos::subplot( { par(cex = 5); color.bar(Col(100), JRWToolBox::r(min(exp(SP.Results.Dpth.[,-(1:4)])), 0), JRWToolBox::r(max(exp(SP.Results.Dpth.[,-(1:4)])), 0), nticks = 6) },
-            x=grconvertX(c(0.83, 0.87), from='npc'), y=grconvertY(c(0.5, 0.75), from='npc'), type='fig', pars=list( mar=c(0,0,1,0) + 0.1) )    
+        TeachingDemos::subplot( { par(cex = 5); color.bar(Col(100), JRWToolBox::r(min(exp(SP.Results.Dpth.[,-(1:4)])), ifelse(exists('LenMin.'), 3, 0)), JRWToolBox::r(max(exp(SP.Results.Dpth.[,-(1:4)])), 
+              ifelse(exists('LenMin.'), 3, 0)), nticks = 6) }, x=grconvertX(c(0.83, 0.87), from='npc'), y=grconvertY(c(0.5, 0.75), from='npc'), type='fig', pars=list( mar=c(0,0,1,0) + 0.1) )    
         
     dev.off()
   
