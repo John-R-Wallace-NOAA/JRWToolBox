@@ -83,7 +83,8 @@ YearlyResultsFigures <- function(spShortName. = NULL, HomeDir = ".", eastLongitu
     
     latExtend <- ifelse(N > 13, -((-125 - (N + 1) * 3.5 + 117) - (-125 - 14 * 3.5 + 117))/3, 0)
        
-    Imap::imap(longlat = list(Imap::world.h.land, Imap::world.h.borders), col= c("black", "cyan"), poly = c("grey40", NA), longrange = c(eastLongitude, -117), latrange = c(27 - latExtend, 48.2), zoom= FALSE, bg = "white")  
+    Imap::imap(longlat = list(Imap::world.h.land, Imap::world.h.borders), col= c("black", "cyan"), poly = c("grey40", NA), longrange = c(eastLongitude, -117), latrange = c(27 - latExtend, 48.2), 
+             axes = 'latOnly', zoom = FALSE, bg = "white")  
     box(lwd = 5)
     
     Col <- colorRampPalette(colors = c("blue", "dodgerblue", "cyan", "green", "orange", "red", "red3"))
