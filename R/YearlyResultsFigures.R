@@ -1,7 +1,7 @@
 
-YearlyResultsFigures <- function(spShortName. = NULL, HomeDir = ".", eastLongitude = -124 - (N + 1) * longitudeDelta, longitudeDelta = 2.6, Index. = NULL, SP.Results.Dpth. = NULL, MapDetails_List. = MapDetails_List, Report. = Report, Opt. = Opt, 
-                                 DateFile. = DateFile, Year_Set. = Year_Set, Years2Include. = Years2Include, strata.limits. = strata.limits, Ages. = NULL, LenMin. = NULL, LenMax. = NULL, 
-                                 yearDelta = 0.5, changeUnitsUnder1Kg = TRUE) {
+YearlyResultsFigures <- function(spShortName. = NULL, HomeDir = ".", eastLongitude = -124 - (N + 1) * longitudeDelta, longitudeDelta = 2.6, Index. = NULL, SP.Results.Dpth. = NULL, MapDetails_List. = MapDetails_List, 
+                                 Report. = Report, Opt. = Opt, DateFile. = DateFile, Year_Set. = Year_Set, Years2Include. = Years2Include, strata.limits. = strata.limits, Ages. = NULL, LenMin. = NULL, LenMax. = NULL, 
+                                 yearDelta = 0.5, changeUnitsUnder1Kg = TRUE, sweptAreaInHectares = FALSE) {
   
     if (!any(installed.packages()[, 1] %in% "devtools")) 
         install.packages("devtools")
@@ -63,15 +63,18 @@ YearlyResultsFigures <- function(spShortName. = NULL, HomeDir = ".", eastLongitu
     SP.Results$Rescaled.Sum <- apply(SP.Results[,-(1:2)], 1, sum)
     SP.Results$Rescaled.Sum <- SP.Results$Rescaled.Sum - min(SP.Results$Rescaled.Sum)
     SP.Results$Rescaled.Sum <- SP.Results$Rescaled.Sum * 12/max(SP.Results$Rescaled.Sum) + 1
-    
-    # Index <- read.csv(paste0(DateFile., "Table_for_SS3.csv"))[Years2Include., ]
-    if(is.null(Index.) & exists('Index')) {
-        if(is.data.frame(Index))
-            Index. <- Index
-        else
-           Index. <- Index$Table[Years2Include., ]
+   
+    if(is.null(Index.)) {
+        if(exists('Index')) {
+           if(is.data.frame(Index))
+               Index. <- Index
+           else
+              Index. <- Index$Table[Years2Include., ]
+        } else
+           Index. <- read.csv(paste0(DateFile., "Table_for_SS3.csv"))[Years2Include., ]
     }
-	if(is.null(spShortName.) & exists('spShortName'))  
+
+    if(is.null(spShortName.) & exists('spShortName'))  
         spShortName. <- spShortName
     if(is.null(spShortName.) & !exists('spShortName')) 
          warning("No short species name given nor found.")
@@ -106,7 +109,8 @@ YearlyResultsFigures <- function(spShortName. = NULL, HomeDir = ".", eastLongitu
     
     # It appears that calls to text() need to be before things get changed by using subplot() below.
  
-    GRAMS <- max(exp(SP.Results.Dpth.[,-(1:4)])) < 1 & changeUnitsUnder1Kg   # Auto change to grams under 1 kg
+    # Standard swept area is km2, but here the numbers are converted to hectares, unless the swept area was already in hectares (non-standard)
+    GRAMS <- ifelse(sweptAreaInHectares, 1, 0.01) * max(exp(SP.Results.Dpth.[,-(1:4)])) < 1 & changeUnitsUnder1Kg   # Auto change to grams under 1 kg/ha
     
     # Converting relative plotting location, 0.5 out of [0, 1] to latitude
     latAdj <- 0.5 * (48.2 - 27 + latExtend) + 27 - latExtend
@@ -149,12 +153,13 @@ YearlyResultsFigures <- function(spShortName. = NULL, HomeDir = ".", eastLongitu
     }
     if(!is.null(LenMin.) & !is.null(LenMax.))        
           text(-161.7, ageLat - 1, paste('Length range (cm):', LenMin., "-", LenMax.), cex = 0.75, adj = 0)
-       
+    
+    # If swept area is in hectares (non-standard) then a 100X adjustment is needed since VAST multiples by 4 km2 per extrapolation grid point while using hectares needs 400ha per point.    
     if(LatMin. >= 33.8) {
         text(-120, 33.29, "All", cex = 0.80)
         text(-120, 33.29 - yearDelta, "Years", cex = 0.80)
-        TeachingDemos::subplot( {par(cex = 5); JRWToolBox::plotCI.jrw3(Index.$Year, Index.$Estimate_metric_tons,  Index.$SD_mt, type = 'b', sfrac=0, xlab='Year', ylab = 'Abundance (mt)', 
-        col = 'red', lwd = 7, cex =1, xaxt = "n", bty = 'n');  axis(3, Year_Set., lwd = 5); axis(side = 2, lwd = 5)}, 
+        TeachingDemos::subplot( {par(cex = 5); JRWToolBox::plotCI.jrw3(Index.$Year, ifelse(sweptAreaInHectares, 100, 1) * Index.$Estimate_metric_tons,  ifelse(sweptAreaInHectares, 100, 1) * Index.$SD_mt, 
+        type = 'b', sfrac=0, xlab='Year', ylab = 'Abundance (mt)', col = 'red', lwd = 7, cex =1, xaxt = "n", bty = 'n');  axis(3, Year_Set., lwd = 5); axis(side = 2, lwd = 5)}, 
         x=grconvertX(c(0.08, 0.87), from='npc'), y=grconvertY(c(0.02, 0.28), from='npc'), type='fig', pars=list( mar=c(1.5,4,0,0) + 0.1) )
     
     } 
@@ -162,27 +167,31 @@ YearlyResultsFigures <- function(spShortName. = NULL, HomeDir = ".", eastLongitu
     if(LatMin. > 32.25 & LatMin. < 33.8) {
         text(-118.0, 32.053, "All", cex = 0.85)
         text(-118.0, 32.053 - yearDelta, "Years", cex = 0.85)
-        TeachingDemos::subplot( {par(cex = 5); JRWToolBox::plotCI.jrw3(Index.$Year, Index.$Estimate_metric_tons,  Index.$SD_mt, type = 'b', sfrac=0, xlab='Year', ylab = 'Abundance (mt)', 
-        col = 'red', lwd = 7, cex =1, xaxt = "n", bty = 'n');  axis(3, Year_Set., lwd = 5); axis(side = 2, lwd = 5)}, 
-        x=grconvertX(c(0.10, 0.915), from='npc'), y=grconvertY(c(0, 0.225), from='npc'), type='fig', pars=list( mar=c(1.5,4,0,0) + 0.1) )
+        TeachingDemos::subplot( {par(cex = 5); JRWToolBox::plotCI.jrw3(Index.$Year, ifelse(sweptAreaInHectares, 100, 1) * Index.$Estimate_metric_tons, ifelse(sweptAreaInHectares, 100, 1) * Index.$SD_mt, 
+          type = 'b', sfrac=0, xlab='Year', ylab = 'Abundance (mt)', col = 'red', lwd = 7, cex =1, xaxt = "n", bty = 'n');  axis(3, Year_Set., lwd = 5); axis(side = 2, lwd = 5)}, 
+          x=grconvertX(c(0.10, 0.915), from='npc'), y=grconvertY(c(0, 0.225), from='npc'), type='fig', pars=list( mar=c(1.5,4,0,0) + 0.1) )
     }
     
     # y=grconvertY(c(0, 0.190), from='npc'); x=grconvertX(c(0.10, 0.89), from='npc')
+    
     xExpand <- ifelse(N > 13, (N - 13) * 0.025/3, 0)
     if(LatMin. <= 32.25) {
         text(-118.7, 31.266, "All", cex = 0.85)
         text(-118.7, 31.266 - yearDelta, "Years", cex = 0.85)
-        TeachingDemos::subplot( {par(cex = 5); JRWToolBox::plotCI.jrw3(Index.$Year, Index.$Estimate_metric_tons,  Index.$SD_mt, type = 'b', sfrac=0, xlab='Year', ylab = 'Abundance (mt)', 
-        col = 'red', lwd = 7, cex =1, xaxt = "n", bty = 'n');  axis(3, Year_Set., lwd = 5); axis(side = 2, lwd = 5)}, 
-        x=grconvertX(c(0.10 - xExpand, 0.89 + xExpand), from='npc'), y=grconvertY(c(0, (31.03 - 27 + 0.8 * latExtend)/(48.2 - 27 + 0.8 * latExtend)), from='npc'), type='fig', pars=list( mar=c(1.5,4,0,0) + 0.1) )
+        TeachingDemos::subplot( {par(cex = 5); JRWToolBox::plotCI.jrw3(Index.$Year, ifelse(sweptAreaInHectares, 100, 1) * Index.$Estimate_metric_tons,  ifelse(sweptAreaInHectares, 100, 1) * Index.$SD_mt, 
+          type = 'b', sfrac=0, xlab='Year', ylab = 'Abundance (mt)', col = 'red', lwd = 7, cex =1, xaxt = "n", bty = 'n');  axis(3, Year_Set., lwd = 5); axis(side = 2, lwd = 5)}, 
+          x=grconvertX(c(0.10 - xExpand, 0.89 + xExpand), from='npc'), y=grconvertY(c(0, (31.03 - 27 + 0.8 * latExtend)/(48.2 - 27 + 0.8 * latExtend)), from='npc'), type='fig', pars=list( mar=c(1.5,4,0,0) + 0.1) )
     }
     
+    
+    # Standard swept area is km2, but here the numbers are converted to hectares, unless the swept area was already in hectares (non-standard)
     if(GRAMS)
-        TeachingDemos::subplot( { par(cex = 5); color.bar(Col(100), JRWToolBox::r(1000 * min(exp(SP.Results.Dpth.[,-(1:4)])), 0), JRWToolBox::r(1000 * max(exp(SP.Results.Dpth.[,-(1:4)])), 0), nticks = 6) },
-            x=grconvertX(c(0.83, 0.87), from='npc'), y=grconvertY(c(0.5, 0.75), from='npc'), type='fig', pars=list( mar=c(0,0,1,0) + 0.1) )    
+        TeachingDemos::subplot( { par(cex = 5); color.bar(Col(100), JRWToolBox::r(1000 * ifelse(sweptAreaInHectares, 1, 0.01) * min(exp(SP.Results.Dpth.[,-(1:4)])), 0), 
+            JRWToolBox::r(1000 * ifelse(sweptAreaInHectares, 1, 0.01) * max(exp(SP.Results.Dpth.[,-(1:4)])), 0), nticks = 6) }, x=grconvertX(c(0.83, 0.87), from='npc'), y=grconvertY(c(0.5, 0.75), from='npc'), type='fig', pars=list( mar=c(0,0,1,0) + 0.1) )    
     else 
-        TeachingDemos::subplot( { par(cex = 5); color.bar(Col(100), JRWToolBox::r(min(exp(SP.Results.Dpth.[,-(1:4)])), ifelse(exists('LenMin.'), 3, 0)), JRWToolBox::r(max(exp(SP.Results.Dpth.[,-(1:4)])), 
-              ifelse(exists('LenMin.'), 3, 0)), nticks = 6) }, x=grconvertX(c(0.83, 0.87), from='npc'), y=grconvertY(c(0.5, 0.75), from='npc'), type='fig', pars=list( mar=c(0,0,1,0) + 0.1) )    
+        TeachingDemos::subplot( { par(cex = 5); color.bar(Col(100), JRWToolBox::r(ifelse(sweptAreaInHectares, 1, 0.01) * min(exp(SP.Results.Dpth.[,-(1:4)])), ifelse(exists('LenMin.'), 3, 0)), 
+            JRWToolBox::r(ifelse(sweptAreaInHectares, 1, 0.01) * max(exp(SP.Results.Dpth.[,-(1:4)])), ifelse(exists('LenMin.'), 3, 0)), nticks = 6) }, x=grconvertX(c(0.83, 0.87), from='npc'), y=grconvertY(c(0.5, 0.75), from='npc'), 
+            type='fig', pars=list( mar=c(0,0,1,0) + 0.1) )    
         
     dev.off()
   
