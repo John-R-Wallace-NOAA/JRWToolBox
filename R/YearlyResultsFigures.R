@@ -1,7 +1,7 @@
 
 YearlyResultsFigures <- function(spShortName. = NULL, spLongName. = NULL, HomeDir = ".", eastLongitude = -124 - (N + 1) * longitudeDelta, longitudeDelta = 2.6, Index. = NULL, SP.Results.Dpth. = NULL, 
                             MapDetails_List. = MapDetails_List, Report. = Report, Opt. = Opt, DateFile. = DateFile, Year_Set. = Year_Set, Years2Include. = Years2Include, strata.limits. = strata.limits, 
-                            Ages. = NULL, LenMin. = NULL, LenMax. = NULL, yearDelta = 0.5, title = FALSE, changeUnitsUnder1Kg = TRUE, sweptAreaInHectares = FALSE) 
+                            Ages. = NULL, LenMin. = NULL, LenMax. = NULL, yearDelta = 0.5, title = FALSE, relativeAbundance = FALSE, changeUnitsUnder1Kg = TRUE, sweptAreaInHectares = FALSE) 
 {
     if (!any(installed.packages()[, 1] %in% "devtools")) 
         install.packages("devtools")
@@ -154,31 +154,48 @@ YearlyResultsFigures <- function(spShortName. = NULL, spLongName. = NULL, HomeDi
         if( is.null(LenMin.) | is.null(LenMax.)  )
            title(spLongName.)
         if( !is.null(LenMin.) & !is.null(LenMax.) & is.null(Ages.) ) 
-           title(paste0(spLongName., ', Length range (cm): ', LenMin., " - ", LenMax.))
+           title(paste0(spLongName., '; Length range (cm): ', LenMin., " - ", LenMax.))
         if( !is.null(LenMin.) & !is.null(LenMax.) & !is.null(Ages.) ) {
            if(length(Ages.) == 1)
-             title(paste0(spLongName.,', Age: ', Ages., ', Length range (cm): ', LenMin., " - ", LenMax.)) 
+             title( paste0(spLongName., '; Age: ', Ages., ', Length range (cm): ', LenMin., " - ", LenMax.) ) 
            else
-             title(paste0(spLongName.,', Ages: ', min(Ages.), " - ", max(Ages.), ', Length range (cm): ', LenMin., " - ", LenMax.))            
+             title( paste0(spLongName., '; Ages: ', min(Ages.), " - ", max(Ages.), ', Length range (cm): ', LenMin., " - ", LenMax.) )            
         }             
     }
+    
+    # Abundanace and CI from SD_log
+    Abundance <- ifelse(sweptAreaInHectares, 100, 1) * Index$Estimate_metric_tons
+    li <- ifelse(sweptAreaInHectares, 100, 1) * Index$Estimate_metric_tons * exp(-Index$SD_log)
+    ui <- ifelse(sweptAreaInHectares, 100, 1) * Index$Estimate_metric_tons * exp(Index$SD_log)
+        
+    if(relativeAbundance) {
+        maxUi <- max(ui)
+        Abundance <- Abundance/maxUi
+        li <- li/maxUi
+        ui <- ui/maxUi
+        sweptAreaInHectares <- FALSE
+        parsMar <- list( mar=c(1.5,5,0,0) + 0.1)
+        yLab = 'Relative\nAbundance'
+        xAdjust <- 0.02
+     } else {
+        parsMar <- list( mar=c(1.5,4,0,0) + 0.1)
+        yLab <- 'Abundance (mt)'
+        xAdjust <- 0
+     }    
     
     # If swept area is in hectares (non-standard) then a 100X adjustment is needed since VAST multiples by 4 km2 per extrapolation grid point while using hectares needs 400ha per point.    
     if(LatMin. >= 33.8) {
         text(-120, 33.29, "All", cex = 0.80)
         text(-120, 33.29 - yearDelta, "Years", cex = 0.80)
-        TeachingDemos::subplot( {par(cex = 5); JRWToolBox::plotCI.jrw3(Index.$Year, ifelse(sweptAreaInHectares, 100, 1) * Index.$Estimate_metric_tons,  ifelse(sweptAreaInHectares, 100, 1) * Index.$SD_mt, 
-        type = 'b', sfrac=0, xlab='Year', ylab = 'Abundance (mt)', col = 'red', lwd = 7, cex =1, xaxt = "n", bty = 'n');  axis(3, Year_Set., lwd = 5); axis(side = 2, lwd = 5)}, 
-        x=grconvertX(c(0.08, 0.87), from='npc'), y=grconvertY(c(0.02, 0.28), from='npc'), type='fig', pars=list( mar=c(1.5,4,0,0) + 0.1) )
-    
+        TeachingDemos::subplot( {par(cex = 5); JRWToolBox::plotCI.jrw2(Index.$Year, Abundance, li, ui, type = 'b', sfrac = 0, xlab='Year', ylab = yLab, col = 'red', lwd = 7, cex =1, xaxt = "n", bty = 'n');  
+                            axis(3, Year_Set., lwd = 5); axis(side = 2, lwd = 5)}, x=grconvertX(c(0.08 - xAdjust, 0.870), from='npc'), y=grconvertY(c(0.02, 0.28), from='npc'), type='fig', pars= parsMar )
     } 
 
     if(LatMin. > 32.25 & LatMin. < 33.8) {
         text(-118.0, 32.053, "All", cex = 0.85)
         text(-118.0, 32.053 - yearDelta, "Years", cex = 0.85)
-        TeachingDemos::subplot( {par(cex = 5); JRWToolBox::plotCI.jrw3(Index.$Year, ifelse(sweptAreaInHectares, 100, 1) * Index.$Estimate_metric_tons, ifelse(sweptAreaInHectares, 100, 1) * Index.$SD_mt, 
-          type = 'b', sfrac=0, xlab='Year', ylab = 'Abundance (mt)', col = 'red', lwd = 7, cex =1, xaxt = "n", bty = 'n');  axis(3, Year_Set., lwd = 5); axis(side = 2, lwd = 5)}, 
-          x=grconvertX(c(0.10, 0.915), from='npc'), y=grconvertY(c(0, 0.225), from='npc'), type='fig', pars=list( mar=c(1.5,4,0,0) + 0.1) )
+        TeachingDemos::subplot( {par(cex = 5); JRWToolBox::plotCI.jrw2(Index.$Year, Abundance, li, ui, type = 'b', sfrac = 0, xlab='Year', ylab = yLab, col = 'red', lwd = 7, cex =1, xaxt = "n", bty = 'n'); 
+                             axis(3, Year_Set., lwd = 5); axis(side = 2, lwd = 5)}, x=grconvertX(c(0.10 - xAdjust, 0.915), from='npc'), y=grconvertY(c(0, 0.225), from='npc'), type='fig', pars= parsMar )
     }
     
     # Old values: y=grconvertY(c(0, 0.190), from='npc'); x=grconvertX(c(0.10, 0.89), from='npc')
@@ -188,8 +205,8 @@ YearlyResultsFigures <- function(spShortName. = NULL, spLongName. = NULL, HomeDi
         text(-118.7, 31.266, "All", cex = 0.85)
         text(-118.7, 31.266 - yearDelta, "Years", cex = 0.85)
         TeachingDemos::subplot( {par(cex = 5); JRWToolBox::plotCI.jrw3(Index.$Year, ifelse(sweptAreaInHectares, 100, 1) * Index.$Estimate_metric_tons,  ifelse(sweptAreaInHectares, 100, 1) * Index.$SD_mt, 
-          type = 'b', sfrac=0, xlab='Year', ylab = 'Abundance (mt)', col = 'red', lwd = 7, cex =1, xaxt = "n", bty = 'n');  axis(3, Year_Set., lwd = 5); axis(side = 2, lwd = 5)}, 
-          x=grconvertX(c(0.10 - xExpand, 0.89 + xExpand), from='npc'), y=grconvertY(c(0, (31.03 - 27 + 0.8 * latExtend)/(48.2 - 27 + 0.8 * latExtend)), from='npc'), type='fig', pars=list( mar=c(1.5,4,0,0) + 0.1) )
+          type = 'b', sfrac=0, xlab='Year', ylab = yLab, col = 'red', lwd = 7, cex =1, xaxt = "n", bty = 'n');  axis(3, Year_Set., lwd = 5); axis(side = 2, lwd = 5)}, 
+          x=grconvertX(c(0.10 - xAdjust - xExpand, 0.89 + xExpand), from='npc'), y=grconvertY(c(0, (31.03 - 27 + 0.8 * latExtend)/(48.2 - 27 + 0.8 * latExtend)), from='npc'), type='fig', pars= parsMar )
     }
     
     
