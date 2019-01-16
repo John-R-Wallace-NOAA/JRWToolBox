@@ -1,5 +1,5 @@
 
-keyPad <- function(tolerance = 0.5) {
+keyPad <- function(as.num = TRUE, tolerance = 0.5) {
 
   index <- expand.grid(1:4, 1:4)
   padLab <- c("Finish", 0, "", "", 7:9, 4:6, 1:3)
@@ -19,8 +19,14 @@ keyPad <- function(tolerance = 0.5) {
 	cat("\r", paste(NUM, collapse = "")); flush.console()
   }	
 	
-cat("\n\n")
-as.numeric(paste(NUM, collapse = ""))
+  cat("\n\n")
+ 
+  NUM <- paste(NUM, collapse = "")
+  
+  if(as.num)
+     NUM <- as.numeric(NUM)
+   
+  NUM
 
 }
 
