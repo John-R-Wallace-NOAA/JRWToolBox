@@ -19,6 +19,7 @@ keyPad <- function(as.num = TRUE, tolerance = 0.5) {
 	cat("\r", paste(NUM, collapse = "")); flush.console()
   }	
 	
+  dev.off()	
   cat("\n\n")
  
   NUM <- paste(NUM, collapse = "")
