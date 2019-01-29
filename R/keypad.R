@@ -1,5 +1,8 @@
-keypad <- function (as.num = TRUE, tolerance = 0.5) 
+keypad <- function (msg = NULL, as.num = TRUE, tolerance = 0.5) 
 {
+    if(!is.null(msg)) {
+        cat("\n\n", msg, "\n"); flush.console()
+    }    
     index <- expand.grid(1:4, 1:4)
     padLab <- c(0, "", "", 7:9, 4:6, 1:3)
     numVec <- c(NA, 0, ".", NA, 7, 8, 9, NA, 4, 5, 6, NA, 1, 2, 3, NA)
