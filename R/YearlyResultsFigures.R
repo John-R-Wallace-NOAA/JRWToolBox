@@ -73,17 +73,20 @@ YearlyResultsFigures <- function(spShortName. = NULL, spLongName. = NULL, HomeDi
         } else
            Index. <- read.csv(paste0(DateFile., "Table_for_SS3.csv"))[Years2Include., ]
     }
-
-    
-    if(is.null(spLongName.) & exists('spLongName'))  
-        spLongName. <- spLongName
             
     if(is.null(spShortName.) & exists('spShortName'))  
         spShortName. <- spShortName
-    if(is.null(spShortName.) & !exists('spShortName')) 
+    if(is.null(spShortName.) & !exists('spShortName')) {
          warning("No short species name given nor found.")
-	png(paste0(DateFile., "SpResults ", spShortName., ".png"),  width = 6000, height = 6000, bg = 'white')
-		   
+          spShortName. <- "Species X"
+    }
+    if(is.null(spLongName.) & exists('spLongName'))  
+        spLongName. <- spLongName 
+    if(is.null(spLongName.) & !exists('spLongName'))          
+        spLongName. <- spShortName.
+        
+    png(paste0(DateFile., "SpResults ", spShortName., ".png"),  width = 6000, height = 6000, bg = 'white')
+
     par(cex = 6)   
 
     N <- length(Year_Set.)
