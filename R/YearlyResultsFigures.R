@@ -164,9 +164,9 @@ YearlyResultsFigures <- function(spShortName. = NULL, spLongName. = NULL, HomeDi
     }
     
     # Abundanace and CI from SD_log
-    Abundance <- ifelse(sweptAreaInHectares, 100, 1) * Index$Estimate_metric_tons
-    li <- ifelse(sweptAreaInHectares, 100, 1) * Index$Estimate_metric_tons * exp(-Index$SD_log)
-    ui <- ifelse(sweptAreaInHectares, 100, 1) * Index$Estimate_metric_tons * exp(Index$SD_log)
+    Abundance <- ifelse(sweptAreaInHectares, 100, 1) * Index.$Estimate_metric_tons
+    li <- ifelse(sweptAreaInHectares, 100, 1) * Index.$Estimate_metric_tons * exp(-Index.$SD_log)
+    ui <- ifelse(sweptAreaInHectares, 100, 1) * Index.$Estimate_metric_tons * exp(Index.$SD_log)
         
     if(relativeAbundance) {
         maxUi <- max(ui)
