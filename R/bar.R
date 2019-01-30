@@ -1,4 +1,4 @@
-bar <- function (i, n, size = 60, skipNum = round(n/size), char = ">", OuterIndex = 1, prefix = ifelse(.Platform$OS.type == 
+bar <- function (i, n, size = 60, skipNum = ifelse(round(n/size) < 1, 1, round(n/size)), char = ">", OuterIndex = 1, prefix = ifelse(.Platform$OS.type == 
           "windows", paste(OuterIndex, ":", memory.size()), paste(OuterIndex, ":", i))) 
 {
     if(i %% skipNum == 0) {
