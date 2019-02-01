@@ -85,7 +85,7 @@ YearlyResultsFigures <- function(spShortName. = NULL, spLongName. = NULL, HomeDi
     if(is.null(spLongName.) & !exists('spLongName'))          
         spLongName. <- spShortName.
         
-    png(paste0(DateFile., "SpResults ", spShortName., ".png"),  width = 6000, height = 6000, bg = 'white')
+    png(paste0(DateFile., "SpResults ", spShortName., ".png"),  width = 6000, height = 6000, bg = 'white', type = 'cairo')
 
     par(cex = 6)   
 
