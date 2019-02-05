@@ -92,7 +92,7 @@ YearlyResultsFigures <- function(spShortName. = NULL, spLongName. = NULL, HomeDi
     N <- length(Year_Set.)
 
     # eastLongitude <- -122 - (N + 1) * longitudeDelta
-    eastLongitude <- eastLongitude 
+    eastLongitude <- eastLongitude # Needed for imap() to find this
     
     latExtend <- ifelse(N > 13, -((-125 - (N + 1) * 3.5 + 117) - (-125 - 14 * 3.5 + 117))/3, 0)
        
