@@ -124,9 +124,9 @@ YearlyResultsFigures <- function(spShortName. = NULL, spLongName. = NULL, HomeDi
     
     # text(-118.5, 37.50, ...
     if(GRAMS)
-        text(-118.3, latAdj, 'Grams per Hectare', cex = 0.80)    
+        text(-118.1, latAdj, 'Grams per Hectare', cex = 0.80)    
     else
-        text(-118.3, latAdj, 'Kg per Hectare', cex = 0.85) 
+        text(-118.1, latAdj, 'Kg per Hectare', cex = 0.85) 
 
     LatMin. <- strata.limits.$south_border[1]
     
@@ -155,14 +155,14 @@ YearlyResultsFigures <- function(spShortName. = NULL, spLongName. = NULL, HomeDi
     
     if(title) {
         if( is.null(LenMin.) | is.null(LenMax.)  )
-           title(spLongName.)
+           title(JRWToolBox::casefold.f(spLongName.))
         if( !is.null(LenMin.) & !is.null(LenMax.) & is.null(Ages.) ) 
-           title(paste0(spLongName., '; Length range (cm): ', LenMin., " - ", LenMax.))
+           title(paste0(JRWToolBox::casefold.f(spLongName.), '; Length range (cm): ', LenMin., " - ", LenMax.))
         if( !is.null(LenMin.) & !is.null(LenMax.) & !is.null(Ages.) ) {
            if(length(Ages.) == 1)
-             title( paste0(spLongName., '; Age: ', Ages., ', Length range (cm): ', LenMin., " - ", LenMax.) ) 
+             title( paste0(JRWToolBox::casefold.f(spLongName.), '; Age: ', Ages., ', Length range (cm): ', LenMin., " - ", LenMax.) ) 
            else
-             title( paste0(spLongName., '; Ages: ', min(Ages.), " - ", max(Ages.), ', Length range (cm): ', LenMin., " - ", LenMax.) )            
+             title( paste0(JRWToolBox::casefold.f(spLongName.), '; Ages: ', min(Ages.), " - ", max(Ages.), ', Length range (cm): ', LenMin., " - ", LenMax.) )            
         }             
     }
     
@@ -186,8 +186,15 @@ YearlyResultsFigures <- function(spShortName. = NULL, spLongName. = NULL, HomeDi
         xAdjust <- 0
      }    
     
-    # If swept area is in hectares (non-standard) then a 100X adjustment is needed since VAST multiples by 4 km2 per extrapolation grid point while using hectares needs 400ha per point.    
-    if(LatMin. >= 33.8) {
+    # If swept area is in hectares (non-standard) then a 100X adjustment is needed since VAST multiples by 4 km2 per extrapolation grid point, but while using hectares needs 400ha per point.    
+    if(LatMin. >= 35.0) {
+        text(-123.2, 37.25, "All", cex = 0.80)
+        text(-123.2, 37.25 - yearDelta, "Years", cex = 0.80)
+        TeachingDemos::subplot( {par(cex = 5); JRWToolBox::plotCI.jrw2(Index.$Year, Abundance, li, ui, type = 'b', sfrac = 0, xlab='Year', ylab = yLab, col = 'red', lwd = 7, cex =1, xaxt = "n", bty = 'n');  
+                            axis(3, Year_Set., lwd = 5); axis(side = 2, lwd = 5)}, x=grconvertX(c(0.01 - xAdjust, 0.820), from='npc'), y=grconvertY(c(0.22, 0.48), from='npc'), type='fig', pars= parsMar )
+    } 
+    
+    if(LatMin. >= 33.8 & LatMin. < 35) {
         text(-120, 33.29, "All", cex = 0.80)
         text(-120, 33.29 - yearDelta, "Years", cex = 0.80)
         TeachingDemos::subplot( {par(cex = 5); JRWToolBox::plotCI.jrw2(Index.$Year, Abundance, li, ui, type = 'b', sfrac = 0, xlab='Year', ylab = yLab, col = 'red', lwd = 7, cex =1, xaxt = "n", bty = 'n');  
