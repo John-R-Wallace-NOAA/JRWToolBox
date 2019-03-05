@@ -1,4 +1,4 @@
-dataWareHouseTrawlBio <- function (commonName = "canary rockfish", species = NULL, yearRange = c(1000, 5000), projectShort = c("Ask", "AFSC.Shelf", "AFSC.Slope", "WCGBTS.Combo", "WCGBTS.Shelf", 
+dataWareHouseTrawlBio.OLD <- function (commonName = "canary rockfish", species = NULL, yearRange = c(1000, 5000), projectShort = c("Ask", "AFSC.Shelf", "AFSC.Slope", "WCGBTS.Combo", "WCGBTS.Shelf", 
                             "WCGBTS.Slope", "WCGBTS.Hypoxia", "WCGBTS.Santa.Barb.Basin", "WCGBTS.Shelf.Rockfish", "WCGBTS.Video"), verbose = FALSE, optionDigitsAtLeast11 = TRUE,
                             type3HaulsOnly = TRUE, removeWaterHauls = TRUE, noCanadianHauls = TRUE, headOnly = FALSE) 
 {
