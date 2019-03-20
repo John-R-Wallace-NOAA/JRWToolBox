@@ -1,4 +1,4 @@
-source <- function (file, ...) 
+Source <- function (file, ...) 
 {
     ls.ext <- function(file) {
         local({
