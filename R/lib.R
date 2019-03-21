@@ -1,7 +1,7 @@
 lib <- function (Package, Package.Name = NULL, attach = TRUE, updateCRAN = FALSE, 
-    pos = 2, quiet = ifelse(sys.nframe() < 2, FALSE, TRUE), force = FALSE, 
-    autoAddRepo = TRUE, ...) 
+    pos = 2, , force = FALSE, quiet = FALSE, autoAddRepo = TRUE, ...) 
 {
+    " # quiet = ifelse(sys.nframe() < 2, FALSE, TRUE) "
     if (autoAddRepo & options()$repos[names(options()$repos) %in% 
         "CRAN"] %in% "@CRAN@") 
         local({
