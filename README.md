@@ -8,7 +8,7 @@ Any csv file, script (of any kind), or R fucntion, including those in this toolb
 
 For example use (without a final slash at the end of the URL):
 
-    gitAFile('https://raw.githubusercontent.com/John-R-Wallace/R-ToolBox/master/R/lib.R') 
+   gitAFile('https://cdn.jsdelivr.net/gh/John-R-Wallace/JRWToolBox@master/R/lib.R')  
     # lib() is saved to .GlobalEnv
 
 to download just the lib() function that will install and update both GitHub and CRAN packages only if needed and regardless will load the package into the R session, if require = TRUE (the default).
