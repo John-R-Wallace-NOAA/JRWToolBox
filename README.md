@@ -6,7 +6,7 @@ Prologue
 
 Any csv file, script (of any kind), or R fucntion, including those in this toolbox can be individually downloaded using the function gitAFile() found in this toolbox. (Which could intially be copied from the 'R' directory here and pasted into R.)
 
-For example use (without a final slash at the end of the URL):
+For example use:
 
    gitAFile('https://cdn.jsdelivr.net/gh/John-R-Wallace/JRWToolBox@master/R/lib.R')  
     # lib() is saved to .GlobalEnv
