@@ -48,7 +48,7 @@ gitAFile <- function (URL, run = FALSE, show = !run, type = c("function", "csv",
        }
        if(type %in% "RData") {
          ' # https://stackoverflow.com/questions/18833031/download-rdata-and-csv-files-from-ftp-using-rcurl-or-any-other-method '
-         ' # test <- load(rawConnection(getBinaryURL(URL)))  # Doesn't work for me on binary RData files '
+         ' # test <- load(rawConnection(getBinaryURL(URL)))  # Does not work for me on binary RData files '
          File.BINARY <- tempfile()
          download.file(URL, File.BINARY, mode = 'wb')
          if(show)
