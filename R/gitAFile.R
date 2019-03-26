@@ -49,7 +49,10 @@ gitAFile <- function (URL, run = FALSE, show = !run, type = c("function", "csv",
        if(type %in% "RData") {
          ' # https://stackoverflow.com/questions/18833031/download-rdata-and-csv-files-from-ftp-using-rcurl-or-any-other-method '
          ' # test <- load(rawConnection(getBinaryURL(URL)))  # Does not work for me on binary RData files '
-         File.BINARY <- tempfile()
+         if(is.null(File))
+            File.BINARY <- tempfile()
+         else 
+            File.BINARY <- File
          download.file(URL, File.BINARY, mode = 'wb')
          if(show)
             JRWToolBox::load(File.BINARY)
