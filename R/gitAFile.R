@@ -1,8 +1,8 @@
-gitAFile <- function (URL, run = FALSE, show = !run, type = "function", File = NULL, delete.R.Object = ifelse(type %in% 'function', TRUE, FALSE)) 
+gitAFile <- function (URL, run = FALSE, show = !run, type = c("function", "csv", "script", "RData")[1] , File = NULL, delete.R.Object = ifelse(type %in% 'function', TRUE, FALSE)) 
 {
   
-  '# Use the raw git name, i.e.: "https://raw.githubusercontent.com/John-R-Wallace/R-ToolBox/master/R/panel.conf.pred.band.R"'
-  '# For raw GitHub URL see:  https://rawgit.com/'
+  '# Use the CDN jsDelivr name, i.e.: "https://cdn.jsdelivr.net/gh/John-R-Wallace/JRWToolBox@master/R/panel.conf.pred.band.R" '
+  '# CDN jsDelivr homepage:  https://www.jsdelivr.com/'
   '# csv file download information was from here: http://www.r-bloggers.com/data-on-github-the-easy-way-to-make-your-data-available/'
   ''
     require(RCurl)
@@ -43,7 +43,17 @@ gitAFile <- function (URL, run = FALSE, show = !run, type = "function", File = N
       if(type %in% "script") {
          if(run)
             source(File.ASCII)
-          if(show)
+         if(show)
             file.show(File.ASCII)
+       }
+       if(type %in% "RData") {
+         ' # https://stackoverflow.com/questions/18833031/download-rdata-and-csv-files-from-ftp-using-rcurl-or-any-other-method '
+         ' # test <- load(rawConnection(getBinaryURL(URL)))  # Doesn't work for me on binary RData files '
+         File.BINARY <- tempfile()
+         download.file(URL, File.BINARY, mode = 'wb')
+         if(show)
+            JRWToolBox::load(File.BINARY)
+         if(!show)
+            base::load(File.BINARY)
        }
 }
