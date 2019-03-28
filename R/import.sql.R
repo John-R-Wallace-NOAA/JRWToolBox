@@ -28,7 +28,7 @@ import.sql <- function (SQL, VAR = "", VAL = "", File = FALSE, dsn = 'PacFIN', u
           "(DESCRIPTION=",
           "(ADDRESS=(PROTOCOL=tcp)(HOST=", host, ")(PORT=", port, "))",
           "(CONNECT_DATA=(SERVICE_NAME=", svc, ")))", sep = "")
-        CON <- ROracle::dbConnect(drv, username = uid, password = pwd, dbname = connect.string)
+        CON <- ROracle::dbConnect(dbDriver("Oracle"), username = uid, password = pwd, dbname = connect.string)
         ROracle::fetch(ROracle::dbSendQuery(CON, SQL.Parsed))
     }
 }
