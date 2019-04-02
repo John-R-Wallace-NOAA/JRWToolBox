@@ -1,5 +1,5 @@
 
-Linux.First <- function() {
+Linux.First <- function(askCRAN = TRUE) {
 
     ###########################################
         # Purpose: this is my Rprofile.site file
@@ -13,7 +13,7 @@ Linux.First <- function() {
 	    repos=c(CRAN="http://www.stats.ox.ac.uk/pub/RWin", CRANextra = "https://cran.cnr.berkeley.edu"))
     
     switch(menu("Check for package updates?") + 1,
-           cat("\n"), update.packages())
+           cat("\n"), update.packages(ask = askCRAN))
   
     switch(menu("Check for GitHub updates?") + 1,
            cat("\n"), { try(devtools::install_github("John-R-Wallace/R-ToolBox")); cat("\n\n");
