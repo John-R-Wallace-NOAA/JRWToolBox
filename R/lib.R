@@ -45,7 +45,7 @@ lib <- function (Package, Package.Name = NULL, attach = TRUE, updateCRAN = FALSE
         }
         else install.packages(Package, quiet = quiet, ...)
         if (!any(utils::installed.packages()[, 1] %in% Package)) 
-            stop(paste("CRAN", Package, "package is not installed; an attempt to install failed (check for internet access)"))
+            warning(paste("CRAN", Package, "package is not installed; an attempt to install failed (check for internet access)"))
         if (attach) 
             library(Package, pos = pos, character.only = TRUE)
     }
