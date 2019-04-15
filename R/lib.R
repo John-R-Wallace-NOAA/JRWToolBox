@@ -30,7 +30,7 @@ lib <- function (Package, Package.Name = NULL, attach = TRUE, updateCRAN = FALSE
         if (!any(utils::installed.packages()[, 1] %in% Package.Name)) 
             stop(paste0("R '", Package.Name, "' package from Github is not installed. Note that the R package name may not be the same \n            as the GitHub directory name, if so, use the Package.Name argument. Find the R package name using quiet = FALSE."))
         if(length(SHA.OLD) > 0) {
-          if (packageDescription(Package.Name)$RemoteSha == SHA.OLD & !force)
+          if (packageDescription(Package.Name)$RemoteSha == SHA.OLD)
               warning(paste0("R '", Package.Name, "' package's SHA number did not change"))   
         }     
         if (attach) {
