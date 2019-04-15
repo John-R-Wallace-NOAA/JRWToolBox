@@ -31,7 +31,7 @@ lib <- function (Package, Package.Name = NULL, attach = TRUE, updateCRAN = FALSE
             stop(paste0("R '", Package.Name, "' package from Github is not installed. Note that the R package name may not be the same \n            as the GitHub directory name, if so, use the Package.Name argument. Find the R package name using quiet = FALSE."))
         if(length(SHA.OLD) > 0) {
           if (packageDescription(Package.Name)$RemoteSha == SHA.OLD & !force)
-             stop(paste0("R '", Package.Name, "' package's SHA number did not change"))   
+              warning(paste0("R '", Package.Name, "' package's SHA number did not change"))   
         }     
         if (attach) {
             unloadNamespace(Package.Name)   
@@ -45,7 +45,7 @@ lib <- function (Package, Package.Name = NULL, attach = TRUE, updateCRAN = FALSE
         }
         else install.packages(Package, quiet = quiet, ...)
         if (!any(utils::installed.packages()[, 1] %in% Package)) 
-            warning(paste("CRAN", Package, "package is not installed; an attempt to install failed (check for internet access)"))
+            stop(paste("CRAN", Package, "package is not installed; an attempt to install failed (check for internet access)"))
         if (attach) 
             library(Package, pos = pos, character.only = TRUE)
     }
