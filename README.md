@@ -8,14 +8,18 @@ Any csv file, script (of any kind), or R fucntion, including those in this toolb
 
 For example use:
 
-   lib <- gitAFile('https://cdn.jsdelivr.net/gh/John-R-Wallace/JRWToolBox@master/R/lib.R')  
-    # lib() is saved to .GlobalEnv
+    gitAFile('https://cdn.jsdelivr.net/gh/John-R-Wallace/JRWToolBox@master/R/lib.R')  
+    # lib() is saved to .GlobalEnv and also scrolled on the screen since show = TRUE (the default)
 
 to download just the lib() function that will install and update both GitHub and CRAN packages only if needed and regardless will load the package into the R session, if require = TRUE (the default).
 
-Note, for the use of a raw GitHub URL see: http://rawgit.com/
+Note, jsDelivr (https://www.jsdelivr.com) is an open source CDN. 
 
-Install or upgrade the package with:
+See additional arguments of gitAFile() with str(gitAFile).
+
+============================ 
+
+Install or upgrade this package with:
 
     # Get devtools if you don't already have it.
     if (!any(installed.packages()[, 1] %in% "devtools"))  install.packages('devtools')  
