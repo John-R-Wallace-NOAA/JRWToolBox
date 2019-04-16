@@ -1,15 +1,14 @@
-gitAFile <- function (URL, run = FALSE, show = !run, type = c("function", "csv", "script", "RData")[1] , File = NULL, delete.R.Object = ifelse(type %in% 'function', TRUE, FALSE)) 
+gitAFile <- function (URL, type = c("function", "csv", "script", "RData", "pdfGitHub")[1], run = FALSE, show = !run, File = NULL, delete.R.Object = ifelse(type %in% 'function', TRUE, FALSE)) 
 {
   
-  '# Use the CDN jsDelivr name, i.e.: "https://cdn.jsdelivr.net/gh/John-R-Wallace/JRWToolBox@master/R/panel.conf.pred.band.R" '
-  '# CDN jsDelivr homepage:  https://www.jsdelivr.com/'
-  '# csv file download information was from here: http://www.r-bloggers.com/data-on-github-the-easy-way-to-make-your-data-available/'
-  ''
+  # Use the CDN jsDelivr name, i.e.: "https://cdn.jsdelivr.net/gh/John-R-Wallace/JRWToolBox@master/R/panel.conf.pred.band.R" 
+  # CDN jsDelivr homepage:  https://www.jsdelivr.com/
+  # csv file download information was from here: http://www.r-bloggers.com/data-on-github-the-easy-way-to-make-your-data-available/ 
+  # Displaying pdf's from GitHub: https://webapps.stackexchange.com/questions/48061/can-i-trick-github-into-displaying-the-pdf-in-the-browser-instead-of-downloading 
+  
     require(RCurl)
     Source <- function(file, ...) {
         ls.ext <- function(file) {
-        
-        
             local({
                 base::source(file, TRUE)
                 base::ls()
@@ -20,9 +19,10 @@ gitAFile <- function (URL, run = FALSE, show = !run, type = c("function", "csv",
     }
     '# ------------------------------------'
   
-    if (type %in% "csv") 
+    if (grepl(type, "csv")) 
         return(read.csv(textConnection(getURL(URL))))
-    if (type %in% c("function", "script") ) {
+        
+    if (grepl(type, "function") | grepl(type, "script") ) {
         if(is.null(File))
            File.ASCII <- tempfile()
         else 
@@ -32,7 +32,7 @@ gitAFile <- function (URL, run = FALSE, show = !run, type = c("function", "csv",
            on.exit(file.remove(File.ASCII))
      }
      
-     if(type %in% "function") {
+     if(grepl(type, "function")) {
            s.name <- Source(File.ASCII)
            if(run) 
              eval(parse(text = s.name))()
@@ -40,13 +40,15 @@ gitAFile <- function (URL, run = FALSE, show = !run, type = c("function", "csv",
                  print(eval(parse(text = s.name)))
            return(invisible(eval(parse(text = s.name))))
       }
-      if(type %in% "script") {
+      
+      if(grepl(type, "script")) {
          if(run)
             source(File.ASCII)
          if(show)
             file.show(File.ASCII)
        }
-       if(type %in% "RData") {
+       
+       if(grepl(type, "RData")) {
          ' # https://stackoverflow.com/questions/18833031/download-rdata-and-csv-files-from-ftp-using-rcurl-or-any-other-method '
          ' # test <- load(rawConnection(getBinaryURL(URL)))  # Does not work for me on binary RData files '
          if(is.null(File))
@@ -58,5 +60,9 @@ gitAFile <- function (URL, run = FALSE, show = !run, type = c("function", "csv",
             JRWToolBox::load(File.BINARY)
          if(!show)
             base::load(File.BINARY)
+       }
+       
+       if(grepl(type, "pdfGitHub")) { 
+          JRWToolBox::browseGitPDF(URL)
        }
 }
