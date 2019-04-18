@@ -1,6 +1,9 @@
 lib <- function (Package, Package.Name = NULL, attach = TRUE, updateCRAN = FALSE, 
     pos = 2, quiet = FALSE, force = FALSE, autoAddRepo = TRUE, ...) 
 {
+   oldOpts <- options(download.file.method = "auto")  # Sometimes remotes::install_github() throws an error without this
+   on.exit(options(oldOpts))
+   
     " # quiet = ifelse(sys.nframe() < 2, FALSE, TRUE) "
     if (autoAddRepo & options()$repos[names(options()$repos) %in% 
         "CRAN"] %in% "@CRAN@") 
