@@ -1,22 +1,24 @@
-save.RGamma.simulation <- function(N=50000)
-{
+save.RGamma.simulation <- function (N = 500) {
+  
     x <- seq(1, 3, len = N)
-
-# Alpha = 1, Beta = 2.5 for the GLM
-
-# The variance has been set to 0.3 times the mean squared, that is the dispersion has been set to 0.3
-
-# In terms of the shape parameter nu: nu = 1/CV^2 = mean^2/var = mean^2/(0.3*mean^2) = 1/0.3 , and so dispersion is 1/nu = 0.3 
-
-    y <- RGamma(N, exp(1 + 2.5 * x), 0.3 * exp(1 + 2.5 * x)^2)
-
+    y <- rGamma(N, exp(1 + 2.5 * x), 0.3 * exp(1 + 2.5 * x)^2)
     gm <- glm(y ~ x, family = Gamma(link = log))
-
+    cat("\nSummary of glm(y ~ x, family = Gamma(link = log))\n\n")
     print(summary(gm))
-
-    cat("\n Summary using MASS's gamma.dispersion() function\n\n")
+    cat("AIC =", AIC(gm), "\n")
+    cat("\n\n\nSummary the same model using MASS's gamma.dispersion() function\n\n")
     summary(gm, dispersion = gamma.dispersion(gm))
-}
-
-
-
+    JRWToolBox::lib(gamlss, attach = FALSE)
+    gl <- gamlss::gamlss(y ~ x, family = LOGNO2)
+    cat("\n\n\nSummary of gamlss::gamlss(y ~ x, family = LOGNO2))\n\n")
+    print(summary(gl))
+    plot(x,y)
+    lines(x, exp(1 + 2.5 * x), lwd=2)
+    lines(x, fitted(gm), col = 'green', lwd=2)
+    lines(x, fitted(gl), col = 'cyan', lwd=2)
+   
+}    
+    
+    
+    
+    
