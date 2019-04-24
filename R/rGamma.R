@@ -11,8 +11,9 @@ rGamma <- function(n, Mean, Var, nu = NULL, Shape.Scale = FALSE, verbose = FALSE
                    summary(glm(y ~ x, family = Gamma(link='log'))) 
                }
        
+               "  # Since Dispersion = CV^2 = Var/Mean^2 = 1/nu  " 
                if(is.null(nu))
-                       nu <- Mean^2/Var  "  # Since Dispersion = CV^2 = Var/Mean^2 = 1/nu  "
+                       nu <- Mean^2/Var
        
                if(verbose) {
                        catf("\nAverage Shape =", mean(1/nu), "Average Scale =", mean(nu*Mean), "\n\n")
