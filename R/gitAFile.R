@@ -27,10 +27,10 @@ gitAFile <- function (URL, type = c("function", "csv", "script", "RData", "pdfGi
     if(grepl(type, "csv")) 
         return(read.csv(textConnection(getURL(URL))))
         
-    if(grepl(type, "function") & ) {
+    if(grepl(type, "function")) {
         if(CDN.prefix) 
            URL <- paste0('https://cdn.jsdelivr.net/gh/', URL)
-        if((CDN.purge)    
+        if(CDN.purge)    
            getURL(paste0('https://purge.jsdelivr.net/gh/', URL))
     }    
        
