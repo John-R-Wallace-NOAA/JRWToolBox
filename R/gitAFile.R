@@ -1,6 +1,6 @@
 gitAFile <- function (URL, type = c("function", "csv", "script", "RData", "pdfGitHub")[1], run = FALSE, show = !run, File = NULL, delete.R.Object = ifelse(is.null(File), TRUE, FALSE), CDN.prefix = TRUE, CDN.purge = TRUE) 
 {
-  
+  # Example:  gitAFile("John-R-Wallace/JRWToolBox@master/R/gitAFile.R")
   # Adds a CDN jsDelivr prefix to create full URL when type = "function", i.e.: paste0("https://cdn.jsdelivr.net/gh/", "John-R-Wallace/JRWToolBox@master/R/panel.conf.pred.band.R") 
   # Set CDN = NULL to not add a prefix.
   # CDN jsDelivr homepage:  https://www.jsdelivr.com/
@@ -19,7 +19,7 @@ gitAFile <- function (URL, type = c("function", "csv", "script", "RData", "pdfGi
                 base::ls()
             })
         }
-        base::source(file, baseenv(), ...)
+        base::source(file, ...)
         ls.ext(file)
     }
     # ------------------------------------
