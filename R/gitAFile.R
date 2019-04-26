@@ -1,12 +1,9 @@
-gitAFile <- function (URL, type = c("function", "csv", "script", "RData", "pdfGitHub")[1], run = FALSE, show = !run, File = NULL, delete.R.Object = ifelse(is.null(File), TRUE, FALSE), CDN.prefix = TRUE, CDN.purge = TRUE) 
+gitAFile <- function (URL, type = c("function", "csv", "script", "RData", "pdfGitHub")[1], run = FALSE, show = !run, File = NULL, delete.R.Object = ifelse(is.null(File), TRUE, FALSE), rawGitPrefix = TRUE) 
 {
-  # Example:  gitAFile("John-R-Wallace-NOAA/JRWToolBox@master/R/gitAFile.R")
-  # Adds a CDN jsDelivr prefix to create full URL when type = "function", i.e.: paste0("https://cdn.jsdelivr.net/gh/", "John-R-Wallace-NOAA/JRWToolBox@master/R/panel.conf.pred.band.R") 
-  # Set CDN = NULL to not add a prefix.
-  # CDN jsDelivr homepage:  https://www.jsdelivr.com/
-  # csv file download information was from here: http://www.r-bloggers.com/data-on-github-the-easy-way-to-make-your-data-available/ 
-  # Purging CDN: https://github.com/video-dev/hls.js/issues/1664
-  
+  # Example:  gitAFile("John-R-Wallace-NOAA/JRWToolBox/master/R/gitAFile.R")
+  # Adds the raw GitHub prefix to create a full URL when type = "function", i.e.: paste0("https://raw.githubusercontent.com", "John-R-Wallace-NOAA/JRWToolBox@master/R/panel.conf.pred.band.R") 
+  # Set rawGitPrefix = NULL to not add a prefix.
+    
   # Example of pdf download: gitAFile("https://github.com/James-Thorson/VAST/blob/master/manual/VAST_model_structure.pdf", "pdf")
   # Or directly using browseGitPDF: JRWToolBox::browseGitPDF("https://github.com/James-Thorson/VAST/blob/master/manual/VAST_model_structure.pdf")
   # Displaying pdf's from GitHub: https://webapps.stackexchange.com/questions/48061/can-i-trick-github-into-displaying-the-pdf-in-the-browser-instead-of-downloading 
@@ -28,11 +25,9 @@ gitAFile <- function (URL, type = c("function", "csv", "script", "RData", "pdfGi
         return(read.csv(textConnection(getURL(URL))))
         
     if(grepl(type, "function")) {
-        if(CDN.prefix) 
-           URL <- paste0('https://cdn.jsdelivr.net/gh/', URL)
-        if(CDN.purge)  
-           on.exit(getURL(paste0('https://purge.jsdelivr.net/gh/', URL)))
-     }    
+        if(rawGitPrefix) 
+           URL <- paste0('https://raw.githubusercontent.com/', URL)
+    }    
        
     if(grepl(type, "function") | grepl(type, "script") ) {
         if(is.null(File))
