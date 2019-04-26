@@ -1,21 +1,34 @@
 R-ToolBox
 ============================
 
-
 Prologue
 
-Any csv file, script (of any kind), or R fucntion, including those in this toolbox can be individually downloaded using the function gitAFile() found in this toolbox. (Which could intially be copied from the 'R' directory here and pasted into R.)
+Any csv file, script (of any kind), or R function and pdf on GitHub, including those in this toolbox can be individually downloaded using the function gitAFile() found in this toolbox. (Which could initially be copied from the 'R' directory here and pasted into R.)
 
 For example use:
 
-    gitAFile('https://cdn.jsdelivr.net/gh/John-R-Wallace-NOAA/JRWToolBox@master/R/lib.R')  
+    gitAFile('John-R-Wallace-NOAA/JRWToolBox/master/R/lib.R') 
     # lib() is saved to .GlobalEnv and also scrolled on the screen since show = TRUE (the default)
 
 to download just the lib() function that will install and update both GitHub and CRAN packages only if needed and regardless will load the package into the R session, if require = TRUE (the default).
 
-Note, jsDelivr (https://www.jsdelivr.com) is an open source CDN. 
+Note that the FUNCTION DOWNLOADED WILL HAVE ALL THE COMMENTS AND LINE SPACING INTACT, unlike functions within packages downloaded via the devtools package (which now calls the 'remotes' package).
 
 See additional arguments of gitAFile() with str(gitAFile).
+
+Customized wrappers for gitAFile can be made for often used packages, e.g.:
+       
+       S <- function (File, ...) {
+            if (!(is.character(substitute(File)))) 
+                File <- deparse(substitute(File))
+            gitAFile(paste0("John-R-Wallace-NOAA/JRWToolBox/master/R/", File, ".R"), ...)
+       }
+       
+so that only:
+
+      S(getAfile)
+ 
+ is needed so see in the comments an example to directly display the pdf fully in a viewer and not on the GitHub web site.
 
 ============================ 
 
