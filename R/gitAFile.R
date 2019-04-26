@@ -31,7 +31,7 @@ gitAFile <- function (URL, type = c("function", "csv", "script", "RData", "pdfGi
         if(CDN.prefix) 
            URL <- paste0('https://cdn.jsdelivr.net/gh/', URL)
         if(CDN.purge)  
-           getURL(paste0('https://purge.jsdelivr.net/gh/', URL))
+           on.exit(getURL(paste0('https://purge.jsdelivr.net/gh/', URL)))
      }    
        
     if(grepl(type, "function") | grepl(type, "script") ) {
@@ -41,7 +41,7 @@ gitAFile <- function (URL, type = c("function", "csv", "script", "RData", "pdfGi
            File.ASCII <- File
         writeLines(paste(readLines(textConnection(getURL(URL))), collapse = "\n"), File.ASCII)
         if(delete.R.Object)
-           on.exit(file.remove(File.ASCII))
+           on.exit(file.remove(File.ASCII), add = TRUE)
      }
      
      if(grepl(type, "function")) {
