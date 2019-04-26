@@ -30,7 +30,7 @@ so that only:
  
  is needed so see in the comments an example to directly display the pdf fully in a viewer and not on the GitHub web site:
  
-  ... gitAFile("https://github.com/James-Thorson/VAST/blob/master/manual/VAST_model_structure.pdf", "pdf")
+    gitAFile("https://github.com/James-Thorson/VAST/blob/master/manual/VAST_model_structure.pdf", "pdf")
  
 
 ============================ 
