@@ -1,7 +1,7 @@
 gitAFile <- function (URL, type = c("function", "csv", "script", "RData", "pdfGitHub")[1], run = FALSE, show = !run, File = NULL, delete.R.Object = ifelse(is.null(File), TRUE, FALSE), CDN.prefix = TRUE, CDN.purge = TRUE) 
 {
-  # Example:  gitAFile("John-R-Wallace/JRWToolBox@master/R/gitAFile.R")
-  # Adds a CDN jsDelivr prefix to create full URL when type = "function", i.e.: paste0("https://cdn.jsdelivr.net/gh/", "John-R-Wallace/JRWToolBox@master/R/panel.conf.pred.band.R") 
+  # Example:  gitAFile("John-R-Wallace-NOAA/JRWToolBox@master/R/gitAFile.R")
+  # Adds a CDN jsDelivr prefix to create full URL when type = "function", i.e.: paste0("https://cdn.jsdelivr.net/gh/", "John-R-Wallace-NOAA/JRWToolBox@master/R/panel.conf.pred.band.R") 
   # Set CDN = NULL to not add a prefix.
   # CDN jsDelivr homepage:  https://www.jsdelivr.com/
   # csv file download information was from here: http://www.r-bloggers.com/data-on-github-the-easy-way-to-make-your-data-available/ 
@@ -30,8 +30,9 @@ gitAFile <- function (URL, type = c("function", "csv", "script", "RData", "pdfGi
     if(grepl(type, "function")) {
         if(CDN.prefix) 
            URL <- paste0('https://cdn.jsdelivr.net/gh/', URL)
-        if(CDN.purge)    
+        if(CDN.purge) {   
            getURL(paste0('https://purge.jsdelivr.net/gh/', URL))
+        }
     }    
        
     if(grepl(type, "function") | grepl(type, "script") ) {
