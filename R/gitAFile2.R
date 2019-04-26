@@ -43,10 +43,10 @@ gitAFile2 <- function (URL, type = c("function", "csv", "script", "RData", "pdfG
            s.name <- Source(File.ASCII)
            print(s.name)
            if(run) 
-             eval(parse(text = s.name), envir = baseenv())()
+             eval(parse(text = s.name), envir = globalenv())()
            if(show)
-                 print(eval(parse(text = s.name), envir = baseenv()))
-           return(invisible(eval(parse(text = s.name), envir = baseenv())))
+                 print(eval(parse(text = s.name), envir = globalenv()))
+           return(invisible(eval(parse(text = s.name), envir = globalenv())))
       }
       
       if(grepl(type, "script")) {
