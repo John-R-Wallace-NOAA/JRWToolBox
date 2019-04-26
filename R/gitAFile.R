@@ -1,4 +1,4 @@
-gitAFile <- function (URL, type = c("function", "csv", "script", "RData", "pdfGitHub")[1], run = FALSE, show = !run, File = NULL, delete.R.Object = ifelse(is.null(File), TRUE, FALSE), rawGitPrefix = TRUE) 
+gitAFile <- function (URL, type = c("function", "csv", "script", "RData", "pdfGitHub")[1], run = FALSE, show = !run, viewOnly = FALSE, File = NULL, deleteFileObj = ifelse(is.null(File), TRUE, FALSE), rawGitPrefix = TRUE) 
 {
   # Example:  gitAFile("John-R-Wallace-NOAA/JRWToolBox/master/R/gitAFile.R")
   # Adds the raw GitHub prefix to create a full URL when type = "function", i.e.: paste0("https://raw.githubusercontent.com", "John-R-Wallace-NOAA/JRWToolBox@master/R/panel.conf.pred.band.R") 
@@ -35,18 +35,20 @@ gitAFile <- function (URL, type = c("function", "csv", "script", "RData", "pdfGi
         else 
            File.ASCII <- File
         writeLines(paste(readLines(textConnection(getURL(URL))), collapse = "\n"), File.ASCII)
-        if(delete.R.Object)
+        if(deleteFileObj)
            on.exit(file.remove(File.ASCII), add = TRUE)
-     }
+    } 
      
      if(grepl(type, "function")) {
            s.name <- Source(File.ASCII)
            print(s.name)
            if(run) 
-             eval(parse(text = s.name))()
+             eval(parse(text = s.name), envir = globalenv())()
            if(show)
-                 print(eval(parse(text = s.name)))
-           return(invisible(eval(parse(text = s.name))))
+              print(eval(parse(text = s.name), envir = globalenv()))
+           if(viewOnly)   
+              on.exit(rm(list = s.name, pos = globalenv()), add = TRUE)
+           return(invisible(eval(parse(text = s.name), envir = globalenv())))
       }
       
       if(grepl(type, "script")) {
