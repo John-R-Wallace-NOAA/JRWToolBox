@@ -1,9 +1,9 @@
 
-S <- function(File) {
+S <- function(File, ...) {
     if (!(is.character(substitute(File))))
         File <- deparse(substitute(File))
 
-     JRWToolBox::gitAFile(paste0("John-R-Wallace-NOAA/JRWToolBox/master/R/", File, ".R"))     
+     gitAFile(paste0("John-R-Wallace-NOAA/JRWToolBox/master/R/", File, ".R"), ...)     
 }
 
 
