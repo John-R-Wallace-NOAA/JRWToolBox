@@ -31,6 +31,10 @@ so that only:
  is needed so see in the comments an example to directly display the pdf fully in a viewer and not on the GitHub web site:
  
     gitAFile("https://github.com/James-Thorson/VAST/blob/master/manual/VAST_model_structure.pdf", "pdf")
+    
+To save a script (not an R function) as a file in the current working directory do, e.g.:
+
+     gitAFile("John-R-Wallace-NOAA/Length_Restricted_Catch_with_VAST/master/Run_Data_and_VAST_by_Species.R", 'script', File = 'Run_Data_and_VAST_by_Species.R') 
  
 
 ============================ 
