@@ -1,3 +1,6 @@
+
+
+
 gitAFile <- function (URL, type = c("function", "csv", "script", "RData", "pdfGitHub")[1], run = FALSE, show = !run, viewOnly = FALSE, File = NULL, deleteFileObj = ifelse(is.null(File), TRUE, FALSE), rawGitPrefix = TRUE) 
 {
   # Example:  gitAFile("John-R-Wallace-NOAA/JRWToolBox/master/R/gitAFile.R")
@@ -23,13 +26,10 @@ gitAFile <- function (URL, type = c("function", "csv", "script", "RData", "pdfGi
   
     if(grepl(type, "csv")) 
         return(read.csv(textConnection(getURL(URL))))
-        
-    if(grepl(type, "function")) {
+    
+    if(grepl(type, "function") | grepl(type, "script")) {
         if(rawGitPrefix) 
            URL <- paste0('https://raw.githubusercontent.com/', URL)
-    }    
-       
-    if(grepl(type, "function") | grepl(type, "script") ) {
         if(is.null(File))
            File.ASCII <- tempfile()
         else 
