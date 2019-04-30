@@ -1,8 +1,8 @@
-recode.simple <- function(Codes.Old, Table) {
-
-   # Table[Old, New]; Codes.New is result
- 
-    Table[,2][match(Codes.Old,  Table[,1])]
-
+recode.simple <- function (Codes, Table) 
+{
+    # Table[Old, New]
+    toChange <- Codes %in% Table[, 1]
+    Codes[toChange] <- Table[, 2][match(Codes[toChange], Table[, 1])]
+    Codes
+    
 }
-
