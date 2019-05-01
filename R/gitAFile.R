@@ -23,6 +23,8 @@ gitAFile <- function (URL, type = c("function", "csv", "script", "RData", "pdfGi
         ls.ext(file)
     }
     # ------------------------------------
+	
+    URL <- paste(strsplit(URL," ")[[1]], collapse = '%20')
   
     if(grepl(type, "csv")) 
         return(read.csv(textConnection(getURL(URL))))
@@ -76,3 +78,4 @@ gitAFile <- function (URL, type = c("function", "csv", "script", "RData", "pdfGi
           JRWToolBox::browseGitPDF(URL)
        }
 }
+
