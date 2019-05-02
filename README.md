@@ -10,9 +10,9 @@ For example use:
     gitAFile('John-R-Wallace-NOAA/JRWToolBox/master/R/lib.R') 
     # lib() is saved to .GlobalEnv and also scrolled on the screen since show = TRUE (the default)
 
-to download just the lib() function that will install and update both GitHub and CRAN packages only if needed and regardless will load the package into the R session, if require = TRUE (the default).
+to view and download lib() into R. (The lib() function will install and update both GitHub and CRAN packages only if needed and regardless will load the package into the R session, if require = TRUE (the default).)
 
-Note that the FUNCTION DOWNLOADED WILL HAVE ALL THE COMMENTS AND LINE SPACING INTACT, unlike functions within packages downloaded via the devtools package (which now calls the 'remotes' package).
+Note that the FUNCTION DOWNLOADED WILL HAVE ALL THE COMMENTS AND LINE SPACING INTACT, unlike functions within packages downloaded via the 'devtools' package (which, FYI, now calls the 'remotes' package).
 
 See additional arguments of gitAFile() with str(gitAFile).
 
@@ -26,18 +26,26 @@ Customized wrappers for gitAFile can be made for often used packages, e.g.:
        
 so that only:
 
-      S(getAfile)
+      S(gitAFile)
  
- is needed so see in the comments an example to directly display the pdf fully in a viewer and not on the GitHub web site:
+ is needed to download and view gitAFile().
+ 
+ An example to directly display the pdf fully in a viewer and not on the GitHub web site:
  
     gitAFile("https://github.com/James-Thorson/VAST/blob/master/manual/VAST_model_structure.pdf", "pdf")
     
 To save a script (not an R function) as a file in the current working directory do, e.g.:
 
      gitAFile("John-R-Wallace-NOAA/Length_Restricted_Catch_with_VAST/master/Run_Data_and_VAST_by_Species.R", 'script', File = 'Run_Data_and_VAST_by_Species.R') 
+     
+ To download and put the function directly into an editor, edit gitEdit()'s path to your favorite editor, e.g.:
+ 
+      gitEdit(Table)
+      
+ downloads Table() and puts it into notepad++ for editing (if one of the two paths is correct).    
  
 
-============================ 
+======================================================================================== 
 
 Install or upgrade this package with:
 
