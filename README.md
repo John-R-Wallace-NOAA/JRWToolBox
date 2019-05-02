@@ -9,6 +9,7 @@ For example use:
 
     gitAFile('John-R-Wallace-NOAA/JRWToolBox/master/R/lib.R') 
     # lib() is saved to .GlobalEnv and also scrolled on the screen since show = TRUE (the default)
+    # Use the Raw view URL as a guide to the correct path, but the URL space ' ' code '%20' can be left as a space
 
 to view and download lib() into R. (The lib() function will install and update both GitHub and CRAN packages only if needed and regardless will load the package into the R session, if require = TRUE (the default).)
 
