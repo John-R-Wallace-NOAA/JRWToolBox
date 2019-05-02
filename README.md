@@ -38,11 +38,11 @@ To save a script (not an R function) as a file in the current working directory 
 
      gitAFile("John-R-Wallace-NOAA/Length_Restricted_Catch_with_VAST/master/Run_Data_and_VAST_by_Species.R", 'script', File = 'Run_Data_and_VAST_by_Species.R') 
      
- To download and put the function directly into an editor, edit gitEdit()'s path to your favorite editor, e.g.:
+ To download and put a function directly into an editor, copy and edit gitEdit()'s paths to a particular package and your favorite editor, e.g.:
  
       gitEdit(Table)
       
- downloads Table() and puts it into notepad++ for editing (if one of the two paths is correct).    
+ downloads JRWToolBox::Table() and puts it into notepad++ for editing (if one of the two paths is correct).    
  
 
 ======================================================================================== 
