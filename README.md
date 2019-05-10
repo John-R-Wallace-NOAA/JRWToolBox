@@ -44,7 +44,7 @@ To save a script (not an R function) as a file in the current working directory 
  
       gitEdit(Table)
       
- downloads JRWToolBox::Table() and puts it into notepad++ for editing (if one of the two paths is correct).    
+ downloads JRWToolBox::Table() and puts it into notepad++ for editing (if one of the two paths to notepad++ in gitEDit is correct).    
  
 
 ======================================================================================== 
@@ -54,7 +54,7 @@ Install or upgrade this package with:
     # Get devtools if you don't already have it.
     if (!any(installed.packages()[, 1] %in% "devtools"))  install.packages('devtools')  
     
-    devtools::install_github("John-R-Wallace/JRWToolBox")
+    devtools::install_github("John-R-Wallace-NOAA/JRWToolBox")
 
 If you then want to load the package into R use:
 
