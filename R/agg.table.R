@@ -1,4 +1,4 @@
-agg.table <- function(df, Total.col = F, Print= TRUE, digits=7, sort.cols = 1, rows.as.col = F) {
+agg.table <- function(df, Total.col = F, Print= TRUE, digits=7, sort.cols = 1, sortColNames = FALSE, rows.as.col = F) {
         
       sort.f <- function(x, col = 1, reverse = F, renumber = T) {
             if(reverse)
@@ -20,9 +20,9 @@ agg.table <- function(df, Total.col = F, Print= TRUE, digits=7, sort.cols = 1, r
        }
 
 # -----------------------------------------------------------------------
-  
+       
         df <- sort.f(df, col = sort.cols)
-
+        
         labels <- dimnames(df)[[2]]
         if(F) {
                 if(!any(is.na(as.num(unique(df[[1]])))))
@@ -53,6 +53,9 @@ agg.table <- function(df, Total.col = F, Print= TRUE, digits=7, sort.cols = 1, r
              names(out2)[1] <- names(df)[1]
              out2 <- renum(out2)
         }
+                    
+        if(sortColNames) 
+            out2 <- out2[ ,order(names(out2))]
         
         if(Print) {
              cat("\n\t\t", labels[3], "\n\n", labels[1], "\t\t\t", labels[2], "\n\n")
@@ -65,4 +68,5 @@ agg.table <- function(df, Total.col = F, Print= TRUE, digits=7, sort.cols = 1, r
 
         invisible(out2)
 }
+
 
