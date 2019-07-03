@@ -1,4 +1,4 @@
-if(False) {
+if(FALSE) {
 
 
 # Manually copy from old version of R:
@@ -29,7 +29,7 @@ install.packages("INLA", repos="https://inla.r-inla-download.org/R/stable")
 install.packages("mvbutils")
 install.packages("https://cran.r-project.org/src/contrib/Archive/debug/debug_1.3.1.tar.gz")
 library(debug)
-mtrace(<function to trace>)
+mtrace('function to trac')
 
 
 # RStan
@@ -128,7 +128,7 @@ source('install_windows.R')
 
 # ============ Windows path for clang++ ========
 
-W:\Rtools\bin;W:\Bin;W:\R\R-3.1.1\bin;W:\MinGW\bin;W:\MinGW\msys\1.0\bin;W:\ADMB\bin;W:\ADMB\utilities;C:\Program Files\Java\jre8\bin;c:\oracle_instant_client_11_2;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Common Files\Roxio Shared\DLLShared\;C:\Program Files (x86)\Common Files\Roxio Shared\OEM\DLLShared\;C:\Program Files (x86)\Common Files\Roxio Shared\OEM\DLLShared\;C:\Program Files (x86)\Common Files\Roxio Shared\OEM\12.0\DLLShared\;C:\Program Files (x86)\Roxio\OEM\AudioCore\;C:\Program Files (x86)\Bitvise Tunnelier;C:\Program Files (x86)\Tumbleweed\Desktop Validator\;C:\Program Files\ActivIdentity\ActivClient\;C:\Program Files (x86)\ActivIdentity\ActivClient\;W:\Win_apps\doxygen\bin;W:\Win_apps\Mscgen;W:\Win_apps\Git\cmd;W:\Win_apps\Git\bin;W:\Win_apps\MiKTeX 2.9\miktex\bin\;C:\Program Files (x86)\QuickTime\QTSystem\;W:\LLVM\bin
+"W:/Rtools/bin;W:/Bin;W:/R/R-3.1.1/bin;W:/MinGW/bin;W:/MinGW/msys/1.0/bin;W:/ADMB/bin;W:/ADMB/utilities;C:/Program Files/Java/jre8/bin;c:/oracle_instant_client_11_2;C:/Windows/system32;C:/Windows;C:/Windows/System32/Wbem;C:/Windows/System32/WindowsPowerShell/v1.0/;C:/Program Files (x86)/Common Files/Roxio Shared/DLLShared/;C:/Program Files (x86)/Common Files/Roxio Shared/OEM/DLLShared/;C:/Program Files (x86)/Common Files/Roxio Shared/OEM/DLLShared/;C:/Program Files (x86)/Common Files/Roxio Shared/OEM/12.0/DLLShared/;C:/Program Files (x86)/Roxio/OEM/AudioCore/;C:/Program Files (x86)/Bitvise Tunnelier;C:/Program Files (x86)/Tumbleweed/Desktop Validator/;C:/Program Files/ActivIdentity/ActivClient/;C:/Program Files (x86)/ActivIdentity/ActivClient/;W:/Win_apps/doxygen/bin;W:/Win_apps/Mscgen;W:/Win_apps/Git/cmd;W:/Win_apps/Git/bin;W:/Win_apps/MiKTeX 2.9/miktex/bin/;C:/Program Files (x86)/QuickTime/QTSystem/;W:/LLVM/bin"
 
 
 }
