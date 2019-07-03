@@ -29,7 +29,7 @@ install.packages("INLA", repos="https://inla.r-inla-download.org/R/stable")
 install.packages("mvbutils")
 install.packages("https://cran.r-project.org/src/contrib/Archive/debug/debug_1.3.1.tar.gz")
 library(debug)
-mtrace('function to trac')
+mtrace('Function to trace')
 
 
 # RStan
