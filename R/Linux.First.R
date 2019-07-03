@@ -16,18 +16,20 @@ Linux.First <- function(askCRAN = TRUE) {
            cat("\n"), update.packages(ask = askCRAN))
   
     switch(menu("Check for GitHub updates?") + 1,
-           cat("\n"), { try(devtools::install_github("John-R-Wallace/R-ToolBox")); cat("\n\n");
-                        try(devtools::install_github("John-R-Wallace/Imap")); cat("\n\n");
-                        try(devtools::install_github("r4ss/r4ss")); cat("\n\n");
-                        try(devtools::install_github("kaskr/adcomp/TMB")); cat("\n\n");
-                        try(devtools::install_github("kaskr/TMB_contrib_R/TMBhelper")); cat("\n\n");
-                        try(devtools::install_github("kaskr/TMB_contrib_R/TMBdebug")); cat("\n\n");
-                        try(devtools::install_github("kaskr/TMB_contrib_R/TMBphase")); cat("\n\n");
-                        try(devtools::install_github("james-thorson/VAST")); cat("\n\n");
-                        try(devtools::install_github("nwfsc-assess/geostatistical_delta-GLMM")); cat("\n\n");
-                        try(devtools::install_github("james-thorson/utilities")); cat("\n\n");
-                        # try(devtools::install_github("james-thorson/MIST"))
-                        cat("\n\n") })
+           cat("\n"), { try(devtools::install_github("John-R-Wallace-NOAA/JRWToolBox")); cat("\n\n");
+                      try(devtools::install_github("John-R-Wallace-NOAA/Imap")); cat("\n\n");
+                      try(devtools::install_github("r4ss/r4ss")); cat("\n\n");
+                      try(devtools::install_github("kaskr/adcomp/TMB")); cat("\n\n");
+                      try(devtools::install_github("kaskr/TMB_contrib_R/TMBhelper")); cat("\n\n");
+                      try(devtools::install_github("kaskr/TMB_contrib_R/TMBdebug")); cat("\n\n");
+                      try(devtools::install_github("kaskr/TMB_contrib_R/TMBphase")); cat("\n\n");
+                      try(devtools::install_github("james-thorson-noaa/VAST")); cat("\n\n");
+                      try(devtools::install_github("james-thorson-noaa/FishStatsUtils")); cat("\n\n");
+                      try(devtools::install_github("james-thorson/utilities")); cat("\n\n");
+                      try(devtools::install_github("nwfsc-assess/geostatistical_delta-GLMM")); cat("\n\n");
+                      # try(devtools::install_github("james-thorson/MIST"))
+                      cat("\n\n") })
+
   
                         # try(devtools::install_github("glmmTMB/glmmTMB",subdir="glmmTMB")); cat("\n\n")
                          
@@ -40,44 +42,49 @@ Linux.First <- function(askCRAN = TRUE) {
    
     cat("\nDone with package updates.\n"); flush.console()
     
-	try(lib(datasets))
-	try(lib(stats4))
-    try(lib(stats))
-    try(lib(methods))
-    try(lib(graphics))
-    try(lib(chron))
-    try(lib(foreign))
-    try(lib(grid))
-    try(lib(grDevices))
-    try(lib(sp))
-    # try(lib(rgeos))
-    try(lib(lattice))
-    try(lib(latticeExtra))	
-    try(lib(akima))
+   lib(datasets)
+   lib(stats)
+   lib(methods)
+   lib(graphics)
+   lib(chron)
+   lib(foreign)
+   lib(grid)
+   lib(grDevices)
+   lib(sp)
+   lib(rgeos)
+   lib(lattice)
+   lib(latticeExtra)
+             
+   lib(akima)
     
-    try(lib(gdata))
-    try(lib(gplots))
-    try(lib(gstat))
-    try(lib(gtools))
-    # try(lib(stashR))
-    try(lib(gam))
-    try(lib(Hmisc))
-    try(lib(coda))
-    # try(lib(MCMCpack))
-    try(lib(MASS))
-    try(lib(RODBC))
-    # try(lib(mvbutils))
+   lib(gdata)
+   lib(gplots)
+   lib(gstat)
+   lib(gtools)
+   # lib(stashR)
+   lib(gam)
+   # lib(Hmisc)
+   lib(coda)
+   # lib(MCMCpack)
+   lib(MASS)
+   lib(RODBC)
+   # lib(mvbutils)
     
-    try(lib(mvtnorm))
-    try(lib(numDeriv))
-    try(lib(bbmle))
-    try(lib(Matrix))
-    try(lib(devtools))
-    try(lib(data.table))
-    try(lib(TMB))
-    try(lib(TMBhelper))
-    try(lib(TMBdebug))
-    try(lib(r4ss))
+   lib(mvtnorm)
+   lib(numDeriv)
+   lib(bbmle)
+   lib(Matrix)
+   lib(devtools)
+   lib(data.table)
+   lib(TMB)
+   lib(TMBhelper)
+   
+   
+   
+   lib(Imap)
+   detach("package:JRWToolBox")
+   library(JRWToolBox)
+
   
     # Load packages when called
   
@@ -141,6 +148,7 @@ Linux.First <- function(askCRAN = TRUE) {
   invisible()
   
 }
+
 
 
 
