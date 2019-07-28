@@ -17,5 +17,5 @@ Hist <- function (pattern, max.show = Inf, reverse = F, ...)
     file2 <- tempfile("hist")
     writeLines(rawhist[inds], file2)
     file.show(file2, title = "R History", delete.file = TRUE, 
-        pager = "winvi.exe")
+        pager = options()$editor)
 }
