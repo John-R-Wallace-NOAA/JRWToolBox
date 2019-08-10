@@ -36,7 +36,8 @@ dataWareHouseTrawlCatch <- function (commonName = "canary rockfish", species = N
     projectNames <- JRWToolBox::scanIn("
                                  longProject                            shortProject
                    'Groundfish Triennial Shelf Survey'                   AFSC.Shelf
-                                                   NA                    AFSC.Slope
+           'Triennial Shelf Groundfish Survey: Canada'            AFSC.Shelf.Canada
+                              'AFSC/RACE Slope Survey'                   AFSC.Slope
        'Groundfish Slope and Shelf Combination Survey'                 WCGBTS.Combo
                              'Groundfish Shelf Survey'                 WCGBTS.Shelf
                              'Groundfish Slope Survey'                 WCGBTS.Slope
@@ -48,8 +49,8 @@ dataWareHouseTrawlCatch <- function (commonName = "canary rockfish", species = N
     
     if(	projectShort[1] %in% c('Ask', 'ask', 'ASK'))  {
         cat("\n\nSelect a project [enter 0 (zero) to abort]:\n\n"); flush.console()
-        projectShort <- switch(menu(c("AFSC.Shelf","AFSC.Slope","WCGBTS.Combo","WCGBTS.Shelf","WCGBTS.Slope","WCGBTS.Hypoxia","WCGBTS.Santa.Barb.Basin","WCGBTS.Shelf.Rockfish","WCGBTS.Video")) + 1,
-        stop("No project selected"), "AFSC.Shelf","AFSC.Slope","WCGBTS.Combo","WCGBTS.Shelf","WCGBTS.Slope","WCGBTS.Hypoxia","WCGBTS.Santa.Barb.Basin","WCGBTS.Shelf.Rockfish","WCGBTS.Video")
+        projectShort <- switch(menu(c("AFSC.Shelf","AFSC.Shelf.Canada","AFSC.Slope","WCGBTS.Combo","WCGBTS.Shelf","WCGBTS.Slope","WCGBTS.Hypoxia","WCGBTS.Santa.Barb.Basin","WCGBTS.Shelf.Rockfish","WCGBTS.Video")) + 1,
+        stop("No project selected"), "AFSC.Shelf","AFSC.Shelf.Canada","AFSC.Slope","WCGBTS.Combo","WCGBTS.Shelf","WCGBTS.Slope","WCGBTS.Hypoxia","WCGBTS.Santa.Barb.Basin","WCGBTS.Shelf.Rockfish","WCGBTS.Video")
         cat("\n\nTo avoid this menu, the (quoted) project names shown above may be entered into the project argument.\n")
         cat("\nOne project name or a vector of project names may be entered.  A warning will be shown if a project has no data for the filters given.\n")
     }
@@ -76,7 +77,7 @@ dataWareHouseTrawlCatch <- function (commonName = "canary rockfish", species = N
             yearRange[1], ",date_dim$year<=", yearRange[2], "&variables=", paste0(Vars, collapse = ","))
         
         if (verbose) 
-            cat("\n\nURL Text for the species:\n\n", UrlText, "\n\n")
+            cat("\n\nURL for the species:\n\n", UrlText, "\n\n")
         
         if(headOnly) {
             SP <- try(JRWToolBox::headJSON(UrlText))
@@ -107,17 +108,20 @@ dataWareHouseTrawlCatch <- function (commonName = "canary rockfish", species = N
             Vars <- c("project", "year", "vessel", "pass", "tow", "datetime_utc_iso", "depth_m", "longitude_dd", "latitude_dd", "area_swept_ha_der", "trawl_id")
             
             " # Beth still needs to add  is_assessment_acceptable  to the other surveys"
-            if (P == 'AFSC.Shelf') 
+            if (P %in% c('AFSC.Shelf', 'AFSC.Slope')) 
                UrlText <- paste0("https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.operation_haul_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",", 
                   "station_invalid=0,", "operation_dim$is_assessment_acceptable=True,", "operation_dim$legacy_performance_code!=8,", "date_dim$year>=", yearRange[1], ",date_dim$year<=", yearRange[2],
                   "&variables=", paste0(Vars, collapse = ","))
+            else if (P %in% 'AFSC.Shelf.Canada') 
+                  UrlText <- paste0("https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.operation_haul_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",", 
+                     "station_invalid=0,", "date_dim$year>=", yearRange[1], ",date_dim$year<=", yearRange[2], "&variables=", paste0(Vars, collapse = ","))    
             else
-               UrlText <- paste0("https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.operation_haul_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",", 
-                  "station_invalid=0,", "performance=Satisfactory,", "date_dim$year>=", yearRange[1], ",date_dim$year<=", yearRange[2],
-                  "&variables=", paste0(Vars, collapse = ","))
-            
+                  UrlText <- paste0("https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.operation_haul_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",", 
+                     "station_invalid=0,", "performance=Satisfactory,", "date_dim$year>=", yearRange[1], ",date_dim$year<=", yearRange[2],
+                     "&variables=", paste0(Vars, collapse = ","))
+                        
             if (verbose) 
-                cat("\n\nURL Text for all tows (needed for zero catch tows):\n\n", UrlText, "\n\n")
+                cat("\n\nURL for all tows (needed for zero catch tows):\n\n", UrlText, "\n\n")
             
             All.Tows <- jsonlite::fromJSON(UrlText)
             
@@ -159,3 +163,4 @@ dataWareHouseTrawlCatch <- function (commonName = "canary rockfish", species = N
     cat("\n")
     invisible(OutAll)
 }
+
