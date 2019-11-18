@@ -1,8 +1,9 @@
 
 
-switchSlash <- function() {
-    Out <- gsub("\\\\", "/", readClipboard())
-    JRWToolBox::write.clip(Out)
-    Out
+switchSlash <- function (backSlash = readClipboard()) 
+{
+    forwardSlash <- gsub("\\\\", "/", backSlash)
+    JRWToolBox::write.clip(forwardSlash)
+    forwardSlash 
 }
 
