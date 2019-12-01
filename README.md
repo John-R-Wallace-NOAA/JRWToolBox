@@ -54,7 +54,9 @@ Install or upgrade this package with:
     # Get devtools if you don't already have it.
     if (!any(installed.packages()[, 1] %in% "devtools"))  install.packages('devtools')  
     
-    devtools::install_github("John-R-Wallace-NOAA/JRWToolBox")
+    oldOpts <- options(download.file.method = "auto")  # Sometimes remotes::install_github() throws an error without this
+    remotes::install_github("John-R-Wallace-NOAA/JRWToolBox", force = TRUE)
+    options(oldOpts)
 
 If you then want to load the package into R use:
 
