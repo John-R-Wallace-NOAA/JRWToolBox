@@ -5,8 +5,7 @@ lib <- function (Package, Package.Name = NULL, attach = TRUE, updateCRAN = FALSE
    on.exit(options(oldOpts))
    
     " # quiet = ifelse(sys.nframe() < 2, FALSE, TRUE) "
-    if (autoAddRepo & options()$repos[names(options()$repos) %in% 
-        "CRAN"] %in% "@CRAN@") 
+    if (autoAddRepo & options()$repos[names(options()$repos) %in% "CRAN"] %in% "@CRAN@") 
         local({
             r <- getOption("repos")
             r["CRAN"] <- "http://cran.fhcrc.org"
@@ -27,6 +26,8 @@ lib <- function (Package, Package.Name = NULL, attach = TRUE, updateCRAN = FALSE
             Package.Name <- deparse(substitute(Package.Name))
         if (Package.Name == "NULL") 
             Package.Name <- get.subs(Package, "/")[[length(get.subs(Package, "/"))]]
+		if(!quiet) 
+	        on.exit(cat("\nPackage = ", Package, "; Package.Name = ", Package.Name, "\n\n", sep = ""), add = TRUE)
         if (any(utils::installed.packages()[, 1] %in% Package.Name))  
              SHA.OLD <- packageDescription(Package.Name)$RemoteSha         
         remotes::install_github(Package, quiet = quiet, force = force, ...)
@@ -40,8 +41,7 @@ lib <- function (Package, Package.Name = NULL, attach = TRUE, updateCRAN = FALSE
             unloadNamespace(Package.Name)   
             library(Package.Name, pos = pos, character.only = TRUE)
         }    
-    }
-    else {
+    } else {
         if (any(utils::installed.packages()[, 1] %in% Package)) {
             if (updateCRAN) 
                 update.packages(Package, ask = FALSE)
@@ -52,4 +52,6 @@ lib <- function (Package, Package.Name = NULL, attach = TRUE, updateCRAN = FALSE
         if (attach) 
             library(Package, pos = pos, character.only = TRUE)
     }
+	
 }
+
