@@ -11,7 +11,7 @@ gitAFile <- function (URL, type = c("function", "csv", "script", "RData", "pdfGi
   # Or directly using browseGitPDF: JRWToolBox::browseGitPDF("https://github.com/James-Thorson/VAST/blob/master/manual/VAST_model_structure.pdf")
   # Displaying pdf's from GitHub: https://webapps.stackexchange.com/questions/48061/can-i-trick-github-into-displaying-the-pdf-in-the-browser-instead-of-downloading 
   
-    require(RCurl)
+    JRWToolBox::lib(RCurl)
     Source <- function(file, ...) {
         ls.ext <- function(file) {
             local({
