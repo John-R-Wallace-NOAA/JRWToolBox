@@ -34,9 +34,10 @@ dataWareHouseTrawlBio <- function (commonName = "canary rockfish", species = NUL
     }
         
     projectNames <- JRWToolBox::scanIn("
-                                 longProject                            shortProject
+                                 longProject                           shortProject
                    'Groundfish Triennial Shelf Survey'                   AFSC.Shelf
-                                                   NA                    AFSC.Slope
+           'Triennial Shelf Groundfish Survey: Canada'            AFSC.Shelf.Canada
+                              'AFSC/RACE Slope Survey'                   AFSC.Slope
        'Groundfish Slope and Shelf Combination Survey'                 WCGBTS.Combo
                              'Groundfish Shelf Survey'                 WCGBTS.Shelf 
                              'Groundfish Slope Survey'                 WCGBTS.Slope
@@ -48,9 +49,9 @@ dataWareHouseTrawlBio <- function (commonName = "canary rockfish", species = NUL
       
     if(	projectShort[1] %in% c('Ask', 'ask'))  {
         cat("\n\nSelect a project [enter 0 (zero) to abort]:\n\n"); flush.console()
-        projectShort <- switch(menu(c("AFSC.Shelf","AFSC.Slope","WCGBTS.Combo","WCGBTS.Shelf","WCGBTS.Slope","WCGBTS.Hypoxia","WCGBTS.Santa.Barb.Basin","WCGBTS.Shelf.Rockfish","WCGBTS.Video")) + 1,
-        stop("No project selected"), "AFSC.Shelf","AFSC.Slope","WCGBTS.Combo","WCGBTS.Shelf","WCGBTS.Slope","WCGBTS.Hypoxia","WCGBTS.Santa.Barb.Basin","WCGBTS.Shelf.Rockfish","WCGBTS.Video")
-        cat("\n\nTo avoid this menu, the (quoted) project names shown above may be entered into the project argument.\n")
+        projectShort <- switch(menu(c("AFSC.Shelf # Triennial","AFSC.Shelf.Canada","AFSC.Slope","WCGBTS.Combo","WCGBTS.Shelf","WCGBTS.Slope","WCGBTS.Hypoxia","WCGBTS.Santa.Barb.Basin","WCGBTS.Shelf.Rockfish","WCGBTS.Video")) + 1,
+        stop("No project selected"), "AFSC.Shelf","AFSC.Shelf.Canada","AFSC.Slope","WCGBTS.Combo","WCGBTS.Shelf","WCGBTS.Slope","WCGBTS.Hypoxia","WCGBTS.Santa.Barb.Basin","WCGBTS.Shelf.Rockfish","WCGBTS.Video")
+        cat("\n\nTo avoid this menu, the (quoted) project names shown above may be entered into the 'project' argument.\n")
         cat("\nOne project name or a vector of project names may be entered.  A warning will be shown if a project has no data for the filters given.\n")
      }
     
@@ -72,14 +73,14 @@ dataWareHouseTrawlBio <- function (commonName = "canary rockfish", species = NUL
         if (any(P %in% c('AFSC.Shelf', 'AFSC.Slope')))
             UrlText <- paste0("https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.individual_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",", 
                 "station_invalid=0,", "operation_dim$is_assessment_acceptable=True,", "operation_dim$legacy_performance_code!=8,",
-                "field_identified_taxonomy_dim$scientific_name=", paste(strsplit(species, " ")[[1]], collapse = "%20"), ",date_dim$year>=", 
-                yearRange[1], ",date_dim$year<=", yearRange[2], "&variables=", 
+                "field_identified_taxonomy_dim$scientific_name=", paste(strsplit(species, " ")[[1]], collapse = "%20"), ",year>=", 
+                yearRange[1], ",year<=", yearRange[2], "&variables=", 
                 paste0(Vars, collapse = ","))
         else         
             UrlText <- paste0("https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.individual_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",", 
                 "station_invalid=0,", "performance=Satisfactory,",
-                "field_identified_taxonomy_dim$scientific_name=", paste(strsplit(species, " ")[[1]], collapse = "%20"), ",date_dim$year>=", 
-                yearRange[1], ",date_dim$year<=", yearRange[2], "&variables=", 
+                "field_identified_taxonomy_dim$scientific_name=", paste(strsplit(species, " ")[[1]], collapse = "%20"), ",year>=", 
+                yearRange[1], ",year<=", yearRange[2], "&variables=", 
                 paste0(Vars, collapse = ","))
                 
         if (verbose) cat("\n\nURL for the species:\n\n", UrlText, "\n\n")
@@ -121,7 +122,7 @@ dataWareHouseTrawlBio <- function (commonName = "canary rockfish", species = NUL
         
             UrlText <- paste0("https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.triennial_length_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",", 
                 "station_invalid=0,", "operation_dim$is_assessment_acceptable=True,", "operation_dim$legacy_performance_code!=8,", "field_identified_taxonomy_dim$scientific_name=", 
-                paste(strsplit(species, " ")[[1]], collapse = "%20"), ",date_dim$year>=", yearRange[1], ",date_dim$year<=", yearRange[2], "&variables=", 
+                paste(strsplit(species, " ")[[1]], collapse = "%20"), ",year>=", yearRange[1], ",year<=", yearRange[2], "&variables=", 
                 paste0(Vars, collapse = ","))
                 
              if (verbose) cat("\n\nURL for AFSC.Shelf lengths:\n\n", UrlText, "\n\n")   
@@ -169,6 +170,7 @@ dataWareHouseTrawlBio <- function (commonName = "canary rockfish", species = NUL
     cat("\n")
     SpAll
 }
+
 
 
 
