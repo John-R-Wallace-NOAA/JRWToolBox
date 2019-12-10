@@ -83,7 +83,7 @@ dataWareHouseTrawlBio <- function (commonName = "canary rockfish", species = NUL
                 yearRange[1], ",year<=", yearRange[2], "&variables=", 
                 paste0(Vars, collapse = ","))
                 
-        if (verbose) cat("\n\nURL for the species:\n\n", UrlText, "\n\n")
+        if (verbose) cat("\n\nURL for the species' ages:\n\n", UrlText, "\n\n")
         
         noColFlag <- FALSE
         if(headOnly) {
