@@ -73,8 +73,8 @@ dataWareHouseTrawlCatch <- function (commonName = "canary rockfish", species = N
         
         UrlText <- paste0("https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.catch_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",", 
             "station_invalid=0,", "performance=Satisfactory,", 
-            "field_identified_taxonomy_dim$scientific_name=", paste(strsplit(species, " ")[[1]], collapse = "%20"), ",date_dim$year>=", 
-            yearRange[1], ",date_dim$year<=", yearRange[2], "&variables=", paste0(Vars, collapse = ","))
+            "field_identified_taxonomy_dim$scientific_name=", paste(strsplit(species, " ")[[1]], collapse = "%20"), ",year>=", 
+            yearRange[1], ",year<=", yearRange[2], "&variables=", paste0(Vars, collapse = ","))
         
         if (verbose) 
             cat("\n\nURL for the species:\n\n", UrlText, "\n\n")
@@ -110,14 +110,14 @@ dataWareHouseTrawlCatch <- function (commonName = "canary rockfish", species = N
             " # Beth still needs to add  is_assessment_acceptable  to the other surveys"
             if (P %in% c('AFSC.Shelf', 'AFSC.Slope')) 
                UrlText <- paste0("https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.operation_haul_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",", 
-                  "station_invalid=0,", "operation_dim$is_assessment_acceptable=True,", "operation_dim$legacy_performance_code!=8,", "date_dim$year>=", yearRange[1], ",date_dim$year<=", yearRange[2],
+                  "station_invalid=0,", "operation_dim$is_assessment_acceptable=True,", "operation_dim$legacy_performance_code!=8,", "year>=", yearRange[1], ",year<=", yearRange[2],
                   "&variables=", paste0(Vars, collapse = ","))
             else if (P %in% 'AFSC.Shelf.Canada') 
                   UrlText <- paste0("https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.operation_haul_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",", 
-                     "station_invalid=0,", "date_dim$year>=", yearRange[1], ",date_dim$year<=", yearRange[2], "&variables=", paste0(Vars, collapse = ","))    
+                     "station_invalid=0,", "year>=", yearRange[1], ",year<=", yearRange[2], "&variables=", paste0(Vars, collapse = ","))    
             else
                   UrlText <- paste0("https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.operation_haul_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",", 
-                     "station_invalid=0,", "performance=Satisfactory,", "date_dim$year>=", yearRange[1], ",date_dim$year<=", yearRange[2],
+                     "station_invalid=0,", "performance=Satisfactory,", "year>=", yearRange[1], ",year<=", yearRange[2],
                      "&variables=", paste0(Vars, collapse = ","))
                         
             if (verbose) 
@@ -163,4 +163,5 @@ dataWareHouseTrawlCatch <- function (commonName = "canary rockfish", species = N
     cat("\n")
     invisible(OutAll)
 }
+
 
