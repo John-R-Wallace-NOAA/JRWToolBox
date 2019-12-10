@@ -70,8 +70,8 @@ dataWareHouseTrawlBio.OLD <- function (commonName = "canary rockfish", species =
         " # species and performance=Satisfactory added; went with a year range approach for the years to select  "
         UrlText <- paste0("https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.individual_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",", 
             "station_invalid=0,", "performance=Satisfactory,",
-            "field_identified_taxonomy_dim$scientific_name=", paste(strsplit(species, " ")[[1]], collapse = "%20"), ",date_dim$year>=", 
-            yearRange[1], ",date_dim$year<=", yearRange[2], "&variables=", 
+            "field_identified_taxonomy_dim$scientific_name=", paste(strsplit(species, " ")[[1]], collapse = "%20"), ",year>=", 
+            yearRange[1], ",year<=", yearRange[2], "&variables=", 
             paste0(Vars, collapse = ","))
         
         if (verbose) cat("\n\nURL for the species:\n\n", UrlText, "\n\n")
@@ -113,7 +113,7 @@ dataWareHouseTrawlBio.OLD <- function (commonName = "canary rockfish", species =
         
             UrlText <- paste0("https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.triennial_length_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",", 
                 "station_invalid=0,", "performance=Satisfactory,", "field_identified_taxonomy_dim$scientific_name=", 
-                paste(strsplit(species, " ")[[1]], collapse = "%20"), ",date_dim$year>=", yearRange[1], ",date_dim$year<=", yearRange[2], "&variables=", 
+                paste(strsplit(species, " ")[[1]], collapse = "%20"), ",year>=", yearRange[1], ",year<=", yearRange[2], "&variables=", 
                 paste0(Vars, collapse = ","))
                 
              if (verbose) cat("\n\nURL for AFSC.Shelf lengths:\n\n", UrlText, "\n\n")   
@@ -263,6 +263,7 @@ dataWareHouseTrawlBio.OLD <- function (commonName = "canary rockfish", species =
     cat("\n")
     SpAll
 }
+
 
 
 
