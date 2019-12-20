@@ -16,7 +16,7 @@ import.sql <- function (SQL, VAR = "", VAL = "", File = FALSE, dsn = 'PacFIN', u
     SQL.Parsed <- Hmisc::sedit(SQL, VAR, VAL)
     
     if (View.Parsed.Only) {
-        print(SQL.Parsed)
+        cat(SQL.Parsed, "\n")
         return(invisible())
     }
     if(Windows) {
