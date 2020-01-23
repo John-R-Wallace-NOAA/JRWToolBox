@@ -44,7 +44,7 @@ To save a script (not an R function) as a file in the current working directory 
  
       gitEdit(Table)
       
- downloads JRWToolBox::Table() and puts it into notepad++ for editing (if one of the two paths to notepad++ in gitEDit is correct).    
+ downloads JRWToolBox::Table() and puts it into notepad++ for editing (if one of the two paths to notepad++ in gitEdit is correct).    
  
 
 ======================================================================================== 
