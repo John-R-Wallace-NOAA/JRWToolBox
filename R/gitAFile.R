@@ -1,7 +1,7 @@
 
 
 
-gitAFile <- function (URL, type = c("function", "csv", "script", "RData", "pdfGitHub")[1], run = FALSE, show = FALSE, viewOnly = FALSE, File = NULL, deleteFileObj = ifelse(is.null(File), TRUE, FALSE), rawGitPrefix = TRUE, ...) 
+gitAFile <- function (URL, type = c("function", "csv", "script", "RData", "RPckageZip", "pdfGitHub")[1], run = FALSE, show = FALSE, viewOnly = FALSE, File = NULL, deleteFileObj = ifelse(is.null(File), TRUE, FALSE), rawGitPrefix = TRUE, ...) 
 {
   # Example:  gitAFile("John-R-Wallace-NOAA/JRWToolBox/master/R/gitAFile.R")
   # Adds the raw GitHub prefix to create a full URL when type = "function", i.e.: paste0("https://raw.githubusercontent.com", "John-R-Wallace-NOAA/JRWToolBox@master/R/panel.conf.pred.band.R") 
@@ -60,23 +60,45 @@ gitAFile <- function (URL, type = c("function", "csv", "script", "RData", "pdfGi
             file.show(File.ASCII)
        }
        
-       if(grepl(type, "RData")) {
+       if(any(type %in% c("RData", "RPckageZip"))) {
           # https://stackoverflow.com/questions/18833031/download-rdata-and-csv-files-from-ftp-using-rcurl-or-any-other-method 
           # test <- load(rawConnection(getBinaryURL(URL)))  # Does not work for me on binary RData files 
-         if(is.null(File))
-            File.BINARY <- tempfile()
-         else 
+          
+          if(is.null(File)) {
+            if(type %in% "RPckageZip") 
+               File.BINARY <- tempfile(fileext = ".zip")
+            if(type %in% "RData")
+               File.BINARY <- tempfile()        
+         } else {
             File.BINARY <- File
+         }
+          
          download.file(URL, File.BINARY, mode = 'wb')
-         if(show)
-            JRWToolBox::load(File.BINARY)
-         if(!show)
-            base::load(File.BINARY)
+         
+         if(type %in% "RData") {
+            if(show)
+               JRWToolBox::load(File.BINARY)
+            if(!show)
+               base::load(File.BINARY)
+         }
+         
+         if(type %in% "RPckageZip") {
+            # install_local(File.BINARY)
+            unzip(File)
+            noZipName <- get.subs(File, sep = ".")
+            noZipName <- paste(noZipName[-length(noZipName)], collapse = ".")
+            shortName <- get.subs(noZipName, sep = "-")
+            shortName <- paste(shortName[-length(shortName)], collapse = "-")
+            file.rename(noZipName, shortName)
+            zip(paste0(shortName, ".zip"), files = shortName)
+            install.packages(paste0(shortName, ".zip"),  repos = NULL, type = "win.binary")
+         }
        }
        
        if(grepl(type, "pdfGitHub")) { 
           JRWToolBox::browseGitPDF(URL)
        }
 }
+
 
 
