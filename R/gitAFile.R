@@ -1,7 +1,6 @@
 
-
-
-gitAFile <- function (URL, type = c("function", "csv", "script", "RData", "RPckageZip", "pdfGitHub")[1], run = FALSE, show = FALSE, viewOnly = FALSE, File = NULL, deleteFileObj = ifelse(is.null(File), TRUE, FALSE), rawGitPrefix = TRUE, ...) 
+gitAFile <- function (URL, type = c("function", "csv", "script", "RData", "RPckageZip", "pdfGitHub")[1], File = NULL, shortName = NULL, run = FALSE, show = FALSE, viewOnly = FALSE, 
+                      deleteFileObj = ifelse(is.null(File), TRUE, FALSE), rawGitPrefix = TRUE, ...) 
 {
   # Example:  gitAFile("John-R-Wallace-NOAA/JRWToolBox/master/R/gitAFile.R")
   # Adds the raw GitHub prefix to create a full URL when type = "function", i.e.: paste0("https://raw.githubusercontent.com", "John-R-Wallace-NOAA/JRWToolBox@master/R/panel.conf.pred.band.R") 
@@ -87,11 +86,17 @@ gitAFile <- function (URL, type = c("function", "csv", "script", "RData", "RPcka
             unzip(File)
             noZipName <- get.subs(File, sep = ".")
             noZipName <- paste(noZipName[-length(noZipName)], collapse = ".")
-            shortName <- get.subs(noZipName, sep = "-")
-            shortName <- paste(shortName[-length(shortName)], collapse = "-")
-            file.rename(noZipName, shortName)
+			if(is.null(shortName)) {
+			     shortName <- get.subs(noZipName, sep = "-")
+                 shortName <- paste(shortName[-length(shortName)], collapse = "-")
+				 file.rename(noZipName, shortName)
+			}	 
+            if(!is.null(shortName))
+			   setwd(noZipName)
             zip(paste0(shortName, ".zip"), files = shortName)
             install.packages(paste0(shortName, ".zip"),  repos = NULL, type = "win.binary")
+			if(!is.null(shortName))
+			   setwd("..")
          }
        }
        
@@ -99,6 +104,4 @@ gitAFile <- function (URL, type = c("function", "csv", "script", "RData", "RPcka
           JRWToolBox::browseGitPDF(URL)
        }
 }
-
-
 
