@@ -1,7 +1,7 @@
 
 YearlyResultsFigures <- function(spShortName. = NULL, spLongName. = NULL, HomeDir = ".", eastLongitude = -124 - (N + 1) * longitudeDelta, longitudeDelta = 2.6, Index. = NULL, SP.Results.Dpth. = NULL, 
         MapDetails_List. = MapDetails_List, Report. = Report, Opt. = Opt, DateFile. = DateFile, Year_Set. = Year_Set, Years2Include. = Years2Include, strata.limits. = strata.limits, 
-        Ages. = NULL, LenMin. = NULL, LenMax. = NULL, yearDelta = 0.5, title = FALSE, relativeAbundance = FALSE, changeUnitsUnder1Kg = TRUE, sweptAreaInHectares = FALSE, rhoConfig. = 0, Graph.Dev = "tif") 
+        Ages. = NULL, LenMin. = NULL, LenMax. = NULL, yearDelta = 0.5, title = FALSE, relativeAbundance = FALSE, changeUnitsUnder1Kg = TRUE, sweptAreaInHectares = FALSE, rhoConfig. = NULL, Graph.Dev = "tif") 
 {
     if (!any(installed.packages()[, 1] %in% "devtools")) 
         install.packages("devtools")
@@ -89,13 +89,23 @@ YearlyResultsFigures <- function(spShortName. = NULL, spLongName. = NULL, HomeDi
         spLongName. <- spLongName 
     if(is.null(spLongName.) & !exists('spLongName'))          
         spLongName. <- spShortName.
-      
-    if(Graph.Dev == "png")      
-        png(paste0(DateFile., "SpResults ", spShortName., ".png"),  width = 6000, height = 6000, bg = 'white', type = 'cairo')
+     
 
-    if(Graph.Dev == "tiff")      
-        tiff(paste0(DateFile., "SpResults ", spShortName., ", Rho = ", rhoConfig., ", 6000x6000.tif"),  width = 6000, height = 6000, bg = 'white', type = 'cairo') # 10" X 10" @ 600 dpi (10*10*600*600 = 6000^2)
+    if(is.null(rhoConfig.))  {
+        if(Graph.Dev == "png")      
+            png(paste0(DateFile., "SpResults ", spShortName., ".png"),  width = 6000, height = 6000, bg = 'white', type = 'cairo')
         
+        if(Graph.Dev == "tif")      
+            tiff(paste0(DateFile., "SpResults ", spShortName., ".tif"),  width = 6000, height = 6000, bg = 'white', type = 'cairo') # 10" X 10" @ 600 dpi (10*10*600*600 = 6000^2)
+    } else {
+    
+        if(Graph.Dev == "png")      
+            png(paste0(DateFile., "SpResults ", spShortName., ", Rho = ", rhoConfig., ".png"),  width = 6000, height = 6000, bg = 'white', type = 'cairo')
+        
+        if(Graph.Dev == "tif")      
+            tiff(paste0(DateFile., "SpResults ", spShortName., ", Rho = ", rhoConfig., ".tif"),  width = 6000, height = 6000, bg = 'white', type = 'cairo') # 10" X 10" @ 600 dpi (10*10*600*600 = 6000^2)
+    } 
+    
     par(cex = 6)   
 
     N <- length(Year_Set.)
@@ -249,4 +259,5 @@ YearlyResultsFigures <- function(spShortName. = NULL, spLongName. = NULL, HomeDi
  
 
  
+
 
