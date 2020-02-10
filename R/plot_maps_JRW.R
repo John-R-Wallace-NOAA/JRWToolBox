@@ -77,6 +77,15 @@ function (plot_set = 3, MappingDetails, Report, Sdreport = NULL,
             category_names = 1:dim(Report$D_xcy)[2]
         Ncategories = dim(Report$D_xcy)[2]
     }
+	if ("D_gcy" %in% names(Report)) {
+        if (is.null(Year_Set)) 
+            Year_Set = 1:dim(Report$D_gcy)[3]
+        if (is.null(Years2Include)) 
+            Years2Include = 1:dim(Report$D_gcy)[3]
+        if (is.null(category_names)) 
+            category_names = 1:dim(Report$D_gcy)[2]
+        Ncategories = dim(Report$D_gcy)[2]
+    }
     if ("dhat_ktp" %in% names(Report)) {
         if (is.null(Year_Set)) 
             Year_Set = 1:dim(Report$dhat_ktp)[2]
@@ -86,6 +95,7 @@ function (plot_set = 3, MappingDetails, Report, Sdreport = NULL,
             category_names = 1:dim(Report$dhat_ktp)[3]
         Ncategories = dim(Report$dhat_ktp)[3]
     }
+	
     if (is.null(mfrow)) 
         mfrow = c(ceiling(sqrt(length(Years2Include))), ceiling(length(Years2Include)/ceiling(sqrt(length(Years2Include)))))
     plot_codes <- c("Pres", "Pos", "Dens", "Pos_Rescaled", "Dens_Rescaled", 
@@ -253,3 +263,4 @@ function (plot_set = 3, MappingDetails, Report, Sdreport = NULL,
     }
     invisible(Return)
 }
+
