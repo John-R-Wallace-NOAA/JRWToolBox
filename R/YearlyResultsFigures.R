@@ -158,7 +158,7 @@ YearlyResultsFigures <- function(spShortName. = NULL, spLongName. = NULL, HomeDi
     if(LatMin. <= 32.25)    
            ageLat <- 32  
      
-    if(is.null(Ages.) & exists('Ages', where = 1, inherits = F) & !is.null(Ages)) {
+     if(is.null(Ages.) & !(!exists('Ages', where = 1, inherits = F) || is.null(Ages))) {
           Ages. <- Ages
           cat("\n\nUsing the non-null 'Ages' found in .GlobalEnv. Delete or rename the file to not use it.\n")
     }     
