@@ -1,7 +1,8 @@
 
 YearlyResultsFigures <- function(spShortName. = NULL, spLongName. = NULL, HomeDir = ".", eastLongitude = -124 - (N + 1) * longitudeDelta, longitudeDelta = 2.6, Index. = NULL, SP.Results.Dpth. = NULL, 
         MapDetails_List. = MapDetails_List, Report. = Report, Opt. = Opt, DateFile. = DateFile, Year_Set. = Year_Set, Years2Include. = Years2Include, strata.limits. = strata.limits, 
-        Ages. = NULL, LenMin. = NULL, LenMax. = NULL, yearDelta = 0.5, title = FALSE, relativeAbundance = FALSE, changeUnitsUnder1Kg = TRUE, sweptAreaInHectares = FALSE, rhoConfig. = NULL, Graph.Dev = "tif") 
+        Ages. = NULL, LenMin. = NULL, LenMax. = NULL, yearDelta = 0.5, title = FALSE, relativeAbundance = FALSE, changeUnitsUnder1Kg = TRUE, 
+        sweptAreaInHectares = FALSE, rhoConfig. = NULL, numCol =13, Graph.Dev = "tif") 
 {
     if (!any(installed.packages()[, 1] %in% "devtools")) 
         install.packages("devtools")
@@ -61,13 +62,13 @@ YearlyResultsFigures <- function(spShortName. = NULL, spLongName. = NULL, HomeDi
                 
     JRWToolBox::catf("\n\nCreating the species results by year figure using hexagon shapes (hexbin R package)\n\n")
      
-    # 13 Colors 
+    # numCol colors 
     SP.Results <- SP.Results.Dpth.[,-(1:2)]
     SP.Results[,-(1:2)] <- SP.Results[,-(1:2)] - min(SP.Results[,-(1:2)])
-    SP.Results[,-(1:2)] <- SP.Results[,-(1:2)] * 12/max(SP.Results[,-(1:2)]) + 1 
+    SP.Results[,-(1:2)] <- SP.Results[,-(1:2)] * (numCol - 1)/max(SP.Results[,-(1:2)]) + 1 
     SP.Results$Rescaled.Sum <- apply(SP.Results[,-(1:2)], 1, sum)
     SP.Results$Rescaled.Sum <- SP.Results$Rescaled.Sum - min(SP.Results$Rescaled.Sum)
-    SP.Results$Rescaled.Sum <- SP.Results$Rescaled.Sum * 12/max(SP.Results$Rescaled.Sum) + 1
+    SP.Results$Rescaled.Sum <- SP.Results$Rescaled.Sum * (numCol - 1)/max(SP.Results$Rescaled.Sum) + 1
    
     if(is.null(Index.)) {
         if(exists('Index')) {
@@ -115,17 +116,18 @@ YearlyResultsFigures <- function(spShortName. = NULL, spLongName. = NULL, HomeDi
     
     latExtend <- ifelse(N > 13, -((-125 - (N + 1) * 3.5 + 117) - (-125 - 14 * 3.5 + 117))/3, 0)
        
-    Imap::imap(longlat = list(Imap::world.h.land, Imap::world.h.borders), col= c("black", "cyan"), poly = c("grey40", NA), longrange = c(eastLongitude, -117), latrange = c(27 - latExtend, 48.2), 
+    Imap::imap(longlat = list(Imap::world.h.land, Imap::world.h.borders, world.h.island), col= c("black", "cyan"), poly = c("grey40", NA), longrange = c(eastLongitude, -117), latrange = c(27 - latExtend, 48.2), 
              axes = 'latOnly', zoom = FALSE, bg = "white", cex.ylab = 1.5, cex.axis = 1.5, lwd.ticks = 1.5)
     box(lwd = 5)
     
     Col <- colorRampPalette(colors = c("blue", "dodgerblue", "cyan", "green", "orange", "red", "red3"))
     
-    COL <- Col(13)[SP.Results$Rescaled.Sum]
-    JRWToolBox::hexPolygon(SP.Results$X, SP.Results$Y, hexC = hexcoords(dx = 0.1, sep=NA), col = COL, border = COL)
+    COL <- Col(numCol)[SP.Results$Rescaled.Sum]
+    JRWToolBox::hexPolygon(SP.Results$X, SP.Results$Y, hexC = hexcoords(dx = 0.01, sep=NA), col = COL, border = COL)
     
     for (i in 1:N) {
-       COL <- Col(13)[SP.Results[, N + 3 - i]]
+       COL <- Col(numCol)[SP.Results[, N + 3 - i]]
+       assign("COL", COL, pos =1)
        JRWToolBox::hexPolygon(SP.Results$X - i * longitudeDelta, SP.Results$Y, hexC = hexcoords(dx = 0.1, sep=NA), col = COL, border = COL)
     }
     
@@ -259,5 +261,6 @@ YearlyResultsFigures <- function(spShortName. = NULL, spLongName. = NULL, HomeDi
  
 
  
+
 
 
