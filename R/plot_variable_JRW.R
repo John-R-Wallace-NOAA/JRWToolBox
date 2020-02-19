@@ -123,7 +123,7 @@ function( Y_gt, map_list, panel_labels, projargs='+proj=longlat', map_resolution
     if( tI == 0)
        Points_orig = sp::SpatialPointsDataFrame( coords=loc_g, data=data.frame( y = apply(Y_gt, 1, mean)), proj4string = CRS_orig )
     else 
-      Points_orig = sp::SpatialPointsDataFrame( coords=loc_g, data=data.frame("y"=Y_gt[,tI]), proj4string = CRS_orig )
+      Points_orig = sp::SpatialPointsDataFrame( coords=loc_g, data=data.frame(y = Y_gt[,tI]), proj4string = CRS_orig )
 
     # Reproject to Lat-Long
     Points_LongLat = sp::spTransform( Points_orig, sp::CRS('+proj=longlat') )
