@@ -1,328 +1,279 @@
-# Download with:
-# JRWToolBox::gitAFile("John-R-Wallace-NOAA/VAST_Examples_and_Scripts/master/West_Coast_Annual_Exmpl_2020_V3X.R", "script", File = "West_Coast_Annual_example_2019.R", show = FALSE)
-# or edit with [using a properly configured gitEdit()]
-# JRWToolBox::gitEdit(West_Coast_Annual_Exmpl_2020_V3X, "John-R-Wallace-NOAA/VAST_Examples_and_Scripts/master/")
 
-
-# Test run of single species spatial delta glmm
-# Test, canary data; implementation, Lingcod groundfish survey data
-# Based on single-species example
-# Revised by M. Haltuch, Feb 2017
-# Revised by J. Wallace Mar 2017
-# Revised by James Thorson April 2017
-# Revised by J. Wallace Apr 2017
-# Revised by J. Wallace Dec 2018
-# Revised by J. Wallace FEb 2020; uses fine_scale = TRUE in VAST ver. 3X and JRWToolBox::YearlyResultsFigure_VAST3X(), following the upper level functions (wrappers) approach.
-
-# =============================================
-
-# VAST will often leave you in the subdirectory of the current run. Using HomeDir helps get you back where you started.
-# Only do this once per R session, after you are in the your main working directory:
-
-HomeDir <- getwd()
-
-# =============================================
-
-
-summaryNWFSC <- function( fit = fit, obj = fit$tmb_list$Obj, Opt = fit$parameter_estimates, sdreport = fit$parameter_estimates$SD, savedir = DateFile ) {
-
-    # Based on James Thorson's summary_nwfsc(), circa 2017
-    # Revised by John Wallace Dec 2018
-
-    f <- function(num,threshold=0.000001) ifelse(num<threshold,paste0("< ",threshold),num)
-    # Table of settings
-    TableA = data.frame( "Setting_name"=rep(NA,9), "Setting_used"=NA )
-    TableA[1,] <- c("Number of knots", fit$spatial_list$n_x)
-    TableA[2,] <- c("Maximum gradient", formatC(f(max(abs( obj$gr(TMB::summary.sdreport(sdreport,"fixed")[,'Estimate'])))),format="f",digits=6) )
-    TableA[3,] <- c("Is hessian positive definite?", switch(as.character(sdreport$pdHess),"FALSE"="No","TRUE"="Yes") )
-    TableA[4,] <- c("Was bias correction used?", ifelse("Est. (bias.correct)"%in%colnames(TMB::summary.sdreport(sdreport)),"Yes","No") )
-    TableA[5,] <- c("Distribution for measurement errors", switch(as.character(obj$env$data$ObsModel[1]),"1"="Lognormal","2"="Gamma") )
-    TableA[6,] <- c("Spatial effect for encounter probability", switch(as.character(fit$data_list$FieldConfig[1, 1]),"-1"="No","1"="Yes") )
-    TableA[7,] <- c("Spatio-temporal effect for encounter probability", switch(as.character(fit$data_list$FieldConfig[1, 2]),"-1"="No","1"="Yes") )
-    TableA[8,] <- c("Spatial effect for positive catch rate", switch(as.character(fit$data_list$FieldConfig[2, 1]),"-1"="No","1"="Yes") )
-    TableA[9,] <- c("Spatio-temporal effect for positive catch rate", switch(as.character(fit$data_list$FieldConfig[2, 2]),"-1"="No","1"="Yes") )
-    
-    # Print number of parameters
-    # TableB = FishStatsUtils::list_parameters( obj, verbose = FALSE )
-    TableB <- list_parameters( obj, verbose = FALSE )
-    
-    # Print table of MLE of fixed effects
-    TableC <- JRWToolBox::r(JRWToolBox::renum(cbind(Param = Opt$diagnostics[, 1], TMB::summary.sdreport( Opt$SD, "fixed" ), Opt$diagnostics[, -1])))
-        
-    # Return
-    Return <- list(TableA = TableA, TableB = TableB, TableC =TableC)
-    if( !is.null(savedir)) for(i in 1:3) write.csv(Return[[i]], file=paste0(savedir,"/",names(Return)[i],".csv"), row.names = FALSE)
-    cat("\n")
-    Return
-}
-
-list_parameters <- function (Obj, verbose = TRUE) {
-
-    # From ThorsonUtilities, circa 2017
-    # If list.parameters() is moved to FishStatsUtils, this fucntion will be removed.
-
-
-    Return = list()
-    Table = data.frame()
-    if (length(Obj$env$random) > 0) {
-        Return[["Fixed_effects"]] = names(Obj$env$last.par[-Obj$env$random])
-        Return[["Random_effects"]] = names(Obj$env$last.par[Obj$env$random])
-        Table = data.frame(Coefficient_name = names(table(Return[["Fixed_effects"]])), 
-            Number_of_coefficients = as.numeric(table(Return[["Fixed_effects"]])), 
-            Type = "Fixed")
-        Table = rbind(Table, data.frame(Coefficient_name = names(table(Return[["Random_effects"]])), 
-            Number_of_coefficients = as.numeric(table(Return[["Random_effects"]])), 
-            Type = "Random"))
-    }
-    else {
-        Return[["Fixed_effects"]] = names(Obj$env$last.par)
-        Table = data.frame(Coefficient_name = names(table(Return[["Fixed_effects"]])), 
-            Number_of_coefficients = as.numeric(table(Return[["Fixed_effects"]])), 
-            Type = "Fixed")
-    }
-    if (verbose == TRUE) {
-        message("List of estimated fixed and random effects:")
-        print(Table)
-    }
-    return(invisible(Table))
-}
-
-
-# =============================================
-
-# 'spFormalName', is a common name that needs to work with the Data Warehouse, i.e. only proper names capitalized.
-# 'spLongName' and 'spShortName' can be whatever is desired, the long name goes in the directory name and
-# the short name goes into the file name of the Yearly Results Figure.
-
-# Canary rockfish
-  # spFormalName <- 'canary rockfish' 
-  # spLongName <- 'Canary rockfish'
-  # spShortName <- 'CNRY'
-
-# Lingcod
-spFormalName <- 'lingcod' 
-spLongName <- 'Lingcod'
-spShortName <- 'LCOD'
-
- if (!any(installed.packages()[, 1] %in% "devtools")) 
+YearlyResultsFigure_VAST3X <- function(spShortName. = NULL, spLongName. = NULL, HomeDir = ".", eastLongitude = -124 - (N + 1) * longitudeDelta, longitudeDelta = 3.5, Index. = NULL, 
+        fit. = fit, map_list. = NULL, SP.Results.Dpth. = NULL, Report. = Report, DateFile. = DateFile, Year_Set. = Year_Set, Years2Include. = Years2Include, strata.limits. = strata.limits, 
+        Ages. = NULL, LenMin. = NULL, LenMax. = NULL, yearDelta = 0.5, title = FALSE, relativeAbundance = FALSE, changeUnitsUnder1Kg = TRUE, sweptAreaInHectares = FALSE, 
+        rhoConfig. = NULL, numCol = 26, Graph.Dev = "tif") 
+{
+    if (!any(installed.packages()[, 1] %in% "devtools")) 
         install.packages("devtools")
-
-if (!any(installed.packages()[, 1] %in% "JRWToolBox"))
-     devtools::install_github("John-R-Wallace/R-ToolBox")
-
-# ***** To get years added to the residual plot do this until pulled to Kelli's verion ***    
-# JRWToolBox::lib("John-R-Wallace-NOAA/FishStatsUtils")
-
-# ***** Once Kelly accepts my fork, do this until pulled to Thorson's verion ***          
-# JRWToolBox::lib("kellijohnson-NOAA/FishStatsUtils")
+    if (!any(installed.packages()[, 1] %in% "JRWToolBox")) 
+        devtools::install_github("John-R-Wallace/JRWToolBox")
+        
+    JRWToolBox::lib(TeachingDemos, pos=1000)   # Put in back search position because of a conflict with %<=% function in my tool box.
+    
+    color.bar <- function(lut, min, max=-min, nticks=11, ticks=seq(min, max, len=nticks), title = '', ...) {
+          scale = (length(lut)-1)/(max-min)
+          plot(c(0,10), c(min,max), type='n', bty='n', xaxt='n', xlab='', yaxt='n', ylab='', main = title, ...)
+          axis(2, ticks, las=1)
+          for (i in 1:(length(lut)-1)) {
+             y = (i-1)/scale + min
+             rect(0,y,10,y+1/scale, col=lut[i], border=NA)
+          }
+    }
  
-# With the INSTALL_opts argument, warning messasges given when SHA number has not changed since last install.
-if (!any(installed.packages()[, 1] %in% "FishStatsUtils"))
-    devtools::install_github("james-thorson-noaa/FishStatsUtils", INSTALL_opts = "--no-multiarch --no-test-load")   
+    setwd(HomeDir) 
+      
+    #  ------------- Create Yearly_Dens.png where the density is within year not over all years -------------  
+             
+    graphics.off()
+    
+    if(is.null(map_list.)) 
+        map_list. = FishStatsUtils::make_map_info( Region = Region, Extrapolation_List = fit.$extrapolation_list, spatial_list = fit.$spatial_list, 
+                            NN_Extrap = fit.$spatial_list$PolygonList$NN_Extrap) 
+
+    if(is.null(SP.Results.Dpth.) & exists('SP.Results.Dpth')) { 
+        SP.Results.Dpth. <- SP.Results.Dpth
+        cat("\n\nUsing the 'SP.Results.Dpth' found. Delete or rename the file and rerun to have it recalculated. 'SP.Results.Dpth' is invisibly returned by this function.\n")
+        cat("\nRecalculation of 'SP.Results.Dpth' will also result in the 'Yearly_Dens.png' figure being recreated.\n\n")
+    }    
+    
+    if(is.null(SP.Results.Dpth.)) {
+    
        
-if (!any(installed.packages()[, 1] %in% "VAST"))
-    devtools::install_github("james-thorson-noaa/VAST", INSTALL_opts = "--no-multiarch --no-test-load --no-staged-install")
-
-if (!any(installed.packages()[, 1] %in% "pander"))
-     install.packages("pander")
-
-if (!any(installed.packages()[, 1] %in% "rnaturalearthdata"))
-    install.packages("rnaturalearthdata")
-
-
-require(TMB)
-require(VAST)
-
-# Extract species data from the Warehouse
-Data_Set <- JRWToolBox::dataWareHouseTrawlCatch(spFormalName, yearRange = c(2003, 2018), project = 'WCGBTS.Combo')
-
-# Look at the data by year and pass - showing 'NA's if any via JRWToolBox::Table function.
-JRWToolBox::Table(Data_Set$Year, Data_Set$Pass)
-
-# Versions of VAST you can use:
-list.files(R.home(file.path("library", "VAST", "executables")))
-# This gives the latest version available. (Up to v10_0_0 - then broken.)
-# (Version <- substr(list.files(R.home(file.path("library", "VAST", "executables")))[length(list.files(R.home(file.path("library", "VAST", "executables"))))], 1, 11))
-# Version 5+ gives a internal compiler error: Segmentation fault as of 21 Nov 2018
-Version <- "VAST_v8_5_0"  
-
-# # define the spatial resolution for the model, and whether to use a grid or mesh approximation
-# # mesh is default recommendation, number of knots need to be specified
-# # do not modify Kmeans setup
-# Method = c("Grid", "Mesh", "Spherical_mesh")[2]
-# grid_size_km = 25     # Value only matters if Method="Grid"
-n_x = 200  # Number of "knots" used when Method="Mesh"
-# Kmeans_Config = list( "randomseed"=1, "nstart"=100, "iter.max"=1e3 )   # Controls K-means algorithm to define location of knots when Method="Mesh"
-# 
-# Model settings
-
-# define whether to include spatial and spatio-temporal variation, whether its autocorrelated, and whether there's overdispersion
-# field config - for both model components
-# Omega- spatial variation
-# Epsilon - temporal spatial variation
-# review these settings
-# if all field config settings are zero it is a fixed effects model
-# RhoConfig - autocorrelation across time: defaults to zero, both annual intercepts (beta) and spatio-temporal (epsilon)
-# OverdispersionConfig, vessel effects for both components of the model?
-# settings can be on or off; 0,1
-# obs model - distribution for errors and which model to run (e.g. default is delta model with standard link functions)
-# ObsModel = c(2,0)
-# FieldConfig = c(Omega1 = 1, Epsilon1 = 1, Omega2 = 1, Epsilon2 = 1)
-# RhoConfig = c(Beta1 = 0,  Beta2 = 0, Epsilon1 = 0, Epsilon2 = 0)
-# OverdispersionConfig = c(Delta1 = 1, Delta2 = 1)  # Turn on vessel-year effects for both components if using WCGBTS
-
-
-# outputs calculated after model runs, essentially reports to create
-# Options = c(SD_site_density = 0, SD_site_logdensity = 0, Calculate_Range = 0, Calculate_evenness = 0, Calculate_effective_area = 0,  Calculate_Cov_SE = 0,
-#             Calculate_Synchrony = 0, Calculate_Coherence = 0, Calculate_Range = 1, Calculate_effective_area = 1)
-
-# strata limits, run model but then calculate area specific indices
-  (strata.limits <- data.frame(
-    STRATA = c("Coastwide","CA","OR","WA"),
-    north_border = c(49.0, 42.0, 46.0, 49.0),
-    south_border = c(32.0, 32.0, 42.0, 46.0),
-    shallow_border = c(55, 55, 55, 55),
-    deep_border = c(1280, 1280, 1280, 1280)
-    ))
-
-setwd(HomeDir)  # Make sure that the working directory is back where it started
-
-#region that tells software which grid to use
-Region = "California_current"
-
-#save files setting
-
-# DateFile = paste0(getwd(),'/VAST_output/')  # Simple, but requires manually changing the directory to save different runs
-(DateFile <- paste0(getwd(),'/VAST_output_', Sys.Date(), '_', spLongName, '_nx=', n_x, '/')) # Change '_nx=' for different runs, e.g. '_Pass_nx=' for including pass
-if(!dir.exists(DateFile)) dir.create(DateFile)
-
-#save all settings
-# Record = ThorsonUtilities::bundlelist( c("Data_Set","Version","Method","grid_size_km","n_x","FieldConfig","RhoConfig","OverdispersionConfig","ObsModel","Kmeans_Config") )
-# save( Record, file=file.path(DateFile,"Record.RData"))
-# capture.output( Record, file=paste0(DateFile,"Record.txt"))
-
-#set up data frame from data set
-#creates data geostat...need this data format
-# Vessel has a unique value for each boat-licence and calendar year (i.e., it's a "Vessel-Year" effect)
-Data_Geostat = data.frame(Catch_KG = Data_Set$Total_sp_wt_kg, Year = Data_Set$Year, Vessel = paste(Data_Set$Vessel, Data_Set$Year,sep="_"),
-             AreaSwept_km2 = Data_Set$Area_Swept_ha/100, Lat =Data_Set$Latitude_dd, Lon = Data_Set$Longitude_dd, Pass = Data_Set$Pass - 1.5)
-
-#see data format
-head(Data_Geostat)
-
-# Remove rows with missing values
-Data_Geostat = na.omit(Data_Geostat)
-
-
-# shows data being used, read this document
-pander::pandoc.table(Data_Geostat[1:6,], digits=3)
-
-
-# https://docs.google.com/document/d/1pl3-q8zlSBqTmPNaSHJU67S_hwN5nok_I9LAr-Klyrw/edit
-
-# FieldConfig = c(Omega1 = 1, Epsilon1 = 1, Omega2 = 1, Epsilon2 = 1) #  where Omega refers to spatial variation, Epsilon refers to spatio-temporal variation, Omega1 refers to variation in encounter probability, 
-#    and Omega2 refers to variation in positive catch rates, where 0 is off, "AR1" is an AR1 process, and >0 is the number of elements in a factor-analysis covariance. 
-
-# RhoConfig = c(Beta1 = 0,  Beta2 = 0, Epsilon1 = 0, Epsilon2 = 0)  # autocorrelation across time: defaults to zero, both annual intercepts (beta) and spatio-temporal (epsilon)
-
-# OverdispersionConfig = c(Delta1 = 1, Delta2 = 1) # Turn on vessel-year effects for both components if using WCGBTS
-settings <- make_settings( n_x = n_x, fine_scale = FALSE, ObsModel = c(2, 1), FieldConfig = c(Omega1 = 1, Epsilon1 = 1, Omega2 = 1, Epsilon2 = 1), RhoConfig = c(Beta1 = 0,  Beta2 = 0, Epsilon1 = 0, Epsilon2 = 0), 
-                  OverdispersionConfig = c(Delta1 = 1, Delta2 = 1), Region = Region, purpose = "index", strata.limits = strata.limits, bias.correct = FALSE )  
-
-# Run model
-sink(paste0(DateFile, "Fit_Output.txt"))
-fit <- fit_model( settings = settings, Lat_i = Data_Geostat$Lat, Lon_i = Data_Geostat$Lon, t_i = Data_Geostat$Year, working_dir = DateFile, test_fit = TRUE,
-                 c_i = rep(0, nrow(Data_Geostat)), b_i = Data_Geostat$Catch_KG, a_i = Data_Geostat$AreaSwept_km2, v_i = Data_Geostat$Vessel, newtonsteps = 0, run_model = TRUE)
-sink()                 
-
-summaryNWFSC( obj = fit$tmb_list$Obj, savedir = DateFile )
-
-fit$parameter_estimates$diagnostics
-
-# Check convergence via gradient (should be TRUE)
-all( abs(fit$parameter_estimates$diagnostics[,'final_gradient']) < 1e-2 )
-
-max(fit$parameter_estimates$diagnostics[,'final_gradient'])
-
-
-
-# Check convergence via Hessian (should be TRUE)
-all( eigen(fit$parameter_estimates$SD$cov.fixed)$values > 0 )
-
-cat("\nMax Gradient =", fit$parameter_estimates$max_gradient, "\n\n")
-cat("\nAIC =", fit$parameter_estimates$AIC, "\n\n")
-
-# Plot results # plot.fit_model()
-plot_list <- plot( fit, what = c('results', 'extrapolation_grid', 'spatial_mesh')[1], working_dir = DateFile)
-
-
-setwd(HomeDir)
-
-
-# MapDetails_List = FishStatsUtils::make_map_info( Region = Region, Extrapolation_List = fit$extrapolation_list, spatial_list = fit$spatial_list, 
-#            NN_Extrap = fit$spatial_list$PolygonList$NN_Extrap) 
-
-# Yearly results figure [ using YearlyResultsFigure_VAST3X() ]
-    # 1. SpResults <spShortName>.png: Yearly results in a single plot; hexagon shapes (not circles) are used. The biomass index is also included.
-
-(Year_Set = seq(min(Data_Geostat[,'Year']),max(Data_Geostat[,'Year']))) # Default arg for YearlyResultsFigure_VAST3X
-(Years2Include = which( Year_Set %in% sort(unique(Data_Geostat[,'Year'])))) # Default arg for YearlyResultsFigure_VAST3X
-
-SP.Results.Dpth <- JRWToolBox::YearlyResultsFigure_VAST3X(Report = Report, map_list = plot_list$map_list, fit = fit, Graph.Dev = 'png')  # This function looks for 'spShortName' (defined above)
-
-
-# Save it all in Image.RData
-save(list = names(.GlobalEnv), file = paste0(DateFile, "Image.RData"))
-
-
-
-
-# =======================================================================
-
-if(F) {
-
-# Notes
- plot(fit1$spatial_list$MeshList$isotropic_mesh)
-
-
-# For knots method = 'samples' is default, but other 'grid' method is prefered  # !!!!! this is not the same as old mesh grid options !!!!!
-
-# check out "getprecision"?
-
-# Good wiki examples to follow in VAST on GitHub
-
-
-# Estimate_metric_tons by year figures for FS (fine_scale) and not FS compares well
-
-
-
-
-
-
-# 2018 Lingcod in SP.Results.Dpth.FS has the highest 15 values, but the 2018 raw data only has 2nd highest value and the lower values
-# means and medians look reasonable however
-# Will need to stack SP.Results.Dpth.FS  to show comparable plots
-
-SP.Results.Dpth.FS <- YearlyResultsFigure_V3.5(Report = fit$Report, fit. = fit, map_list. = plot_list$map_list, Graph.Dev = 'png') 
-
-apply(exp(SP.Results.Dpth.FS[,-(1:2)])/10, 2, max)  # divide by 10 converts grams per sq mile to kg per hectare  (100/1000)
-apply(exp(SP.Results.Dpth.FS[,-(1:2)])/10, 2, mean)
-apply(exp(SP.Results.Dpth.FS[,-(1:2)])/10, 2, median)
-
-
-Data_Set <- JRWToolBox::dataWareHouseTrawlCatch(spFormalName, yearRange = c(2003, 2018), project = 'WCGBTS.Combo')
-change(Data_Set)
-
-# 2006
-rev(sort(exp(SP.Results.Dpth.FS[,6])/10))[1:20]
-rev(sort((Total_sp_wt_kg/Area_Swept_ha)[Year %in% 2006]))[1:20]
+       # D_gcy <- as.data.frame(log(fit$tmb_list$Obj$report()[["D_gcy"]][, 1, ]))
+       # D_gcy <- as.data.frame(log(fit.$tmb_list$Obj$report()[["D_gcy"]][map_list.$PlotDF$Include[!is.na(map_list.$PlotDF$x2i)], 1, ]))
+      
+       SP.Results.Dpth. <- as.data.frame(log(Obj$report()[["D_gcy"]][map_list.$PlotDF[which(map_list.$PlotDF[,'Include'] > 0),'x2i'], 1, ]))
+           
+       # D_gcy <- log(Obj$report()[["D_gcy"]][, 1, ])
+       names(SP.Results.Dpth.) <- paste0("X", Year_Set)
+       
+       # Appears no need for this code - and done each time in the year loop besides
+       # loc_g <- map_list.$PlotDF[!is.na(map_list.$PlotDF$x2i), c('Lon','Lat')]
+       # Points_orig = sp::SpatialPoints( coords=loc_g, proj4string=sp::CRS( '+proj=longlat' ) )
+       # Points_LongLat = sp::spTransform( Points_orig, sp::CRS('+proj=longlat') ) # Reproject to Lat-Long  
+       
+       # SP.Results.Dpth. <- data.frame(map_list.$PlotDF[!is.na(map_list.$PlotDF$x2i) & map_list.$PlotDF$Include, c('Lon','Lat')], D_gcy)
+       # SP.Results.Dpth. <- na.omit(SP.Results.Dpth.)
+     
+       print(SP.Results.Dpth.[1:4, ])
+    }     
+                    
+     
+    
+    
+          
+    # ------------- VAST Species Results by Year Figure -------------   
+                
+    JRWToolBox::catf("\n\nCreating the species results by year figure using hexagon shapes (hexbin R package)\n\n")
+     
+    # numCol Colors 
+    # SP.Results <- SP.Results.Dpth.
+    # SP.Results[,-(1:2)] <- exp(SP.Results[,-(1:2)])
+    # SP.Results[,-(1:2)] <- SP.Results[,-(1:2)] - min(SP.Results[,-(1:2)])
+    # SP.Results[,-(1:2)] <- SP.Results[,-(1:2)] * (numCol - 1)/max(SP.Results[,-(1:2)]) + 1 
+    # SP.Results$Rescaled.Sum <- apply(SP.Results[,-(1:2)], 1, sum)
+    # SP.Results$Rescaled.Sum <- SP.Results$Rescaled.Sum - min(SP.Results$Rescaled.Sum)
+    # SP.Results$Rescaled.Sum <- SP.Results$Rescaled.Sum * (numCol - 1)/max(SP.Results$Rescaled.Sum) + 1
+   
+    if(is.null(Index.)) {
+        if(exists('Index')) {
+           if(is.data.frame(Index))
+               Index. <- Index
+           else
+              Index. <- Index$Table[Years2Include., ]
+        } else
+           Index. <- read.csv(paste0(DateFile., "Table_for_SS3.csv"))[Years2Include., ]
+    }
+            
+    if(is.null(spShortName.) & exists('spShortName'))  
+        spShortName. <- spShortName
+    if(is.null(spShortName.) & !exists('spShortName')) {
+         warning("No short species name given nor found.")
+          spShortName. <- "Species X"
+    }
+    if(is.null(spLongName.) & exists('spLongName'))  
+        spLongName. <- spLongName 
+    if(is.null(spLongName.) & !exists('spLongName'))          
+        spLongName. <- spShortName.
+     
+
+    if(is.null(rhoConfig.))  {
+        if(Graph.Dev == "png")      
+            png(paste0(DateFile., "SpResults ", spShortName., ".png"),  width = 6000, height = 6000, bg = 'white', type = 'cairo')
+        
+        if(Graph.Dev == "tif")      
+            tiff(paste0(DateFile., "SpResults ", spShortName., ".tif"),  width = 6000, height = 6000, bg = 'white', type = 'cairo') # 10" X 10" @ 600 dpi (10*10*600*600 = 6000^2)
+    } else {
+    
+        if(Graph.Dev == "png")      
+            png(paste0(DateFile., "SpResults ", spShortName., ", Rho = ", rhoConfig., ".png"),  width = 6000, height = 6000, bg = 'white', type = 'cairo')
+        
+        if(Graph.Dev == "tif")      
+            tiff(paste0(DateFile., "SpResults ", spShortName., ", Rho = ", rhoConfig., ".tif"),  width = 6000, height = 6000, bg = 'white', type = 'cairo') # 10" X 10" @ 600 dpi (10*10*600*600 = 6000^2)
+    } 
+    
+    par(cex = 6)   
+
+    N <- length(Year_Set.)
+
+    # eastLongitude <- -122 - (N + 1) * longitudeDelta
+    eastLongitude <- eastLongitude # Needed for imap() to find this
+    
+    latExtend <- ifelse(N > 13, -((-125 - (N + 1) * 3.5 + 117) - (-125 - 14 * 3.5 + 117))/3, 0)
+       
+    Imap::imap(longlat = list(Imap::world.h.land, Imap::world.h.borders, world.h.island), col= c("black", "cyan"), poly = c("grey40", NA), longrange = c(eastLongitude, -117), latrange = c(27 - latExtend, 48.2), 
+             axes = 'latOnly', zoom = FALSE, bg = "white", cex.ylab = 1.5, cex.axis = 1.5, lwd.ticks = 1.5)
+    box(lwd = 5)
+    
+    # Col <- colorRampPalette(colors = c("blue", "dodgerblue", "cyan", "green", "orange", "red", "red3"))
+    
+    # COL <- Col(numCol)[SP.Results$Rescaled.Sum]
+    
+    # JRWToolBox::hexPolygon(SP.Results$Lon, SP.Results$Lat, hexC = hexcoords(dx = 0.01, sep=NA), col = COL, border = COL)
+    
+    for (i in 0:N) {
+       # COL <- Col(numCol)[SP.Results[, N + 3 - i]]
+       # JRWToolBox::hexPolygon(SP.Results$Lon - i * longitudeDelta, SP.Results$Lat, hexC = hexcoords(dx = 0.01, sep = NA), col = COL, border = COL)
+       
+       JRWToolBox::plot_variable_JRW(  Y_gt = log(Obj$report()[["D_gcy"]][, 1, ]), projargs='+proj=longlat', map_list = map_list., numYear = i, Delta = - i * longitudeDelta )
+              
+       # plot_variable_JRW(  Y_gt = SP.Results.Dpth., projargs='+proj=longlat', map_list = make_map_info(Region = "California_current", 
+       #      Extrapolation_List = Extrapolation_List, spatial_list = Spatial_List), numYear = i, Delta = - i * longitudeDelta )       
+              
+
+    }
+    
+    Index.$LongPlotValues <- -124.6437 + seq(-longitudeDelta, by = -longitudeDelta, len = N)
+    Index.$LatPlotValues <- rev((48 - 34.2) * (Index.$Estimate_metric_tons - min(Index.$Estimate_metric_tons))/max(Index.$Estimate_metric_tons) + 34.2)
+    Index.$LatSD_mt <- rev((48 - 34.2)/(max(Index.$Estimate_metric_tons) - min(Index.$Estimate_metric_tons)) * Index.$SD_mt)
+    
+    # It appears that calls to text() need to be before things get changed by using subplot() below.
  
+    # Standard swept area is km2, but here the numbers are converted to hectares, unless the swept area was already in hectares (non-standard)
+    GRAMS <- ifelse(sweptAreaInHectares, 1, 0.01) * max(exp(SP.Results.Dpth.)) < 1 & changeUnitsUnder1Kg   # Auto change to grams under 1 kg/ha
+
+    # Converting relative plotting location, 0.5 out of [0, 1] to latitude
+    latAdj <- 0.5 * (48.2 - 27 + latExtend) + 27 - latExtend
+    
+    # text(-118.5, 37.50, ...
+    if(GRAMS)
+        text(-118.1, latAdj, 'Grams per Hectare', cex = 0.80)    
+    else
+        text(-118.1, latAdj, 'Kg per Hectare', cex = 0.85) 
+
+    LatMin. <- strata.limits.$south_border[1]
+    
+    if(LatMin. >= 33.8)
+           ageLat <- 34
+           
+    if(LatMin. > 32.25 & LatMin. < 33.8)
+           ageLat <- 33
+           
+    if(LatMin. <= 32.25)    
+           ageLat <- 32  
+     
+     if(is.null(Ages.) & !(!exists('Ages', where = 1, inherits = F) || is.null(Ages))) {
+          Ages. <- Ages
+          cat("\n\nUsing the non-null 'Ages' found in .GlobalEnv. Delete or rename the file to not use it.\n")
+    }     
+        
+    if(is.null(LenMin.) & exists('LenMin')) {
+          LenMin. <- LenMin
+          cat("\n\nUsing the 'LenMin' found. Delete or rename the file to not use it.\n")
+    }
+    if(is.null(LenMax.) & exists('LenMax')) {
+          LenMax. <- LenMax
+          cat("\n\nUsing the 'LenMax' found. Delete or rename the file to not use it.\n\n")
+    }
+    
+    if(title) {
+        if( is.null(LenMin.) | is.null(LenMax.)  )
+           title(list(JRWToolBox::casefold.f(spLongName.), cex = 1.5))
+        if( !is.null(LenMin.) & !is.null(LenMax.) & is.null(Ages.) ) 
+           title(list(paste0(JRWToolBox::casefold.f(spLongName.), '; Length range (cm): ', LenMin., " - ", LenMax.), cex = 1.5))
+        if( !is.null(LenMin.) & !is.null(LenMax.) & !is.null(Ages.) ) {
+           if(length(Ages.) == 1)
+             title(list(paste0(JRWToolBox::casefold.f(spLongName.), '; Age: ', Ages., ', Length range (cm): ', LenMin., " - ", LenMax.), cex = 1.5))
+           else
+             title(list(paste0(JRWToolBox::casefold.f(spLongName.), '; Ages: ', min(Ages.), " - ", max(Ages.), ', Length range (cm): ', LenMin., " - ", LenMax.), cex = 1.5))
+        }             
+    }
+    
+    # Abundanace and CI from SD_log
+    Abundance <- ifelse(sweptAreaInHectares, 100, 1) * Index.$Estimate_metric_tons
+    li <- ifelse(sweptAreaInHectares, 100, 1) * Index.$Estimate_metric_tons * exp(-Index.$SD_log)
+    ui <- ifelse(sweptAreaInHectares, 100, 1) * Index.$Estimate_metric_tons * exp(Index.$SD_log)
+        
+    if(relativeAbundance) {
+        maxUi <- max(ui)
+        Abundance <- Abundance/maxUi
+        li <- li/maxUi
+        ui <- ui/maxUi
+        sweptAreaInHectares <- FALSE
+        parsMar <- list( mar=c(1.5,5,0,0) + 0.1)
+        yLab = 'Relative\nAbundance'
+        xAdjust <- 0.02
+     } else {
+        parsMar <- list( mar=c(1.5,4,0,0) + 0.1)
+        yLab <- 'Abundance (mt)'
+        xAdjust <- 0
+     }    
+    
+    # If swept area is in hectares (non-standard) then a 100X adjustment is needed since VAST multiples by 4 km2 per extrapolation grid point, but while using hectares needs 400ha per point.    
+    if(LatMin. >= 35.0) {
+        text(-123.2, 37.25, "All", cex = 0.80)
+        text(-123.2, 37.25 - yearDelta, "Years", cex = 0.80)
+        TeachingDemos::subplot( {par(cex = 5); JRWToolBox::plotCI.jrw2(Index.$Year, Abundance, li, ui, type = 'b', sfrac = 0, xlab='Year', ylab = list(yLab, cex = 1.2), col = 'red', lwd = 7, cex =1, xaxt = "n", 
+                 yaxt = "n", bty = 'n'); axis(3, Year_Set., lwd = 5, cex.axis =1.5); axis(2, lwd = 5, cex.axis =1.1)}, x=grconvertX(c(0.01 - xAdjust, 0.820), from='npc'), y=grconvertY(c(0.22, 0.48), 
+                 from='npc'), type='fig', pars= parsMar)
+    } 
+    
+    if(LatMin. >= 33.8 & LatMin. < 35) {
+        text(-120, 33.29, "All", cex = 0.80)
+        text(-120, 33.29 - yearDelta, "Years", cex = 0.80)
+        TeachingDemos::subplot( {par(cex = 5); JRWToolBox::plotCI.jrw2(Index.$Year, Abundance, li, ui, type = 'b', sfrac = 0, xlab='Year', ylab = list(yLab, cex = 1.2), col = 'red', lwd = 7, cex =1, xaxt = "n", 
+               yaxt = "n", bty = 'n'); axis(3, Year_Set., lwd = 5, cex.axis =1.5); axis(2, lwd = 5, cex.axis =1.1)}, x=grconvertX(c(0.08 - xAdjust, 0.870), from='npc'), y=grconvertY(c(0.02, 0.28), from='npc'), 
+               type='fig', pars= parsMar)
+    } 
+
+    if(LatMin. > 32.25 & LatMin. < 33.8) {
+        text(-118.0, 32.053, "All", cex = 0.85)
+        text(-118.0, 32.053 - yearDelta, "Years", cex = 0.85)
+        TeachingDemos::subplot( {par(cex = 5); JRWToolBox::plotCI.jrw2(Index.$Year, Abundance, li, ui, type = 'b', sfrac = 0, xlab='Year', ylab = list(yLab, cex = 1.2), col = 'red', lwd = 7, cex =1, xaxt = "n", 
+               yaxt = "n", bty = 'n'); axis(3, Year_Set., lwd = 5, cex.axis =1.5); axis(2, lwd = 5, cex.axis =1.1)}, x=grconvertX(c(0.10 - xAdjust, 0.915), from='npc'), y=grconvertY(c(0, 0.225), 
+               from='npc'), type='fig', pars= parsMar)
+    }
+    
+    # Old values: y=grconvertY(c(0, 0.190), from='npc'); x=grconvertX(c(0.10, 0.89), from='npc')
+    
+    xExpand <- ifelse(N > 13, (N - 13) * 0.025/3, 0)
+    if(LatMin. <= 32.25) {
+        text(-118.7, 31.266, "All", cex = 0.85)
+        text(-118.7, 31.266 - yearDelta, "Years", cex = 0.85)
+        TeachingDemos::subplot( {par(cex = 5); JRWToolBox::plotCI.jrw3(Index.$Year, ifelse(sweptAreaInHectares, 100, 1) * Index.$Estimate_metric_tons,  ifelse(sweptAreaInHectares, 100, 1) * Index.$SD_mt, 
+          type = 'b', sfrac=0, xlab='Year', ylab = yLab, col = 'red', lwd = 7, cex =1, xaxt = "n", bty = 'n');  axis(3, Year_Set., lwd = 5); axis(side = 2, lwd = 5)}, 
+          x=grconvertX(c(0.10 - xAdjust - xExpand, 0.89 + xExpand), from='npc'), y=grconvertY(c(0, (31.03 - 27 + 0.8 * latExtend)/(48.2 - 27 + 0.8 * latExtend)), from='npc'), type='fig', pars= parsMar )
+    }
+    
+    
+    # Standard swept area is km2, but here the numbers are converted to hectares, unless the swept area was already in hectares (non-standard)
+    if(GRAMS)
+        TeachingDemos::subplot( { par(cex = 5); color.bar(Col(100), JRWToolBox::r(1000 * ifelse(sweptAreaInHectares, 1, 0.01) * min(exp(SP.Results.Dpth.)), 0), 
+            JRWToolBox::r(1000 * ifelse(sweptAreaInHectares, 1, 0.01) * max(exp(SP.Results.Dpth.)), ifelse(1000 * ifelse(sweptAreaInHectares, 1, 0.01) * max(exp(SP.Results.Dpth.)) < 1, 1, 0)), 
+            nticks = 6) }, x=grconvertX(c(0.83, 0.87), from='npc'), y=grconvertY(c(0.5, 0.75), from='npc'), type='fig', pars=list( mar=c(0,0,1,0) + 0.1) )    
+    else 
+        TeachingDemos::subplot( { par(cex = 5); color.bar(Col(100), JRWToolBox::r(ifelse(sweptAreaInHectares, 1, 0.01) * min(exp(SP.Results.Dpth.)), 1), 
+            JRWToolBox::r(ifelse(sweptAreaInHectares, 1, 0.01) * max(exp(SP.Results.Dpth.)), 1), nticks = 6) }, x=grconvertX(c(0.83, 0.87), from='npc'), 
+            y=grconvertY(c(0.5, 0.75), from='npc'), type='fig', pars=list( mar=c(0,0,1,0) + 0.1) )    
+        
+    dev.off()
+  
+    invisible(SP.Results.Dpth.)  
+ }
  
-# 2018
-rev(sort(exp(SP.Results.Dpth.FS[,18])/10))[1:20]
-rev(sort((Total_sp_wt_kg/Area_Swept_ha)[Year %in% 2018]))[1:20]
 
+ 
 
-}
 
 
