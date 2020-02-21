@@ -260,14 +260,18 @@ YearlyResultsFigure_VAST3X <- function(spShortName. = NULL, spLongName. = NULL, 
     
     
     # Standard swept area is km2, but here the numbers are converted to hectares, unless the swept area was already in hectares (non-standard)
+     
+    xAdj <-  0.850 + c(-(0.04 - longitudeDelta * 0.0070), 0.04 - longitudeDelta * 0.0070)
+    yAdj <-  0.625 + c(-(0.2875 - longitudeDelta * 0.0610), 0.2875 - longitudeDelta * 0.0610)
+    
     if(GRAMS)
-        TeachingDemos::subplot( { par(cex = 5); color.bar(Col(ifelse(numCol < 100, 100, numCol)), JRWToolBox::r(1000 * ifelse(sweptAreaInHectares, 1, 0.01) * min(exp(SP.Results.Dpth.)), 0), 
+        TeachingDemos::subplot( { par(cex = 5); color.bar(Col(ifelse(numCol > 100, numCol, 100)), JRWToolBox::r(1000 * ifelse(sweptAreaInHectares, 1, 0.01) * min(exp(SP.Results.Dpth.)), 0), 
             JRWToolBox::r(1000 * ifelse(sweptAreaInHectares, 1, 0.01) * max(exp(SP.Results.Dpth.)), ifelse(1000 * ifelse(sweptAreaInHectares, 1, 0.01) * max(exp(SP.Results.Dpth.)) < 1, 1, 0)), 
-            nticks = 6) }, x=grconvertX(c(0.83, 0.87), from='npc'), y=grconvertY(c(0.5, 0.75), from='npc'), type='fig', pars=list( mar=c(0,0,1,0) + 0.1) )    
+            nticks = 6) }, x=grconvertX(xAdj, from='npc'), y=grconvertY(yAdj, from='npc'), type='fig', pars=list( mar=c(0,0,1,0) + 0.1) )    
     else 
-        TeachingDemos::subplot( { par(cex = 5); color.bar(Col(ifelse(numCol < 100, 100, numCol)), JRWToolBox::r(ifelse(sweptAreaInHectares, 1, 0.01) * min(exp(SP.Results.Dpth.)), 1), 
-            JRWToolBox::r(ifelse(sweptAreaInHectares, 1, 0.01) * max(exp(SP.Results.Dpth.)), 1), nticks = 6) }, x=grconvertX(c(0.83, 0.87), from='npc'), 
-            y=grconvertY(c(0.5, 0.75), from='npc'), type='fig', pars=list( mar=c(0,0,1,0) + 0.1) )    
+        TeachingDemos::subplot( { par(cex = 5); color.bar(Col(ifelse(numCol > 100, numCol, 100)), JRWToolBox::r(ifelse(sweptAreaInHectares, 1, 0.01) * min(exp(SP.Results.Dpth.)), 1), 
+            JRWToolBox::r(ifelse(sweptAreaInHectares, 1, 0.01) * max(exp(SP.Results.Dpth.)), 1), nticks = 6) }, x=grconvertX(xAdj, from='npc'), 
+            y=grconvertY(yAdj, from='npc'), type='fig', pars=list( mar=c(0,0,1,0) + 0.1) )     
         
     dev.off()
   
@@ -276,6 +280,7 @@ YearlyResultsFigure_VAST3X <- function(spShortName. = NULL, spLongName. = NULL, 
  
 
  
+
 
 
 
