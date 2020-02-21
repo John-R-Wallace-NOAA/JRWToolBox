@@ -261,8 +261,9 @@ YearlyResultsFigure_VAST3X <- function(spShortName. = NULL, spLongName. = NULL, 
     
     # Standard swept area is km2, but here the numbers are converted to hectares, unless the swept area was already in hectares (non-standard)
      
-    xAdj <-  0.850 + c(-(0.04 - longitudeDelta * 0.0070), 0.04 - longitudeDelta * 0.0070)
-    yAdj <-  0.625 + c(-(0.2875 - longitudeDelta * 0.0610), 0.2875 - longitudeDelta * 0.0610)
+    # Slightly increasing the factor on longitudeDelta (0.00702 & 0.0611) results in a smaller rectangle for the legend
+    xAdj <-  0.850 + c(-1, 1) * (0.04 - longitudeDelta * 0.00702)
+    yAdj <-  0.625 + c(-1, 1) * (0.2875 - longitudeDelta * 0.0611)
     
     if(GRAMS)
         TeachingDemos::subplot( { par(cex = 5); color.bar(Col(ifelse(numCol > 100, numCol, 100)), JRWToolBox::r(1000 * ifelse(sweptAreaInHectares, 1, 0.01) * min(exp(SP.Results.Dpth.)), 0), 
@@ -280,6 +281,7 @@ YearlyResultsFigure_VAST3X <- function(spShortName. = NULL, spLongName. = NULL, 
  
 
  
+
 
 
 
