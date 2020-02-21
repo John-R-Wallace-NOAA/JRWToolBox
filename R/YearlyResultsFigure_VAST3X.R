@@ -1,8 +1,8 @@
 
 YearlyResultsFigure_VAST3X <- function(spShortName. = NULL, spLongName. = NULL, HomeDir = ".", eastLongitude = -124 - (N + 1) * longitudeDelta, longitudeDelta = 3.5, Index. = NULL, 
-        fit. = fit, map_list. = NULL, SP.Results.Dpth. = NULL, Report. = Report, DateFile. = DateFile, Year_Set. = Year_Set, Years2Include. = Years2Include, strata.limits. = strata.limits, 
+        fit. = fit, map_list. = NULL, SP.Results.Dpth. = NULL, DateFile. = DateFile, Year_Set. = Year_Set, Years2Include. = Years2Include, strata.limits. = strata.limits, 
         Ages. = NULL, LenMin. = NULL, LenMax. = NULL, yearDelta = 0.5, title = FALSE, relativeAbundance = FALSE, changeUnitsUnder1Kg = TRUE, sweptAreaInHectares = FALSE, 
-        rhoConfig. = NULL, numCol = 26, Graph.Dev = "tif") 
+        rhoConfig. = NULL, numCol = 1000, Graph.Dev = "tif") 
 {
     if (!any(installed.packages()[, 1] %in% "devtools")) 
         install.packages("devtools")
@@ -41,9 +41,9 @@ YearlyResultsFigure_VAST3X <- function(spShortName. = NULL, spLongName. = NULL, 
     
        
        # D_gcy <- as.data.frame(log(fit$tmb_list$Obj$report()[["D_gcy"]][, 1, ]))
-       # D_gcy <- as.data.frame(log(fit.$tmb_list$Obj$report()[["D_gcy"]][map_list.$PlotDF$Include[!is.na(map_list.$PlotDF$x2i)], 1, ]))
+       # D_gcy <- as.data.frame(log(fit.$Report[["D_gcy"]][map_list.$PlotDF$Include[!is.na(map_list.$PlotDF$x2i)], 1, ]))
       
-       SP.Results.Dpth. <- as.data.frame(log(Obj$report()[["D_gcy"]][map_list.$PlotDF[which(map_list.$PlotDF[,'Include'] > 0),'x2i'], 1, ]))
+       SP.Results.Dpth. <- as.data.frame(log(fit.$Report[["D_gcy"]][map_list.$PlotDF[map_list.$PlotDF$Include, 'x2i'], 1, ]))
            
        # D_gcy <- log(Obj$report()[["D_gcy"]][, 1, ])
        names(SP.Results.Dpth.) <- paste0("X", Year_Set)
@@ -127,8 +127,9 @@ YearlyResultsFigure_VAST3X <- function(spShortName. = NULL, spLongName. = NULL, 
     box(lwd = 5)
     
     # Col <- colorRampPalette(colors = c("blue", "dodgerblue", "cyan", "green", "orange", "red", "red3"))
+    Col = colorRampPalette(colors=c("blue", "dodgerblue", "cyan", "green", "yellow", JRWToolBox::col.alpha('yellow'), JRWToolBox::col.alpha('red'), "red"))
     
-    # COL <- Col(numCol)[SP.Results$Rescaled.Sum]
+    COL <- Col(numCol)
     
     # JRWToolBox::hexPolygon(SP.Results$Lon, SP.Results$Lat, hexC = hexcoords(dx = 0.01, sep=NA), col = COL, border = COL)
     
@@ -136,7 +137,8 @@ YearlyResultsFigure_VAST3X <- function(spShortName. = NULL, spLongName. = NULL, 
        # COL <- Col(numCol)[SP.Results[, N + 3 - i]]
        # JRWToolBox::hexPolygon(SP.Results$Lon - i * longitudeDelta, SP.Results$Lat, hexC = hexcoords(dx = 0.01, sep = NA), col = COL, border = COL)
        
-       JRWToolBox::plot_variable_JRW(  Y_gt = log(Obj$report()[["D_gcy"]][, 1, ]), projargs='+proj=longlat', map_list = map_list., numYear = i, Delta = - i * longitudeDelta )
+       JRWToolBox::plot_variable_JRW( Y_gt = log(fit.$Report[["D_gcy"]][, 1, ]), projargs='+proj=longlat', col = COL,
+                 map_list = map_list., numYear = ifelse(i == 0, 0, N - i + 1), Delta = - i * longitudeDelta )
               
        # plot_variable_JRW(  Y_gt = SP.Results.Dpth., projargs='+proj=longlat', map_list = make_map_info(Region = "California_current", 
        #      Extrapolation_List = Extrapolation_List, spatial_list = Spatial_List), numYear = i, Delta = - i * longitudeDelta )       
@@ -259,11 +261,11 @@ YearlyResultsFigure_VAST3X <- function(spShortName. = NULL, spLongName. = NULL, 
     
     # Standard swept area is km2, but here the numbers are converted to hectares, unless the swept area was already in hectares (non-standard)
     if(GRAMS)
-        TeachingDemos::subplot( { par(cex = 5); color.bar(Col(100), JRWToolBox::r(1000 * ifelse(sweptAreaInHectares, 1, 0.01) * min(exp(SP.Results.Dpth.)), 0), 
+        TeachingDemos::subplot( { par(cex = 5); color.bar(Col(ifelse(numCol < 100, 100, numCol)), JRWToolBox::r(1000 * ifelse(sweptAreaInHectares, 1, 0.01) * min(exp(SP.Results.Dpth.)), 0), 
             JRWToolBox::r(1000 * ifelse(sweptAreaInHectares, 1, 0.01) * max(exp(SP.Results.Dpth.)), ifelse(1000 * ifelse(sweptAreaInHectares, 1, 0.01) * max(exp(SP.Results.Dpth.)) < 1, 1, 0)), 
             nticks = 6) }, x=grconvertX(c(0.83, 0.87), from='npc'), y=grconvertY(c(0.5, 0.75), from='npc'), type='fig', pars=list( mar=c(0,0,1,0) + 0.1) )    
     else 
-        TeachingDemos::subplot( { par(cex = 5); color.bar(Col(100), JRWToolBox::r(ifelse(sweptAreaInHectares, 1, 0.01) * min(exp(SP.Results.Dpth.)), 1), 
+        TeachingDemos::subplot( { par(cex = 5); color.bar(Col(ifelse(numCol < 100, 100, numCol)), JRWToolBox::r(ifelse(sweptAreaInHectares, 1, 0.01) * min(exp(SP.Results.Dpth.)), 1), 
             JRWToolBox::r(ifelse(sweptAreaInHectares, 1, 0.01) * max(exp(SP.Results.Dpth.)), 1), nticks = 6) }, x=grconvertX(c(0.83, 0.87), from='npc'), 
             y=grconvertY(c(0.5, 0.75), from='npc'), type='fig', pars=list( mar=c(0,0,1,0) + 0.1) )    
         
@@ -274,6 +276,7 @@ YearlyResultsFigure_VAST3X <- function(spShortName. = NULL, spLongName. = NULL, 
  
 
  
+
 
 
 
