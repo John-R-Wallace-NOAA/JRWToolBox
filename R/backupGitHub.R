@@ -2,7 +2,7 @@ backupGitHub <- function() {
 
   
   Dir <- paste0("C:/B/GitHub/", Sys.Date(), "/")
-  dir.create(Dir, recursive = TRUE) 
+  dir.create(Dir,  showWarnings = FALSE, recursive = TRUE) 
  
 
   download.file("https://github.com/John-R-Wallace-NOAA/JRWToolBox/archive/master.zip", destfile = paste0(Dir, 'JRWToolBox ', Sys.Date(), '.zip'), mode = 'wb')
