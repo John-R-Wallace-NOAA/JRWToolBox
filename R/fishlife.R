@@ -3,7 +3,7 @@ fishlife <- function(species){
   # This is from Jason Cope's Shiny Natural Mortality Tool 
   # Setup container
   
-  JRWToolBox::lib("james-thorson/FishLife")
+  JRWToolBox::lib("james-thorson/FishLife", quiet = TRUE)
 
   if(species!="")
   {
