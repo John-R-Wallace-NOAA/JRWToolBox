@@ -33,8 +33,8 @@ fishlife <- function(species){
      }
      
      # Return
-     return(spp_lh_vals)
+     spp_lh_vals
   }
-   else{return(NA)}     
+   else {return(NA)}     
 }
     
