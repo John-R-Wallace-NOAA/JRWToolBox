@@ -44,7 +44,7 @@ lib <- function (Package, Package.Name = NULL, attach = TRUE, updateCRAN = FALSE
         
         if(exists('SHA.OLD') && length(SHA.OLD) > 0) {
           if (packageDescription(Package.Name)$RemoteSha == SHA.OLD & !warnPackageUpdateOnly & !quiet)
-              warning(paste0("R '", Package.Name, "' package's SHA number did not change"))
+              warning(paste0("R '", Package.Name, "' package's SHA number did not change,\nhowever the package was placed in position 2 of the search() path."))
           if (packageDescription(Package.Name)$RemoteSha != SHA.OLD & warnPackageUpdateOnly)
               warning(paste0("R '", Package.Name, "' package was updated to the latest version"))                 
         }
