@@ -12,7 +12,6 @@ gitPush <- function(..., Dir) {
    shell("del run.bat")
    Sys.sleep(5)
    
-   
    # Save source files to the repo directory
    setwd(Dir)
    objList <- list(...)
