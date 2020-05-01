@@ -65,7 +65,7 @@ dataWareHouseTrawlBio <- function (commonName = "canary rockfish", species = NUL
         if (length(yearRange) == 1) 
             yearRange <- c(yearRange, yearRange)
         
-        Vars <- c("project", "trawl_id", "common_name", "scientific_name", "year", "vessel", "pass", "tow", "datetime_utc_iso", "depth_ftm", "weight_kg", "length_cm", "width_cm", "sex", "age_years", "latitude_dd", "longitude_dd")
+        Vars <- c("project", "trawl_id", "common_name", "scientific_name", "year", "vessel", "pass", "tow", "datetime_utc_iso", "depth_m", "weight_kg", "length_cm", "width_cm", "sex", "age_years", "latitude_dd", "longitude_dd")
         " # Available, but not used: project, performance (not output, only used as a filter below)  "
         " # species and performance=Satisfactory added; went with a year range approach for the years to select  "
         
