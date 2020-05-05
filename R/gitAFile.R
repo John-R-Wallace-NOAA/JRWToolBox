@@ -45,10 +45,7 @@ gitAFile <- function (URL, type = c("function", "csv", "script", "RData", "RPcka
         if(deleteFileObj)
            on.exit(file.remove(File.ASCII), add = TRUE)
     } 
-    
-    if(verbose) 
-           cat("\n\n"); print(URL); cat("\n\n")
-     
+       
     if(grepl(type, "function")) {
           s.name <- Source(File.ASCII)
           print(s.name)
