@@ -7,3 +7,5 @@ git <- function(gitCommand, sleepSecs = 2) {
     shell("del run.bat")
     Sys.sleep(2)
 }
+
+
