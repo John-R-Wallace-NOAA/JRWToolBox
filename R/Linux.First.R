@@ -23,10 +23,11 @@ Linux.First <- function(askCRAN = TRUE) {
                       try(devtools::install_github("kaskr/TMB_contrib_R/TMBhelper")); cat("\n\n");
                       try(devtools::install_github("kaskr/TMB_contrib_R/TMBdebug")); cat("\n\n");
                       try(devtools::install_github("kaskr/TMB_contrib_R/TMBphase")); cat("\n\n");
+		      try(devtools::install_github("james-thorson-noaa/FishStatsUtils")); cat("\n\n"); 
                       try(devtools::install_github("james-thorson-noaa/VAST")); cat("\n\n");
-                      try(devtools::install_github("james-thorson-noaa/FishStatsUtils")); cat("\n\n");
-                      try(devtools::install_github("james-thorson/utilities")); cat("\n\n");
-                      try(devtools::install_github("nwfsc-assess/geostatistical_delta-GLMM")); cat("\n\n");
+                     
+                      # try(devtools::install_github("james-thorson/utilities")); cat("\n\n");
+                      # try(devtools::install_github("nwfsc-assess/geostatistical_delta-GLMM")); cat("\n\n");
                       # try(devtools::install_github("james-thorson/MIST"))
                       cat("\n\n") })
 
