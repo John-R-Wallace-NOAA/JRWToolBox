@@ -12,7 +12,7 @@ gitEdit <- function (File, gitPath = "John-R-Wallace-NOAA/JRWToolBox/master/R/")
        system(paste0('C:/Windows/System32/cmd.exe /C start C:/Win_apps/Notepad++/notepad++.exe "', getwd(), '/', File, '"'))
     
     if (file.exists("C:/Program Files/Notepad++/notepad++.exe")) 
-        system(paste0("C:/Windows/System32/cmd.exe /C start C:/Program Files/Notepad++/notepad++.exe \"", getwd(), "/", File, "\""))
+       system(paste0('C:/Windows/System32/cmd.exe /C start "" "C:/Program Files/Notepad++/notepad++.exe" \"', getwd(), "/", File, "\""))
     
     invisible()
 }
