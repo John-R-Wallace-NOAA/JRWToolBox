@@ -55,6 +55,7 @@ YearlyResultsFigures <- function(spShortName. = NULL, spLongName. = NULL, HomeDi
        }     
                   
        graphics.off()
+	   assign("SP.Results.Dpth", SP.Results.Dpth., pos = 1) # Save SP.Results.Dpth early in case there is a problem below.
     } 
     
           
@@ -116,7 +117,7 @@ YearlyResultsFigures <- function(spShortName. = NULL, spLongName. = NULL, HomeDi
     
     latExtend <- ifelse(N > 13, -((-125 - (N + 1) * 3.5 + 117) - (-125 - 14 * 3.5 + 117))/3, 0)
        
-    Imap::imap(longlat = list(Imap::world.h.land, Imap::world.h.borders, world.h.island), col= c("black", "cyan"), poly = c("grey40", NA), longrange = c(eastLongitude, -117), latrange = c(27 - latExtend, 48.2), 
+    Imap::imap(longlat = list(Imap::world.h.land, Imap::world.h.borders, Imap::world.h.island), col= c("black", "cyan"), poly = c("grey40", NA), longrange = c(eastLongitude, -117), latrange = c(27 - latExtend, 48.2), 
              axes = 'latOnly', zoom = FALSE, bg = "white", cex.ylab = 1.5, cex.axis = 1.5, lwd.ticks = 1.5)
     box(lwd = 5)
     
@@ -125,10 +126,10 @@ YearlyResultsFigures <- function(spShortName. = NULL, spLongName. = NULL, HomeDi
     COL <- Col(numCol)[SP.Results$Rescaled.Sum]
     JRWToolBox::hexPolygon(SP.Results$X, SP.Results$Y, hexC = hexcoords(dx = 0.01, sep=NA), col = COL, border = COL)
     
-    for (i in 1:N) {
-       COL <- Col(numCol)[SP.Results[, N + 3 - i]]
-       assign("COL", COL, pos =1)
-       JRWToolBox::hexPolygon(SP.Results$X - i * longitudeDelta, SP.Results$Y, hexC = hexcoords(dx = 0.1, sep=NA), col = COL, border = COL)
+    for (i in 1:(N + 1)) {
+       COL <- Col(numCol)[SP.Results[, N + 4 - i]]
+       assign("COL", COL, pos = 1)
+       JRWToolBox::hexPolygon(SP.Results$X - i * longitudeDelta, SP.Results$Y, hexC = hexcoords(dx = 0.1, sep = NA), col = COL, border = COL)
     }
     
     Index.$LongPlotValues <- -124.6437 + seq(-longitudeDelta, by = -longitudeDelta, len = N)
@@ -261,6 +262,7 @@ YearlyResultsFigures <- function(spShortName. = NULL, spLongName. = NULL, HomeDi
  
 
  
+
 
 
 
