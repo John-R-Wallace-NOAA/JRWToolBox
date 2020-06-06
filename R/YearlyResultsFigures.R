@@ -123,8 +123,9 @@ YearlyResultsFigures <- function(spShortName. = NULL, spLongName. = NULL, HomeDi
     
     Col <- colorRampPalette(colors = c("blue", "dodgerblue", "cyan", "green", "orange", "red", "red3"))
     
+    # Rescaled sum plotted first on the normal coastline then the years in the loop (if needed, change dx in both places)
     COL <- Col(numCol)[SP.Results$Rescaled.Sum]
-    JRWToolBox::hexPolygon(SP.Results$X, SP.Results$Y, hexC = hexcoords(dx = 0.01, sep=NA), col = COL, border = COL)
+    JRWToolBox::hexPolygon(SP.Results$X, SP.Results$Y, hexC = hexcoords(dx = 0.1, sep=NA), col = COL, border = COL)
     
     for (i in 1:(N + 1)) {
        COL <- Col(numCol)[SP.Results[, N + 4 - i]]
