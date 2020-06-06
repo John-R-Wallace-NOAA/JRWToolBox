@@ -122,7 +122,7 @@ YearlyResultsFigure_VAST3X <- function(spShortName. = NULL, spLongName. = NULL, 
     
     latExtend <- ifelse(N > 13, -((-125 - (N + 1) * 3.5 + 117) - (-125 - 14 * 3.5 + 117))/3, 0)
        
-    Imap::imap(longlat = list(Imap::world.h.land, Imap::world.h.borders, world.h.island), col= c("black", "cyan"), poly = c("grey40", NA), longrange = c(eastLongitude, -117), latrange = c(27 - latExtend, 48.2), 
+    Imap::imap(longlat = list(Imap::world.h.land, Imap::world.h.borders, Imap::world.h.island), col= c("black", "cyan"), poly = c("grey40", NA), longrange = c(eastLongitude, -117), latrange = c(27 - latExtend, 48.2), 
              axes = 'latOnly', zoom = FALSE, bg = "white", cex.ylab = 1.5, cex.axis = 1.5, lwd.ticks = 1.5)
     box(lwd = 5)
     
