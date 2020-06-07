@@ -30,33 +30,34 @@ pushFiles <- function(File, gitDir, gitUserName. = gitUserName, gitUserEmail. = 
     
     # Copy the files to the local repo, add the files to the repo, and push the repo (only files that are changed are moved, that's how git push works).
     
-    file.copy(File, repo)
+    file.copy(File, repo, overwrite = TRUE)
     if(verbose)
        cat("\n", File, "was copied from", HomeDir, "to", repo, "\n")
     
     setwd(paste0(HomeDir, repo))
     if(verbose) 
-        cat("\nWorking directory is now:", getwd(), "\n")
+        cat("\n Working directory is now:", getwd(), "\n")
         
     # write(File, test = paste0(
     JRWToolBox::git(paste0('add ', File))
     if(verbose)
-       cat("\n", File, " was added to the local repo.\n")
+       cat("\n", File, "was added to the local repo.\n")
     
     JRWToolBox::git('commit --amend --no-edit --allow-empty')  
     JRWToolBox::git('push -u -v --force origin master')
     if(verbose)
-       cat(paste0("\nThe local copy of ", repo, " has been pushed to GitHub.\n"))
+       cat(paste0("\n The local copy of ", repo, " has been pushed to GitHub.\n"))
     
     setwd(HomeDir)
     if(verbose) 
-        cat("\nWorking directory is now:", getwd(), "\n")
+        cat("\n Working directory is now:", getwd(), "\n")
     
     if(deleteRepoAfterPush) {
        system(paste0("rm -r -f ", repo))
        if(verbose) 
-          cat("\n", repo, "directory was deleted\n")   
+          cat("\n The local", repo, "directory was deleted.\n")   
     }
     
     invisible() 
 }
+
