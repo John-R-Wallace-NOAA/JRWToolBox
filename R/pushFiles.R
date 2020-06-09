@@ -1,11 +1,19 @@
 
-pushFiles <- function(File, gitDir, gitUserName. = gitUserName, gitUserEmail. = gitUserEmail, deleteRepoAfterPush = TRUE, verbose = FALSE)  {
+pushFiles <- function(..., list = character(), gitDir, gitUserName = gitName, gitUserEmail = gitEmail, deleteRepoAfterPush = TRUE, verbose = FALSE)  {
 
-    # Initial setup 
+    # Initial setup (The oddity of calling a character vector 'list' keeped from the 'rm' function code.)
     
-    if (!(is.character(substitute(File)))) {
-        File <- deparse(substitute(File))
-    }
+    dots <- match.call(expand.dots = FALSE)$...
+    if (length(dots) && !all(vapply(dots, function(x) is.symbol(x) || 
+        is.character(x), NA, USE.NAMES = FALSE))) 
+        stop("... must contain names or character strings")
+    names <- vapply(dots, as.character, "")
+    if (length(names) == 0L) 
+        names <- character()
+        
+        
+    list <- .Primitive("c")(list, names)
+    
     
     HomeDir <- paste0(getwd(), "/")
     repo <- JRWToolBox::get.subs(gitDir, "/")[2] # Avoid the list produced by strsplit() [I wrote get.subs() in SPlus before strsplit() came out.] 
@@ -19,8 +27,8 @@ pushFiles <- function(File, gitDir, gitUserName. = gitUserName, gitUserEmail. = 
     system(paste0("rm -r -f ", repo)) # Make sure the repo directory is deleted 
     
     # Download function and scripts from GitHub (you will be asked once for your password, if you are not already logged into GitHub).
-    JRWToolBox::git(paste0("config --global user.name '", gitUserName., "'"))
-    JRWToolBox::git(paste0("config --global user.email '", gitUserEmail., "'"))
+    JRWToolBox::git(paste0("config --global user.name '", gitUserName, "'"))
+    JRWToolBox::git(paste0("config --global user.email '", gitUserEmail, "'"))
     JRWToolBox::git(paste0("clone https://github.com/", gitDir, ".git"))
     
     if(verbose) {
@@ -30,18 +38,22 @@ pushFiles <- function(File, gitDir, gitUserName. = gitUserName, gitUserEmail. = 
     
     # Copy the files to the local repo, add the files to the repo, and push the repo (only files that are changed are moved, that's how git push works).
     
-    file.copy(File, repo, overwrite = TRUE)
-    if(verbose)
-       cat("\n", File, "was copied from", HomeDir, "to", repo, "\n")
+    for (i in list)  {
+      file.copy(i, repo, overwrite = TRUE)
+      if(verbose)
+         cat("\n", i, "was copied from", HomeDir, "to", repo, "\n")
+    }
     
     setwd(paste0(HomeDir, repo))
     if(verbose) 
         cat("\n Working directory is now:", getwd(), "\n")
-        
-    # write(File, test = paste0(
-    JRWToolBox::git(paste0('add ', File))
-    if(verbose)
-       cat("\n", File, "was added to the local repo.\n")
+    
+    for (i in list)  {
+    
+      JRWToolBox::git(paste0('add ', i))
+      if(verbose)
+         cat("\n", i, "was added to the local repo.\n")
+    }
     
     JRWToolBox::git('commit --amend --no-edit --allow-empty')  
     JRWToolBox::git('push -u -v --force origin master')
@@ -60,4 +72,5 @@ pushFiles <- function(File, gitDir, gitUserName. = gitUserName, gitUserEmail. = 
     
     invisible() 
 }
+
 
