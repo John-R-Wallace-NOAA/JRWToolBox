@@ -1,7 +1,7 @@
 
-pushFiles <- function(..., list = character(), gitDir, gitUserName = gitName, gitUserEmail = gitEmail, deleteRepoAfterPush = TRUE, verbose = FALSE)  {
+gitPush <- function(..., list = character(), gitDir, gitUserName = gitName, gitUserEmail = gitEmail, deleteRepoAfterPush = TRUE, verbose = FALSE)  {
 
-    # Initial setup (The oddity of calling a character vector 'list' keeped from the 'rm' function code.)
+    # Initial setup - the oddity of calling a character vector 'list' keeped from the 'rm' function code.
     
     dots <- match.call(expand.dots = FALSE)$...
     if (length(dots) && !all(vapply(dots, function(x) is.symbol(x) || 
@@ -32,7 +32,7 @@ pushFiles <- function(..., list = character(), gitDir, gitUserName = gitName, gi
     JRWToolBox::git(paste0("clone https://github.com/", gitDir, ".git"))
     
     if(verbose) {
-       cat("\nFiles cloned from ", repo, ":\n")
+       cat("Files cloned from ", repo, ":\n", sep = "")
        print(list.files(repo))
     }
     
@@ -72,5 +72,6 @@ pushFiles <- function(..., list = character(), gitDir, gitUserName = gitName, gi
     
     invisible() 
 }
+
 
 

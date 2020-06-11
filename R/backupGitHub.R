@@ -6,6 +6,7 @@ backupGitHub <- function() {
  
 
   download.file("https://github.com/John-R-Wallace-NOAA/JRWToolBox/archive/master.zip", destfile = paste0(Dir, 'JRWToolBox ', Sys.Date(), '.zip'), mode = 'wb')
+  download.file("https://github.com/John-R-Wallace-NOAA/rgit/archive/master.zip", destfile = paste0(Dir, 'rgit ', Sys.Date(), '.zip'), mode = 'wb')
   
   download.file("https://github.com/John-R-Wallace-NOAA/Imap/archive/master.zip", destfile = paste0(Dir, 'Imap ', Sys.Date(), '.zip'), mode = 'wb')
   download.file("https://github.com/John-R-Wallace-NOAA/GSHHG_High_Rez_for_R/archive/master.zip", destfile = paste0(Dir, 'GSHHG_High_Rez_for_R ', Sys.Date(), '.zip'), mode = 'wb')
@@ -28,4 +29,5 @@ backupGitHub <- function() {
   invisible()
 
 }
+
 
