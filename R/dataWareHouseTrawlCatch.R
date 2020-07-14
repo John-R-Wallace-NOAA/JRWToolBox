@@ -7,8 +7,8 @@ dataWareHouseTrawlCatch <- function (commonName = "canary rockfish", species = N
     }
     if (!any(installed.packages()[, 1] %in% "devtools"))  
         install.packages('devtools')  
-    devtools::install_github("John-R-Wallace/JRWToolBox", quiet = TRUE)
-    " # lib() will download a function only if needed and then attach it"
+    if (!any(installed.packages()[, 1] %in% "JRWToolBox"))
+        devtools::install_github("John-R-Wallace/JRWToolBox", quiet = TRUE)  # lib() will download a function only if needed and then attach it
     JRWToolBox::lib("jsonlite")
     JRWToolBox::lib("chron")
     
@@ -163,6 +163,7 @@ dataWareHouseTrawlCatch <- function (commonName = "canary rockfish", species = N
     cat("\n")
     invisible(OutAll)
 }
+
 
 
 

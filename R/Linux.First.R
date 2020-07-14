@@ -15,31 +15,60 @@ Linux.First <- function(askCRAN = TRUE) {
     switch(menu("Check for package updates?") + 1,
            cat("\n"), update.packages(ask = askCRAN))
   
-    switch(menu("Check for GitHub updates?") + 1,
-           cat("\n"), { try(devtools::install_github("John-R-Wallace-NOAA/JRWToolBox")); cat("\n\n");
-                      try(devtools::install_github("John-R-Wallace-NOAA/Imap")); cat("\n\n");
-                      try(devtools::install_github("r4ss/r4ss")); cat("\n\n");
-                      try(devtools::install_github("kaskr/adcomp/TMB")); cat("\n\n");
-                      try(devtools::install_github("kaskr/TMB_contrib_R/TMBhelper")); cat("\n\n");
-                      try(devtools::install_github("kaskr/TMB_contrib_R/TMBdebug")); cat("\n\n");
-                      try(devtools::install_github("kaskr/TMB_contrib_R/TMBphase")); cat("\n\n");
-		      try(devtools::install_github("james-thorson-noaa/FishStatsUtils")); cat("\n\n"); 
-                      try(devtools::install_github("james-thorson-noaa/VAST")); cat("\n\n");
-                     
-                      # try(devtools::install_github("james-thorson/utilities")); cat("\n\n");
-                      # try(devtools::install_github("nwfsc-assess/geostatistical_delta-GLMM")); cat("\n\n");
-                      # try(devtools::install_github("james-thorson/MIST"))
-                      cat("\n\n") })
-
+   #  With the 'INSTALL_opts' argument, remotes::install_github() throws a warning when the SHA number doesn't change    
+   switch(menu("Check for GitHub updates?") + 1,
+          cat("\n"), { try(remotes::install_github("John-R-Wallace-NOAA/JRWToolBox")); cat("\n\n");
+  	              try(remotes::install_github("John-R-Wallace-NOAA/rgit")); cat("\n\n");
+                       try(remotes::install_github("John-R-Wallace-NOAA/Imap")); cat("\n\n");
+                       try(remotes::install_github("r4ss/r4ss")); cat("\n\n");                      
+                       try(remotes::install_github("kaskr/TMB_contrib_R/TMBhelper")); cat("\n\n");
+                       try(remotes::install_github("kaskr/TMB_contrib_R/TMBdebug")); cat("\n\n"); 
+                       try(remotes::install_github("kaskr/TMB_contrib_R/TMBphase")); cat("\n\n");
+  				       try(remotes::install_github("mlysy/TMBtools")); cat("\n\n");
+                       try(remotes::install_github("kaskr/adcomp/TMB")); cat("\n\n");
+                       try(remotes::install_github("james-thorson-noaa/FishStatsUtils", INSTALL_opts="--no-multiarch --no-test-load")); cat("\n\n");
+                       try(remotes::install_github("james-thorson/utilities")); cat("\n\n");
+                       try(remotes::install_github("james-thorson-noaa/VAST", INSTALL_opts = "--no-multiarch --no-test-load --no-staged-install")); cat("\n\n");
+                       try(remotes::install_github("nwfsc-assess/geostatistical_delta-GLMM")); cat("\n\n");
+                       # try(remotes::install_github("james-thorson/MIST"))
+                       cat("\n\n") })
   
-                        # try(devtools::install_github("glmmTMB/glmmTMB",subdir="glmmTMB")); cat("\n\n")
-                         
-    switch(menu("Reinstall INLA, glmmTMB and rstan?") + 1,
-           cat("\n"), {
-                        try(install.packages("INLA", repos="https://www.math.ntnu.no/inla/R/stable")); cat("\n\n");
-                        try(install.packages("glmmTMB", repos = "http://glmmtmb.github.io/glmmTMB/repos/")); cat("\n\n");
-                        try(install.packages('rstan', repos = 'https://cloud.r-project.org/', dependencies = TRUE)); cat("\n\n")  
-                      })
+                     # try(remotes::install_github("glmmTMB/glmmTMB",subdir="glmmTMB")); cat("\n\n")
+                        
+   switch(menu("Reinstall INLA?") + 1,
+          cat("\n"), { 
+  	 try(install.packages("BiocManager")); cat("\n\n");
+   		 try(BiocManager::install(version = "3.11")); cat("\n\n");
+  	 try(BiocManager::install(c("graph", "Rgraphviz"))); cat("\n\n");
+  	 try(install.packages("INLA", repos=c(getOption("repos"), INLA="https://inla.r-inla-download.org/R/stable"), dep=TRUE)); cat("\n\n") 
+  	 })
+    
+   # OLD: gives version 0.0.2: install.packages("glmmTMB", repos = "http://glmmtmb.github.io/glmmTMB/repos/") => http://glmmtmb.github.io/glmmTMB/repos/src/contrib/glmmTMB_0.0.2.tar.gz
+   switch(menu("Reinstall glmmTMB?") + 1,
+          cat("\n"), { try(install.packages("glmmTMB")); cat("\n\n") })
+  
+   # switch(menu("Reinstall rstan?") + 1,
+   #      cat("\n"), { try(install.packages('rstan', repos = 'https://cloud.r-project.org/', dependencies = TRUE)); cat("\n\n") })                    
+   
+  
+   switch(menu("Reinstall compiled rstan?") + 1,
+          cat("\n"), { try(install.packages("rstan", repos = "https://cloud.r-project.org/", dependencies = TRUE)); cat("\n\n") })
+   
+   switch(menu("Reinstall rstan from source?") + 1,
+          cat("\n"), { try({
+          
+              pkgbuild::has_build_tools(debug = TRUE) 
+              dotR <- file.path(Sys.getenv("HOME"), ".R")
+              if (!file.exists(dotR)) dir.create(dotR)
+              M <- file.path(dotR, "Makevars.win")
+              if (!file.exists(M)) file.create(M)
+              cat("\nCXX14FLAGS=-O3 -march=native", "CXX14 = $(BINPREF)g++ -m$(WIN) -std=c++1y", "CXX11FLAGS=-O3 -march=corei7", file = M, sep = "\n", append = TRUE)
+              on.exit(file.remove(M))
+              Sys.setenv(MAKEFLAGS = "-j4")
+              install.packages("rstan", type = "source")
+              # lib("stan-dev/rstan", subdir = "rstan/rstan") # Failed
+         
+              }); cat("\n\n") })                              
    
     cat("\nDone with package updates.\n"); flush.console()
     
@@ -80,9 +109,16 @@ Linux.First <- function(askCRAN = TRUE) {
    lib(TMB)
    lib(TMBhelper)
    
-   
+   lib(RhpcBLASctl)
    
    lib(Imap)
+   
+   lib(rgit)
+   repoList <- c("John-R-Wallace-NOAA/JRWToolBox", "John-R-Wallace-NOAA/rgit", "John-R-Wallace-NOAA/VAST_Examples_and_Scripts", "John-R-Wallace-NOAA/Length_Restricted_Catch_with_VAST")
+   repoPath <- repoList[1]
+   gitName <- "John-R-Wallace-NOAA"
+   gitEmail <- "John.Wallace@noaa.gov"
+      
    detach("package:JRWToolBox")
    library(JRWToolBox)
 
@@ -149,6 +185,8 @@ Linux.First <- function(askCRAN = TRUE) {
   invisible()
   
 }
+
+
 
 
 
