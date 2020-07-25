@@ -1,9 +1,9 @@
  
 .onAttach <- function(libname, pkgname) {
 
-    packageStartupMessage("###########################################################################################")
+    packageStartupMessage("#######################################################")
     packageStartupMessage("Loading JRWToolbox and rgit packages - Welcome")
-    packageStartupMessage("###########################################################################################")
+    packageStartupMessage("#######################################################")
     
     if( getOption("repos")["CRAN"] == "@CRAN@" ) {
     
