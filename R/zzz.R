@@ -13,10 +13,10 @@
     if( !"rgit" %in% utils::installed.packages()[,1] ) {
     
       devtools::install_github("John-R-Wallace-NOAA/rgit")
-  	  library(rgit)
+  	  library(rgit, pos = 3)
   	  
     } else {
   	
-  	  library(rgit)
+  	  library(rgit, pos = 3)
     }
 }
