@@ -1,7 +1,7 @@
 
 sciName <- function(commonName = 'canary rockfish') {
  
-     URL <- paste0("https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.catch_fact/selection.json?filters=", "field_identified_taxonomy_dim$common_name=", 
+     URL <- paste0("https://www.webapps.nwfsc.noaa.gov/data/api/v1/source/trawl.catch_fact/selection.json?filters=", "field_identified_taxonomy_dim$common_name=", 
                     paste(strsplit(commonName, " ")[[1]], collapse = "%20"), "&variables=scientific_name")
               
      spSciName <- JRWToolBox::headJSON(URL, rowNums = 1)
@@ -12,4 +12,5 @@ sciName <- function(commonName = 'canary rockfish') {
          
      spSciName
 }  
+
 
