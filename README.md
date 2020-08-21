@@ -1,4 +1,5 @@
-R-ToolBox
+<h3> R-ToolBox </h3>
+
 ---
 
 Prologue
@@ -62,7 +63,7 @@ If you then want to load the package into R use:
 
     library(JRWToolBox)    
 
-============================ 
+----------------------
 
 Highlights and Comments
 
@@ -118,7 +119,7 @@ https://stackoverflow.com/questions/10586652/r-preserve-order-when-using-matchin
 
 - showObject() shows an R object in an editor, edit the function to change the default editor for ease of use.
 
-============================   
+-------------------   
 All functions were written by me except for (this list is under construction):
 
 - xlsxToR: Substantial fix and value added changes; see the fork off of xlsxToR: https://gist.github.com/John-R-Wallace/3eab07a93877e87ec968
