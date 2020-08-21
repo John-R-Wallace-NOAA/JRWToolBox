@@ -43,7 +43,14 @@ YearlyResultsFigure_VAST3X <- function(spShortName. = NULL, spLongName. = NULL, 
        # D_gcy <- as.data.frame(log(fit$tmb_list$Obj$report()[["D_gcy"]][, 1, ]))
        # D_gcy <- as.data.frame(log(fit.$Report[["D_gcy"]][map_list.$PlotDF$Include[!is.na(map_list.$PlotDF$x2i)], 1, ]))
       
-       SP.Results.Dpth. <- as.data.frame(log(fit.$Report[["D_gcy"]][map_list.$PlotDF[map_list.$PlotDF$Include, 'x2i'], 1, ]))
+	   if(any(grepl('D_gcy', names(fit.$Report))))
+	        D_gc <- fit.$Report[["D_gcy"]]
+			
+       if(any(grepl('D_gct', names(fit.$Report))))
+	        D_gc <- fit.$Report[["D_gct"]]			
+
+	  
+       SP.Results.Dpth. <- as.data.frame(log(D_gc[map_list.$PlotDF[map_list.$PlotDF[, 'Include'], 'x2i'], 1, ]))
            
        # D_gcy <- log(Obj$report()[["D_gcy"]][, 1, ])
        names(SP.Results.Dpth.) <- paste0("X", Year_Set)
@@ -137,7 +144,7 @@ YearlyResultsFigure_VAST3X <- function(spShortName. = NULL, spLongName. = NULL, 
        # COL <- Col(numCol)[SP.Results[, N + 3 - i]]
        # JRWToolBox::hexPolygon(SP.Results$Lon - i * longitudeDelta, SP.Results$Lat, hexC = hexcoords(dx = 0.01, sep = NA), col = COL, border = COL)
        
-       JRWToolBox::plot_variable_JRW( Y_gt = log(fit.$Report[["D_gcy"]][, 1, ]), projargs='+proj=longlat', col = COL,
+       JRWToolBox::plot_variable_JRW( Y_gt = log(D_gc[, 1, ]), projargs='+proj=longlat', col = COL,
                  map_list = map_list., numYear = ifelse(i == 0, 0, N - i + 1), Delta = - i * longitudeDelta )
               
        # plot_variable_JRW(  Y_gt = SP.Results.Dpth., projargs='+proj=longlat', map_list = make_map_info(Region = "California_current", 
@@ -281,6 +288,7 @@ YearlyResultsFigure_VAST3X <- function(spShortName. = NULL, spLongName. = NULL, 
  
 
  
+
 
 
 
