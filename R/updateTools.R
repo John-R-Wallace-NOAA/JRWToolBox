@@ -1,7 +1,8 @@
 
 updateTools <- function(quiet = FALSE, ...) {
 
-   update_rgit()
+   if(any(grepl('rgit', as.data.frame(installed.packages())$Package)))
+      rgit::update_rgit()
    
    if(any(search() %in% "package:JRWToolBox"))
       detach("package:JRWToolBox")
