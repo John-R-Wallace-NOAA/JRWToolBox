@@ -74,7 +74,7 @@ function( Y_gt, map_list, panel_labels, projargs='+proj=longlat', map_resolution
     }
   }
   # Location of extrapolation-grid cells
-  loc_g = map_list$PlotDF[which(map_list$PlotDF[,'Include']>0),c('Lon','Lat')]
+  loc_g = as.data.frame(map_list$PlotDF[which(map_list$PlotDF[,'Include']>0),c('Lon','Lat')])
   loc_g$Lon <- loc_g$Lon + Delta
 
   # CRS for original and new projections
