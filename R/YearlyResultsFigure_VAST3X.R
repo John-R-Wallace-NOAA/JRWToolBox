@@ -4,6 +4,8 @@ YearlyResultsFigure_VAST3X <- function(spShortName. = NULL, spLongName. = NULL, 
         Ages. = NULL, LenMin. = NULL, LenMax. = NULL, yearDelta = 0.5, title = FALSE, relativeAbundance = FALSE, changeUnitsUnder1Kg = TRUE, sweptAreaInHectares = FALSE, 
         rhoConfig. = NULL, numCol = 1000, Graph.Dev = "tif") 
 {
+    hexPolygon <- FALSE  # Now using plot_variable_JRW() - a hacked function of Thorson's plot_variable()
+    
     if (!any(installed.packages()[, 1] %in% "devtools")) 
         install.packages("devtools")
     if (!any(installed.packages()[, 1] %in% "JRWToolBox")) 
@@ -27,61 +29,60 @@ YearlyResultsFigure_VAST3X <- function(spShortName. = NULL, spLongName. = NULL, 
              
     graphics.off()
     
-    if(is.null(map_list.)) 
-        map_list. = FishStatsUtils::make_map_info( Region = Region, Extrapolation_List = fit.$extrapolation_list, spatial_list = fit.$spatial_list, 
-                            NN_Extrap = fit.$spatial_list$PolygonList$NN_Extrap) 
-
-    if(is.null(SP.Results.Dpth.) & exists('SP.Results.Dpth')) { 
-        SP.Results.Dpth. <- SP.Results.Dpth
-        cat("\n\nUsing the 'SP.Results.Dpth' found. Delete or rename the file and rerun to have it recalculated. 'SP.Results.Dpth' is invisibly returned by this function.\n")
-        cat("\nRecalculation of 'SP.Results.Dpth' will also result in the 'Yearly_Dens.png' figure being recreated.\n\n")
-    }    
-    
-    if(is.null(SP.Results.Dpth.)) {
-    
-       
-       # D_gcy <- as.data.frame(log(fit$tmb_list$Obj$report()[["D_gcy"]][, 1, ]))
-       # D_gcy <- as.data.frame(log(fit.$Report[["D_gcy"]][map_list.$PlotDF$Include[!is.na(map_list.$PlotDF$x2i)], 1, ]))
-      
-       if(any(grepl('D_gcy', names(fit.$Report))))
+    if(any(grepl('D_gcy', names(fit.$Report))))
 	        D_gc <- fit.$Report[["D_gcy"]]
-			
-       if(any(grepl('D_gct', names(fit.$Report))))
-	        D_gc <- fit.$Report[["D_gct"]]			
-
-	  
-       SP.Results.Dpth. <- as.data.frame(log(D_gc[map_list.$PlotDF[map_list.$PlotDF[, 'Include'], 'x2i'], 1, ]))
-           
-       # D_gcy <- log(Obj$report()[["D_gcy"]][, 1, ])
-       names(SP.Results.Dpth.) <- paste0("X", Year_Set)
-       
-       # Appears no need for this code - and done each time in the year loop besides
-       # loc_g <- map_list.$PlotDF[!is.na(map_list.$PlotDF$x2i), c('Lon','Lat')]
-       # Points_orig = sp::SpatialPoints( coords=loc_g, proj4string=sp::CRS( '+proj=longlat' ) )
-       # Points_LongLat = sp::spTransform( Points_orig, sp::CRS('+proj=longlat') ) # Reproject to Lat-Long  
-       
-       # SP.Results.Dpth. <- data.frame(map_list.$PlotDF[!is.na(map_list.$PlotDF$x2i) & map_list.$PlotDF$Include, c('Lon','Lat')], D_gcy)
-       # SP.Results.Dpth. <- na.omit(SP.Results.Dpth.)
-     
-       print(SP.Results.Dpth.[1:4, ])
-    }     
-                    
-     
+	   
+    if(any(grepl('D_gct', names(fit.$Report))))
+	        D_gc <- fit.$Report[["D_gct"]]		
+	   
+	
     
-    
+       if(is.null(map_list.)) 
+           map_list. = FishStatsUtils::make_map_info( Region = Region, Extrapolation_List = fit.$extrapolation_list, spatial_list = fit.$spatial_list, 
+                               NN_Extrap = fit.$spatial_list$PolygonList$NN_Extrap) 
+	   
+       if(is.null(SP.Results.Dpth.) & exists('SP.Results.Dpth')) { 
+           SP.Results.Dpth. <- SP.Results.Dpth
+           cat("\n\nUsing the 'SP.Results.Dpth' found. Delete or rename the file and rerun to have it recalculated. 'SP.Results.Dpth' is invisibly returned by this function.\n")
+           cat("\nRecalculation of 'SP.Results.Dpth' will also result in the 'Yearly_Dens.png' figure being recreated.\n\n")
+       }    
+              
+       if(is.null(SP.Results.Dpth.)) {
           
-    # ------------- VAST Species Results by Year Figure -------------   
-                
-    JRWToolBox::catf("\n\nCreating the species results by year figure using hexagon shapes (hexbin R package)\n\n")
-     
-    # numCol Colors 
-    # SP.Results <- SP.Results.Dpth.
-    # SP.Results[,-(1:2)] <- exp(SP.Results[,-(1:2)])
-    # SP.Results[,-(1:2)] <- SP.Results[,-(1:2)] - min(SP.Results[,-(1:2)])
-    # SP.Results[,-(1:2)] <- SP.Results[,-(1:2)] * (numCol - 1)/max(SP.Results[,-(1:2)]) + 1 
-    # SP.Results$Rescaled.Sum <- apply(SP.Results[,-(1:2)], 1, sum)
-    # SP.Results$Rescaled.Sum <- SP.Results$Rescaled.Sum - min(SP.Results$Rescaled.Sum)
-    # SP.Results$Rescaled.Sum <- SP.Results$Rescaled.Sum * (numCol - 1)/max(SP.Results$Rescaled.Sum) + 1
+          # D_gcy <- as.data.frame(log(fit$tmb_list$Obj$report()[["D_gcy"]][, 1, ]))
+          # D_gcy <- as.data.frame(log(fit.$Report[["D_gcy"]][map_list.$PlotDF$Include[!is.na(map_list.$PlotDF$x2i)], 1, ]))
+	   
+          SP.Results.Dpth. <- as.data.frame(log(D_gc[map_list.$PlotDF[map_list.$PlotDF[, 'Include'], 'x2i'], 1, ]))
+              
+          # D_gcy <- log(Obj$report()[["D_gcy"]][, 1, ])
+          names(SP.Results.Dpth.) <- paste0("X", Year_Set)
+          
+          # Appears no need for this code - and done each time in the year loop besides
+          # loc_g <- map_list.$PlotDF[!is.na(map_list.$PlotDF$x2i), c('Lon','Lat')]
+          # Points_orig = sp::SpatialPoints( coords=loc_g, proj4string=sp::CRS( '+proj=longlat' ) )
+          # Points_LongLat = sp::spTransform( Points_orig, sp::CRS('+proj=longlat') ) # Reproject to Lat-Long  
+          
+          # SP.Results.Dpth. <- data.frame(map_list.$PlotDF[!is.na(map_list.$PlotDF$x2i) & map_list.$PlotDF$Include, c('Lon','Lat')], D_gcy)
+          # SP.Results.Dpth. <- na.omit(SP.Results.Dpth.)
+        
+          print(SP.Results.Dpth.[1:4, ])
+       }   
+
+    if(hexPolygon) {       
+	  
+       JRWToolBox::catf("\n\nCreating the species results by year figure using hexagon shapes (hexbin R package)\n\n")
+        
+       # numCol Colors 
+       SP.Results <- SP.Results.Dpth.
+       SP.Results[,-(1:2)] <- exp(SP.Results[,-(1:2)])
+       SP.Results[,-(1:2)] <- SP.Results[,-(1:2)] - min(SP.Results[,-(1:2)])
+       SP.Results[,-(1:2)] <- SP.Results[,-(1:2)] * (numCol - 1)/max(SP.Results[,-(1:2)]) + 1 
+       SP.Results$Rescaled.Sum <- apply(SP.Results[,-(1:2)], 1, sum)
+       SP.Results$Rescaled.Sum <- SP.Results$Rescaled.Sum - min(SP.Results$Rescaled.Sum)
+       SP.Results$Rescaled.Sum <- SP.Results$Rescaled.Sum * (numCol - 1)/max(SP.Results$Rescaled.Sum) + 1
+	}
+	
+	# ------------- VAST Species Results by Year Figure -------------  
    
     if(is.null(Index.)) {
         if(exists('Index')) {
@@ -104,20 +105,26 @@ YearlyResultsFigure_VAST3X <- function(spShortName. = NULL, spLongName. = NULL, 
     if(is.null(spLongName.) & !exists('spLongName'))          
         spLongName. <- spShortName.
      
+	if(hexPolygon)
+	    resName <- "SpResults_Hex_ "
+    
+    if(!hexPolygon)
+	    resName <- "SpResults "	
 
     if(is.null(rhoConfig.))  {
+	
         if(Graph.Dev == "png")      
-            png(paste0(DateFile., "SpResults ", spShortName., ".png"),  width = 6000, height = 6000, bg = 'white', type = 'cairo')
+            png(paste0(DateFile., resName, spShortName., ".png"),  width = 6000, height = 6000, bg = 'white', type = 'cairo')
         
         if(Graph.Dev == "tif")      
-            tiff(paste0(DateFile., "SpResults ", spShortName., ".tif"),  width = 6000, height = 6000, bg = 'white', type = 'cairo') # 10" X 10" @ 600 dpi (10*10*600*600 = 6000^2)
+            tiff(paste0(DateFile., resName, spShortName., ".tif"),  width = 6000, height = 6000, bg = 'white', type = 'cairo') # 10" X 10" @ 600 dpi (10*10*600*600 = 6000^2)
     } else {
     
         if(Graph.Dev == "png")      
-            png(paste0(DateFile., "SpResults ", spShortName., ", Rho = ", rhoConfig., ".png"),  width = 6000, height = 6000, bg = 'white', type = 'cairo')
+            png(paste0(DateFile., resName, spShortName., ", Rho = ", rhoConfig., ".png"),  width = 6000, height = 6000, bg = 'white', type = 'cairo')
         
         if(Graph.Dev == "tif")      
-            tiff(paste0(DateFile., "SpResults ", spShortName., ", Rho = ", rhoConfig., ".tif"),  width = 6000, height = 6000, bg = 'white', type = 'cairo') # 10" X 10" @ 600 dpi (10*10*600*600 = 6000^2)
+            tiff(paste0(DateFile., resName, spShortName., ", Rho = ", rhoConfig., ".tif"),  width = 6000, height = 6000, bg = 'white', type = 'cairo') # 10" X 10" @ 600 dpi (10*10*600*600 = 6000^2)
     } 
     
     par(cex = 6)   
@@ -134,24 +141,38 @@ YearlyResultsFigure_VAST3X <- function(spShortName. = NULL, spLongName. = NULL, 
     box(lwd = 5)
     
     # Col <- colorRampPalette(colors = c("blue", "dodgerblue", "cyan", "green", "orange", "red", "red3"))
-    Col = colorRampPalette(colors=c("blue", "dodgerblue", "cyan", "green", "yellow", JRWToolBox::col.alpha('yellow'), JRWToolBox::col.alpha('red'), "red"))
+    # Col = colorRampPalette(colors=c("blue", "dodgerblue", "cyan", "green", "yellow", JRWToolBox::col.alpha('yellow'), JRWToolBox::col.alpha('red'), "red"))
+    Col =  Col = colorRampPalette(colors=c("blue", "dodgerblue", "cyan", "green", "yellow", "orange", "red"))
     
     COL <- Col(numCol)
     
     # JRWToolBox::hexPolygon(SP.Results$Lon, SP.Results$Lat, hexC = hexcoords(dx = 0.01, sep=NA), col = COL, border = COL)
-    
-    for (i in 0:N) {
-       # COL <- Col(numCol)[SP.Results[, N + 3 - i]]
-       # JRWToolBox::hexPolygon(SP.Results$Lon - i * longitudeDelta, SP.Results$Lat, hexC = hexcoords(dx = 0.01, sep = NA), col = COL, border = COL)
-       
-       JRWToolBox::plot_variable_JRW( Y_gt = log(D_gc[, 1, ]), projargs='+proj=longlat', col = COL,
-                 map_list = map_list., numYear = ifelse(i == 0, 0, N - i + 1), Delta = - i * longitudeDelta )
-              
-       # plot_variable_JRW(  Y_gt = SP.Results.Dpth., projargs='+proj=longlat', map_list = make_map_info(Region = "California_current", 
-       #      Extrapolation_List = Extrapolation_List, spatial_list = Spatial_List), numYear = i, Delta = - i * longitudeDelta )       
-              
-
+     
+	if(hexPolygon) {
+	  for (i in 1:N) {
+ 
+        COL <- Col(numCol)[SP.Results[, N + 3 - i]]
+        assign("COL", COL, pos = 1) # Is this needed?
+        JRWToolBox::hexPolygon(SP.Results$Lon - i * longitudeDelta, SP.Results$Lat, hexC = hexcoords(dx = 0.01, sep = NA), col = COL, border = COL)
+       } 
+	   
+	   #  for (i in 1:N) {
+       #  COL <- Col(numCol)[SP.Results[, N + 3 - i]]
+       #  assign("COL", COL, pos = 1)
+       #  JRWToolBox::hexPolygon(SP.Results$X - i * longitudeDelta, SP.Results$Y, hexC = hexcoords(dx = 0.1, sep = NA), col = COL, border = COL)
     }
+	
+	if(!hexPolygon) {
+	   oldOpt <- options(warn = -1)
+       for (i in 0:N) {
+	   
+            JRWToolBox::plot_variable_JRW( Y_gt = log(D_gc[, 1, ]), projargs = '+proj=longlat', col = COL,
+                    map_list = map_list., numYear = ifelse(i == 0, 0, N - i + 1), Delta = - i * longitudeDelta )
+          }       
+          # plot_variable_JRW(  Y_gt = SP.Results.Dpth., projargs='+proj=longlat', map_list = make_map_info(Region = "California_current", 
+          #      Extrapolation_List = Extrapolation_List, spatial_list = Spatial_List), numYear = i, Delta = - i * longitudeDelta )
+   	   options(oldOpt)
+	}
     
     Index.$LongPlotValues <- -124.6437 + seq(-longitudeDelta, by = -longitudeDelta, len = N)
     Index.$LatPlotValues <- rev((48 - 34.2) * (Index.$Estimate_metric_tons - min(Index.$Estimate_metric_tons))/max(Index.$Estimate_metric_tons) + 34.2)
