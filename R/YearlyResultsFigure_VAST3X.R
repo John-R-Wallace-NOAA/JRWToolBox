@@ -43,7 +43,7 @@ YearlyResultsFigure_VAST3X <- function(spShortName. = NULL, spLongName. = NULL, 
        # D_gcy <- as.data.frame(log(fit$tmb_list$Obj$report()[["D_gcy"]][, 1, ]))
        # D_gcy <- as.data.frame(log(fit.$Report[["D_gcy"]][map_list.$PlotDF$Include[!is.na(map_list.$PlotDF$x2i)], 1, ]))
       
-	   if(any(grepl('D_gcy', names(fit.$Report))))
+       if(any(grepl('D_gcy', names(fit.$Report))))
 	        D_gc <- fit.$Report[["D_gcy"]]
 			
        if(any(grepl('D_gct', names(fit.$Report))))
