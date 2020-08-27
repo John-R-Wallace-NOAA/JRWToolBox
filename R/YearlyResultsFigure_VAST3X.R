@@ -42,10 +42,10 @@ YearlyResultsFigure_VAST3X <- function(spShortName. = NULL, spLongName. = NULL, 
         map_list. = FishStatsUtils::make_map_info( Region = Region, Extrapolation_List = fit.$extrapolation_list, spatial_list = fit.$spatial_list, 
                             NN_Extrap = fit.$spatial_list$PolygonList$NN_Extrap) 
 	
-    if(is.null(SP.Results.Dpth.) & exists('SP.Results.Dpth')) { 
-        SP.Results.Dpth. <- SP.Results.Dpth
-        cat("\n\nUsing the 'SP.Results.Dpth' found. Delete or rename the file and rerun to have it recalculated. 'SP.Results.Dpth' is invisibly returned by this function.\n")
-    }    
+    # if(is.null(SP.Results.Dpth.) & exists('SP.Results.Dpth')) { 
+    #    SP.Results.Dpth. <- SP.Results.Dpth
+    #   cat("\n\nUsing the 'SP.Results.Dpth' found. Delete or rename the file and rerun to have it recalculated. 'SP.Results.Dpth' is invisibly returned by this function.\n")
+    # }    
            
     if(is.null(SP.Results.Dpth.)) {
        
@@ -304,7 +304,8 @@ YearlyResultsFigure_VAST3X <- function(spShortName. = NULL, spLongName. = NULL, 
         
     dev.off()
   
-    invisible(SP.Results.Dpth.)  
+    # invisible(SP.Results.Dpth.)  
+    invisible()  
  }
  
 
