@@ -2,10 +2,9 @@
 YearlyResultsFigure_VAST3X <- function(spShortName. = NULL, spLongName. = NULL, HomeDir = ".", eastLongitude = -124 - (N + 1) * longitudeDelta, longitudeDelta = 3.5, Index. = NULL, 
         fit. = fit, map_list. = NULL, SP.Results.Dpth. = NULL, DateFile. = DateFile, Year_Set. = Year_Set, Years2Include. = Years2Include, strata.limits. = strata.limits, 
         Ages. = NULL, LenMin. = NULL, LenMax. = NULL, yearDelta = 0.5, title = FALSE, relativeAbundance = FALSE, changeUnitsUnder1Kg = TRUE, sweptAreaInHectares = FALSE, 
-        rhoConfig. = NULL, numCol = 1000, Graph.Dev = "tif") 
+        rhoConfig. = NULL, numCol = 1000, Graph.Dev = "tif", lastEdit = "2020-08-27 00:43:12 PDT") 
 {
-    # 2020-08-27 00:43:12 PDT
-
+ 
     hexPolygon <- FALSE  # Now using plot_variable_JRW() - a hacked function of Thorson's plot_variable()
     
     if (!any(installed.packages()[, 1] %in% "devtools")) 
