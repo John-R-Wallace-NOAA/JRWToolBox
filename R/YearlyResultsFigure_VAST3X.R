@@ -4,16 +4,17 @@ YearlyResultsFigure_VAST3X <- function(spShortName. = NULL, spLongName. = NULL, 
         Ages. = NULL, LenMin. = NULL, LenMax. = NULL, yearDelta = 0.5, title = FALSE, relativeAbundance = FALSE, changeUnitsUnder1Kg = TRUE, sweptAreaInHectares = FALSE, 
         rhoConfig. = NULL, numCol = 1000, Graph.Dev = "tif") 
 {
+    # 2020-08-27 00:43:12 PDT
+
     hexPolygon <- FALSE  # Now using plot_variable_JRW() - a hacked function of Thorson's plot_variable()
     
     if (!any(installed.packages()[, 1] %in% "devtools")) 
         install.packages("devtools")
     if (!any(installed.packages()[, 1] %in% "JRWToolBox")) 
         devtools::install_github("John-R-Wallace/JRWToolBox")
-	
-    cat("\nDimension of D_gc:", dim(D_gc), "\n\n")
+	    
             
-    JRWToolBox::lib(TeachingDemos, pos=1000)   # Put in back search position because of a conflict with %<=% function in my tool box.
+    JRWToolBox::lib(TeachingDemos, pos = 1000)   # Put in back search position because of a conflict with %<=% function in my tool box.
     
     color.bar <- function(lut, min, max=-min, nticks=11, ticks=seq(min, max, len=nticks), title = '', ...) {
           scale = (length(lut)-1)/(max-min)
@@ -27,8 +28,6 @@ YearlyResultsFigure_VAST3X <- function(spShortName. = NULL, spLongName. = NULL, 
  
     setwd(HomeDir) 
       
-    #  ------------- Create Yearly_Dens.png where the density is within year not over all years -------------  
-             
     graphics.off()
     
     if(any(grepl('D_gcy', names(fit.$Report))))
@@ -36,39 +35,39 @@ YearlyResultsFigure_VAST3X <- function(spShortName. = NULL, spLongName. = NULL, 
 	   
     if(any(grepl('D_gct', names(fit.$Report))))
 	        D_gc <- fit.$Report[["D_gct"]]		
-	   
+	 
+    cat("\nDimension of D_gc:", dim(D_gc), "\n\n")     
 	
     
-       if(is.null(map_list.)) 
-           map_list. = FishStatsUtils::make_map_info( Region = Region, Extrapolation_List = fit.$extrapolation_list, spatial_list = fit.$spatial_list, 
-                               NN_Extrap = fit.$spatial_list$PolygonList$NN_Extrap) 
-	   
-       if(is.null(SP.Results.Dpth.) & exists('SP.Results.Dpth')) { 
-           SP.Results.Dpth. <- SP.Results.Dpth
-           cat("\n\nUsing the 'SP.Results.Dpth' found. Delete or rename the file and rerun to have it recalculated. 'SP.Results.Dpth' is invisibly returned by this function.\n")
-           cat("\nRecalculation of 'SP.Results.Dpth' will also result in the 'Yearly_Dens.png' figure being recreated.\n\n")
-       }    
-              
-       if(is.null(SP.Results.Dpth.)) {
-          
-          # D_gcy <- as.data.frame(log(fit$tmb_list$Obj$report()[["D_gcy"]][, 1, ]))
-          # D_gcy <- as.data.frame(log(fit.$Report[["D_gcy"]][map_list.$PlotDF$Include[!is.na(map_list.$PlotDF$x2i)], 1, ]))
-	   
-          SP.Results.Dpth. <- as.data.frame(log(D_gc[map_list.$PlotDF[map_list.$PlotDF[, 'Include'], 'x2i'], 1, ]))
-              
-          # D_gcy <- log(Obj$report()[["D_gcy"]][, 1, ])
-          names(SP.Results.Dpth.) <- paste0("X", Year_Set)
-          
-          # Appears no need for this code - and done each time in the year loop besides
-          # loc_g <- map_list.$PlotDF[!is.na(map_list.$PlotDF$x2i), c('Lon','Lat')]
-          # Points_orig = sp::SpatialPoints( coords=loc_g, proj4string=sp::CRS( '+proj=longlat' ) )
-          # Points_LongLat = sp::spTransform( Points_orig, sp::CRS('+proj=longlat') ) # Reproject to Lat-Long  
-          
-          # SP.Results.Dpth. <- data.frame(map_list.$PlotDF[!is.na(map_list.$PlotDF$x2i) & map_list.$PlotDF$Include, c('Lon','Lat')], D_gcy)
-          # SP.Results.Dpth. <- na.omit(SP.Results.Dpth.)
-        
-          print(SP.Results.Dpth.[1:4, ])
-       }   
+    if(is.null(map_list.)) 
+        map_list. = FishStatsUtils::make_map_info( Region = Region, Extrapolation_List = fit.$extrapolation_list, spatial_list = fit.$spatial_list, 
+                            NN_Extrap = fit.$spatial_list$PolygonList$NN_Extrap) 
+	
+    if(is.null(SP.Results.Dpth.) & exists('SP.Results.Dpth')) { 
+        SP.Results.Dpth. <- SP.Results.Dpth
+        cat("\n\nUsing the 'SP.Results.Dpth' found. Delete or rename the file and rerun to have it recalculated. 'SP.Results.Dpth' is invisibly returned by this function.\n")
+    }    
+           
+    if(is.null(SP.Results.Dpth.)) {
+       
+       # D_gcy <- as.data.frame(log(fit$tmb_list$Obj$report()[["D_gcy"]][, 1, ]))
+       # D_gcy <- as.data.frame(log(fit.$Report[["D_gcy"]][map_list.$PlotDF$Include[!is.na(map_list.$PlotDF$x2i)], 1, ]))
+	
+       SP.Results.Dpth. <- as.data.frame(log(D_gc[map_list.$PlotDF[map_list.$PlotDF[, 'Include'], 'x2i'], 1, ]))
+           
+       # D_gcy <- log(Obj$report()[["D_gcy"]][, 1, ])
+       names(SP.Results.Dpth.) <- paste0("X", Year_Set)
+       
+       # Appears no need for this code - and done each time in the year loop besides
+       # loc_g <- map_list.$PlotDF[!is.na(map_list.$PlotDF$x2i), c('Lon','Lat')]
+       # Points_orig = sp::SpatialPoints( coords=loc_g, proj4string=sp::CRS( '+proj=longlat' ) )
+       # Points_LongLat = sp::spTransform( Points_orig, sp::CRS('+proj=longlat') ) # Reproject to Lat-Long  
+       
+       # SP.Results.Dpth. <- data.frame(map_list.$PlotDF[!is.na(map_list.$PlotDF$x2i) & map_list.$PlotDF$Include, c('Lon','Lat')], D_gcy)
+       # SP.Results.Dpth. <- na.omit(SP.Results.Dpth.)
+     
+       print(SP.Results.Dpth.[1:4, ])
+    }   
 
     if(hexPolygon) {       
 	  
@@ -311,6 +310,7 @@ YearlyResultsFigure_VAST3X <- function(spShortName. = NULL, spLongName. = NULL, 
  
 
  
+
 
 
 
