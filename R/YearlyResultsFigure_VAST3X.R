@@ -56,7 +56,7 @@ YearlyResultsFigure_VAST3X <- function(spShortName. = NULL, spLongName. = NULL, 
        SP.Results.Dpth. <- as.data.frame(log(D_gc[map_list.$PlotDF[map_list.$PlotDF[, 'Include'], 'x2i'], 1, ]))
            
        # D_gcy <- log(Obj$report()[["D_gcy"]][, 1, ])
-       names(SP.Results.Dpth.) <- paste0("X", Year_Set)
+       names(SP.Results.Dpth.) <- paste0("X", Year_Set.)
        
        # Appears no need for this code - and done each time in the year loop besides
        # loc_g <- map_list.$PlotDF[!is.na(map_list.$PlotDF$x2i), c('Lon','Lat')]
