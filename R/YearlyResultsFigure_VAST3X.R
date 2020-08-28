@@ -1,6 +1,6 @@
 
 YearlyResultsFigure_VAST3X <- function(spShortName. = NULL, spLongName. = NULL, HomeDir = ".", eastLongitude = -124 - (N + 1) * longitudeDelta, longitudeDelta = 3.5, Index. = NULL, 
-        fit. = fit, map_list. = NULL, SP.Results.Dpth. = NULL, DateFile. = DateFile, Year_Set. = Year_Set, Years2Include. = Years2Include, strata.limits. = strata.limits, 
+        fit. = fit, map_list. = NULL, SP.Results.Dpth. = NULL, DateFile. = DateFile, Region. = Region, Year_Set. = Year_Set, Years2Include. = Years2Include, strata.limits. = strata.limits, 
         Ages. = NULL, LenMin. = NULL, LenMax. = NULL, yearDelta = 0.5, title = FALSE, relativeAbundance = FALSE, changeUnitsUnder1Kg = TRUE, sweptAreaInHectares = FALSE, 
         rhoConfig. = NULL, numCol = 1000, Graph.Dev = "tif", lastEdit = "2020-08-27 14:49:56 PDT") 
 {
@@ -39,7 +39,7 @@ YearlyResultsFigure_VAST3X <- function(spShortName. = NULL, spLongName. = NULL, 
 	
     
     if(is.null(map_list.)) 
-        map_list. = FishStatsUtils::make_map_info( Region = Region, Extrapolation_List = fit.$extrapolation_list, spatial_list = fit.$spatial_list, 
+        map_list. = FishStatsUtils::make_map_info( Region = Region., Extrapolation_List = fit.$extrapolation_list, spatial_list = fit.$spatial_list, 
                             NN_Extrap = fit.$spatial_list$PolygonList$NN_Extrap) 
 	
     # if(is.null(SP.Results.Dpth.) & exists('SP.Results.Dpth')) { 
