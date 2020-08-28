@@ -1,9 +1,11 @@
 
 YearlyResultsFigure_VAST3X <- function(spShortName. = NULL, spLongName. = NULL, HomeDir = ".", eastLongitude = -124 - (N + 1) * longitudeDelta, longitudeDelta = 3.5, Index. = NULL, 
-        fit. = fit, map_list. = NULL, SP.Results.Dpth. = NULL, DateFile. = DateFile, Region. = Region, Year_Set. = Year_Set, Years2Include. = Years2Include, strata.limits. = strata.limits, 
+        fit. = fit, DateFile. = DateFile, Region. = Region, Year_Set. = Year_Set, Years2Include. = Years2Include, strata.limits. = strata.limits, 
         Ages. = NULL, LenMin. = NULL, LenMax. = NULL, yearDelta = 0.5, title = FALSE, relativeAbundance = FALSE, changeUnitsUnder1Kg = TRUE, sweptAreaInHectares = FALSE, 
-        rhoConfig. = NULL, numCol = 1000, Graph.Dev = "tif", lastEdit = "2020-08-27 18:55:47 PDT") 
+        rhoConfig. = NULL, numCol = 1000, Graph.Dev = "tif", lastEdit = "2020-08-28 01:44:14 PDT") 
 {
+
+    cat("\nYearlyResultsFigure_VAST3X's last edit timestamp =", lastEdit, "\n\n")
  
     hexPolygon <- FALSE  # Now using plot_variable_JRW() - a hacked function of Thorson's plot_variable()
     
@@ -38,35 +40,29 @@ YearlyResultsFigure_VAST3X <- function(spShortName. = NULL, spLongName. = NULL, 
     cat("\nDimension of D_gc:", dim(D_gc), "\n\n")     
 	
     
-    if(is.null(map_list.)) 
-        map_list. = FishStatsUtils::make_map_info( Region = Region., Extrapolation_List = fit.$extrapolation_list, spatial_list = fit.$spatial_list, 
-                            NN_Extrap = fit.$spatial_list$PolygonList$NN_Extrap) 
+   
+    map_list. = FishStatsUtils::make_map_info( Region = Region., Extrapolation_List = fit.$extrapolation_list, spatial_list = fit.$spatial_list, 
+                        NN_Extrap = fit.$spatial_list$PolygonList$NN_Extrap) 
 	
-    # if(is.null(SP.Results.Dpth.) & exists('SP.Results.Dpth')) { 
-    #    SP.Results.Dpth. <- SP.Results.Dpth
-    #   cat("\n\nUsing the 'SP.Results.Dpth' found. Delete or rename the file and rerun to have it recalculated. 'SP.Results.Dpth' is invisibly returned by this function.\n")
-    # }    
-           
-    if(is.null(SP.Results.Dpth.)) {
-       
-       # D_gcy <- as.data.frame(log(fit$tmb_list$Obj$report()[["D_gcy"]][, 1, ]))
-       # D_gcy <- as.data.frame(log(fit.$Report[["D_gcy"]][map_list.$PlotDF$Include[!is.na(map_list.$PlotDF$x2i)], 1, ]))
+        
+    # D_gcy <- as.data.frame(log(fit$tmb_list$Obj$report()[["D_gcy"]][, 1, ]))
+    # D_gcy <- as.data.frame(log(fit.$Report[["D_gcy"]][map_list.$PlotDF$Include[!is.na(map_list.$PlotDF$x2i)], 1, ]))
 	
-       SP.Results.Dpth. <- as.data.frame(log(D_gc[map_list.$PlotDF[map_list.$PlotDF[, 'Include'], 'x2i'], 1, ]))
-           
-       # D_gcy <- log(Obj$report()[["D_gcy"]][, 1, ])
-       names(SP.Results.Dpth.) <- paste0("X", Year_Set.)
-       
-       # Appears no need for this code - and done each time in the year loop besides
-       # loc_g <- map_list.$PlotDF[!is.na(map_list.$PlotDF$x2i), c('Lon','Lat')]
-       # Points_orig = sp::SpatialPoints( coords=loc_g, proj4string=sp::CRS( '+proj=longlat' ) )
-       # Points_LongLat = sp::spTransform( Points_orig, sp::CRS('+proj=longlat') ) # Reproject to Lat-Long  
-       
-       # SP.Results.Dpth. <- data.frame(map_list.$PlotDF[!is.na(map_list.$PlotDF$x2i) & map_list.$PlotDF$Include, c('Lon','Lat')], D_gcy)
-       # SP.Results.Dpth. <- na.omit(SP.Results.Dpth.)
+    SP.Results.Dpth. <- as.data.frame(log(D_gc[map_list.$PlotDF[map_list.$PlotDF[, 'Include'], 'x2i'], 1, ]))
+        
+    # D_gcy <- log(Obj$report()[["D_gcy"]][, 1, ])
+    names(SP.Results.Dpth.) <- paste0("X", Year_Set.)
+    
+    # Appears no need for this code - and done each time in the year loop besides
+    # loc_g <- map_list.$PlotDF[!is.na(map_list.$PlotDF$x2i), c('Lon','Lat')]
+    # Points_orig = sp::SpatialPoints( coords=loc_g, proj4string=sp::CRS( '+proj=longlat' ) )
+    # Points_LongLat = sp::spTransform( Points_orig, sp::CRS('+proj=longlat') ) # Reproject to Lat-Long  
+    
+    # SP.Results.Dpth. <- data.frame(map_list.$PlotDF[!is.na(map_list.$PlotDF$x2i) & map_list.$PlotDF$Include, c('Lon','Lat')], D_gcy)
+    # SP.Results.Dpth. <- na.omit(SP.Results.Dpth.)
      
-       print(SP.Results.Dpth.[1:4, ])
-    }   
+    print(SP.Results.Dpth.[1:4, ])
+     
 
     if(hexPolygon) {       
 	  
@@ -310,6 +306,7 @@ YearlyResultsFigure_VAST3X <- function(spShortName. = NULL, spLongName. = NULL, 
  
 
  
+
 
 
 
