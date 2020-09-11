@@ -57,7 +57,7 @@ Install or upgrade this package with:
     
     remotes::install_github("John-R-Wallace-NOAA/JRWToolBox", INSTALL_opts = "--no-staged-install")
     
-    # # Some R installations may require download.file.method = "auto":
+    # # Some R installations may require: download.file.method = "auto":
     # oldOpts <- options(download.file.method = "auto")  # Sometimes remotes::install_github() throws an error without this
     # remotes::install_github("John-R-Wallace-NOAA/JRWToolBox", force = TRUE)
     # options(oldOpts)
