@@ -1,4 +1,4 @@
-dataWareHouseTrawlBioExtra <- function (commonName = "canary rockfish", species = NULL, yearRange = c(1000, 5000), projectShort = c("Ask", "AFSC.Shelf", "AFSC.Slope", "WCGBTS.Combo", "WCGBTS.Shelf", 
+dataWareHouseTrawlBioExtraCols <- function (commonName = "canary rockfish", species = NULL, yearRange = c(1000, 5000), projectShort = c("Ask", "AFSC.Shelf", "AFSC.Slope", "WCGBTS.Combo", "WCGBTS.Shelf", 
                             "WCGBTS.Slope", "WCGBTS.Hypoxia", "WCGBTS.Santa.Barb.Basin", "WCGBTS.Shelf.Rockfish", "WCGBTS.Video"), verbose = FALSE, optionDigitsAtLeast11 = TRUE, headOnly = FALSE) 
 {
     if(optionDigitsAtLeast11)  {
@@ -74,13 +74,13 @@ dataWareHouseTrawlBioExtra <- function (commonName = "canary rockfish", species 
         
         " # Beth still needs to add  is_assessment_acceptable  to the other surveys"
         if (any(P %in% c('AFSC.Shelf', 'AFSC.Slope')))
-            UrlText <- paste0("https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.individual_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",", 
+            UrlText <- paste0("https://www.webapps.nwfsc.noaa.gov/data/api/v1/source/trawl.individual_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",", 
                 "station_invalid=0,", "operation_dim$is_assessment_acceptable=True,", "operation_dim$legacy_performance_code!=8,",
                 "field_identified_taxonomy_dim$scientific_name=", paste(strsplit(species, " ")[[1]], collapse = "%20"), ",year>=", 
                 yearRange[1], ",year<=", yearRange[2], "&variables=", 
                 paste0(Vars, collapse = ","))
         else         
-            UrlText <- paste0("https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.individual_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",", 
+            UrlText <- paste0("https://www.webapps.nwfsc.noaa.gov/data/api/v1/source/trawl.individual_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",", 
                 "station_invalid=0,", "field_identified_taxonomy_dim$scientific_name=", paste(strsplit(species, " ")[[1]], collapse = "%20"), ",year>=", 
                 yearRange[1], ",year<=", yearRange[2], "&variables=", paste0(Vars, collapse = ","))
                 
@@ -123,7 +123,7 @@ dataWareHouseTrawlBioExtra <- function (commonName = "canary rockfish", species 
         
             Vars <- c("project", "trawl_id", "common_name", "scientific_name", "year", "vessel", "pass", "tow", "datetime_utc_iso", "Depth_m", "length_cm", "length_type", "width_cm", "sex", "latitude_dd", "longitude_dd")
         
-            UrlText <- paste0("https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.triennial_length_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",", 
+            UrlText <- paste0("https://www.webapps.nwfsc.noaa.gov/data/api/v1/source/trawl.triennial_length_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",", 
                 "station_invalid=0,", "operation_dim$is_assessment_acceptable=True,", "operation_dim$legacy_performance_code!=8,", "field_identified_taxonomy_dim$scientific_name=", 
                 paste(strsplit(species, " ")[[1]], collapse = "%20"), ",year>=", yearRange[1], ",year<=", yearRange[2], "&variables=", 
                 paste0(Vars, collapse = ","))
