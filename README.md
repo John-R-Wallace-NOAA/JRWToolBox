@@ -88,7 +88,7 @@ Code to put on the top of a function to start using lib() and other functions in
     lib("John-R-Wallace/Imap") # GitHub
     lib(plyr) # CRAN
 
-- %ino% preserves the order when using matching operators unlike %in%.  See my entry in Stack Overflow:
+- %ino% preserves the order when using matching operators unlike %in%.  See my entry on Stack Overflow:
 https://stackoverflow.com/questions/10586652/r-preserve-order-when-using-matching-operators-in
 
 
