@@ -140,6 +140,9 @@ dataWareHouseTrawlCatch <- function (commonName = "canary rockfish", species = N
             " # Note that tow number is within vessel and within year, but not within pass (the Noahs Ark did both passes in 2012 and the tow number max is ~ twice the one pass per year total)  "
              
             Out <- JRWToolBox::match.f(All.Tows, SP, c("Year", "Vessel", "Tow"), c("Year", "Vessel", "Tow"), c("Common_Name", "Scientific_Name", "Subsample_count", "Subsample_wt_kg", "Total_sp_numbers", "Total_sp_wt_kg"))
+            Out$Subsample_count[is.na(Out$Subsample_count)] <- 0
+            Out$Subsample_wt_kg[is.na(Out$Subsample_wt_kg)] <- 0
+            Out$Total_sp_numbers[is.na(Out$Total_sp_numbers)] <- 0
             Out$Total_sp_wt_kg[is.na(Out$Total_sp_wt_kg)] <- 0
             
             Out$Area_Swept_ha[is.na(Out$Area_Swept_ha)] <- mean(Out$Area_Swept_ha, trim = 0.05, na.rm = TRUE)
@@ -163,6 +166,7 @@ dataWareHouseTrawlCatch <- function (commonName = "canary rockfish", species = N
     cat("\n")
     invisible(OutAll)
 }
+
 
 
 
