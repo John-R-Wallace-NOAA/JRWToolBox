@@ -14,7 +14,7 @@ backupGitHub <- function() {
   download.file("https://github.com/John-R-Wallace-NOAA/VAST_Examples_and_Scripts/archive/master.zip", destfile = paste0(Dir, 'VAST_Examples_and_Scripts ', Sys.Date(), '.zip'), mode = 'wb')
   download.file("https://github.com/John-R-Wallace-NOAA/Length_Restricted_Catch_with_VAST/archive/master.zip", destfile = paste0(Dir, 'Length_Restricted_Catch_with_VAST ', Sys.Date(), '.zip'), mode = 'wb')
 
-  download.file("https://github.com/John-R-Wallace-NOAA/PacFIN-Data-Extraction/archive/master.zip", destfile = paste0(Dir, 'PacFIN.Data.Extraction ', Sys.Date(), '.zip'), mode = 'wb')  
+  download.file("https://github.com/John-R-Wallace-NOAA/PacFIN.Data.Extraction/archive/master.zip", destfile = paste0(Dir, 'PacFIN.Data.Extraction ', Sys.Date(), '.zip'), mode = 'wb')  
   download.file("https://github.com/John-R-Wallace-NOAA/PacFIN_Logbook_Download_and_Cleanup/archive/master.zip", destfile = paste0(Dir, 'PacFIN_Logbook_Download_and_Cleanup ', Sys.Date(), '.zip'), mode = 'wb')
   
   download.file("https://github.com/John-R-Wallace-NOAA/R_Wrapper_for_DOS_XTide/archive/master.zip", destfile = paste0(Dir, 'R_Wrapper_for_DOS_XTide ', Sys.Date(), '.zip'), mode = 'wb')
