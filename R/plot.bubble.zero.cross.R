@@ -9,7 +9,7 @@ plot.bubble.zero.cross <- function (xyzOrg, group = rep("A", nrow(xyz)), maxsize
             fill.col
         }
     }, cross.col.alpha = ifelse(fill.col.alpha + 0.65 > 1, 1, fill.col.alpha + 0.5), border.lwd = 1.25, PCH = FALSE, legend = TRUE, 
-    legLoc = c(0.1, 0.25), legCol = "grey4", legAlpha = 0.5, legUnits = "Metric Tons", legNsmall = 1, Extra.Group.Size = rep(1, N), verbose = FALSE, ...) 
+    legLoc = c(0.1, 0.25), legCol = "grey4", legAlpha = 0.5, legUnits = "Metric Tons", Zeros = TRUE, legNsmall = 1, Extra.Group.Size = rep(1, N), verbose = FALSE, ...) 
 {
     " # Need to define below in case toolbox is not attached. "
     '%>>%' <- function (x, y) {
@@ -108,35 +108,18 @@ plot.bubble.zero.cross <- function (xyzOrg, group = rep("A", nrow(xyz)), maxsize
             Mid <- pretVec[Np/1.5]
             Small <- pretVec[Np/2.5]
         }
-        text(Usr[1] + (legLoc[1] + 0.05) * (Usr[2] - Usr[1]), 
-            Usr[3] + legLoc[2] * (Usr[4] - Usr[3]), legUnits, 
-            cex = 0.9)
-        text(Usr[1] + legLoc[1] * (Usr[2] - Usr[1]), Usr[3] + 
-            (legLoc[2] - 0.03) * (Usr[4] - Usr[3]), "+")
-        text(Usr[1] + (legLoc[1] + 0.125) * (Usr[2] - Usr[1]), 
-            Usr[3] + (legLoc[2] - 0.03) * (Usr[4] - Usr[3]), 
-            format(0, nsmall = legNsmall), adj = 1, cex = 0.9)
-        circle.f(Usr[1] + legLoc[1] * (Usr[2] - Usr[1]), Usr[3] + 
-            (legLoc[2] - 0.075) * (Usr[4] - Usr[3]), maxsize * 
-            sqrt(Small)/max(xyzSqrt[, 3], na.rm = T), fill.col = col.alpha(legCol, 
-            legAlpha))
-        text(Usr[1] + (legLoc[1] + 0.125) * (Usr[2] - Usr[1]), 
-            Usr[3] + (legLoc[2] - 0.075) * (Usr[4] - Usr[3]), 
-            format(Small, nsmall = legNsmall), adj = 1, cex = 0.9)
-        circle.f(Usr[1] + legLoc[1] * (Usr[2] - Usr[1]), Usr[3] + 
-            (legLoc[2] - 0.115) * (Usr[4] - Usr[3]), maxsize * 
-            sqrt(Mid)/max(xyzSqrt[, 3], na.rm = T), fill.col = col.alpha(legCol, 
-            legAlpha))
-        text(Usr[1] + (legLoc[1] + 0.125) * (Usr[2] - Usr[1]), 
-            Usr[3] + (legLoc[2] - 0.115) * (Usr[4] - Usr[3]), 
-            format(Mid, nsmall = legNsmall), adj = 1, cex = 0.9)
-        circle.f(Usr[1] + legLoc[1] * (Usr[2] - Usr[1]), Usr[3] + 
-            (legLoc[2] - 0.175) * (Usr[4] - Usr[3]), maxsize * 
-            sqrt(Large)/max(xyzSqrt[, 3], na.rm = T), fill.col = col.alpha(legCol, 
-            legAlpha))
-        text(Usr[1] + (legLoc[1] + 0.125) * (Usr[2] - Usr[1]), 
-            Usr[3] + (legLoc[2] - 0.175) * (Usr[4] - Usr[3]), 
-            format(Large, nsmall = legNsmall), adj = 1, cex = 0.9)
+        text(Usr[1] + (legLoc[1] + 0.05) * (Usr[2] - Usr[1]), Usr[3] + legLoc[2] * (Usr[4] - Usr[3]), legUnits, cex = 0.9)
+        if(Zeros) {
+            text(Usr[1] + legLoc[1] * (Usr[2] - Usr[1]), Usr[3] + (legLoc[2] - 0.03) * (Usr[4] - Usr[3]), "+")
+            text(Usr[1] + (legLoc[1] + 0.125) * (Usr[2] - Usr[1]), Usr[3] + (legLoc[2] - 0.03) * (Usr[4] - Usr[3]), format(0, nsmall = legNsmall), adj = 1, cex = 0.9)
+        }    
+        circle.f(Usr[1] + legLoc[1] * (Usr[2] - Usr[1]), Usr[3] + (legLoc[2] - 0.075) * (Usr[4] - Usr[3]), maxsize * sqrt(Small)/max(xyzSqrt[, 3], na.rm = T), fill.col = col.alpha(legCol, legAlpha))
+        text(Usr[1] + (legLoc[1] + 0.125) * (Usr[2] - Usr[1]), Usr[3] + (legLoc[2] - 0.075) * (Usr[4] - Usr[3]), format(Small, nsmall = legNsmall), adj = 1, cex = 0.9)
+        circle.f(Usr[1] + legLoc[1] * (Usr[2] - Usr[1]), Usr[3] + (legLoc[2] - 0.115) * (Usr[4] - Usr[3]), maxsize * sqrt(Mid)/max(xyzSqrt[, 3], na.rm = T), fill.col = col.alpha(legCol, legAlpha))
+        text(Usr[1] + (legLoc[1] + 0.125) * (Usr[2] - Usr[1]), Usr[3] + (legLoc[2] - 0.115) * (Usr[4] - Usr[3]), format(Mid, nsmall = legNsmall), adj = 1, cex = 0.9)
+        circle.f(Usr[1] + legLoc[1] * (Usr[2] - Usr[1]), Usr[3] + (legLoc[2] - 0.175) * (Usr[4] - Usr[3]), maxsize * sqrt(Large)/max(xyzSqrt[, 3], na.rm = T), fill.col = col.alpha(legCol, legAlpha))
+        text(Usr[1] + (legLoc[1] + 0.125) * (Usr[2] - Usr[1]), Usr[3] + (legLoc[2] - 0.175) * (Usr[4] - Usr[3]), format(Large, nsmall = legNsmall), adj = 1, cex = 0.9)
     }
     invisible()
 }
+
