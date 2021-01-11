@@ -1,4 +1,4 @@
-plot.bubble.zero.cross <- function (xyzOrg, group = rep("A", nrow(xyz)), maxsize = scale.size * diff(range(xyzOrg[, 2])), scale.size = 0.07, largestSqrtZ = max(xyzSqrt[, 
+plot.bubble.zero.cross <- function (xyzRaw, group = rep("A", nrow(xyz)), maxsize = scale.size * diff(range(xyzRaw[, 2])), scale.size = 0.07, largestSqrtZ = max(xyzSqrt[, 
     3], na.rm = T), center.points = FALSE, center.cex = 0.5, xDelta = 0, add = F, xlab = dimnames(xyz)[[2]][1], ylab = dimnames(xyz)[[2]][2], main = NULL, range.bump = F, cross.cex = 1, adj = NULL, 
     fill.col = c("green", "red", "blue", "cyan", "black"), fill.col.alpha = 0.2,  border.col = "black", border.col.alpha = fill.col.alpha, 
     cross.col = {
@@ -9,7 +9,7 @@ plot.bubble.zero.cross <- function (xyzOrg, group = rep("A", nrow(xyz)), maxsize
             fill.col
         }
     }, cross.col.alpha = ifelse(fill.col.alpha + 0.65 > 1, 1, fill.col.alpha + 0.5), border.lwd = 1.25, PCH = FALSE, legend = TRUE, 
-    legLoc = c(0.1, 0.25), legCol = "grey4", legAlpha = 0.5, legUnits = "Metric Tons", Zeros = TRUE, legNsmall = 1, Extra.Group.Size = rep(1, N), verbose = FALSE, ...)  {
+    legLoc = c(0.1, 0.25), legCol = "grey4", legAlpha = 0.5, legUnits = "Metric Tons", legNsmall = 1, Extra.Group.Size = rep(1, N), verbose = FALSE, ...)  {
 
     " # Need to define below in case toolbox is not attached. "
     '%>>%' <- function (x, y) {
@@ -29,13 +29,19 @@ plot.bubble.zero.cross <- function (xyzOrg, group = rep("A", nrow(xyz)), maxsize
             length(alpha)])
         col
     }
+    
+    
+
+    if(nrow(xyzRaw) != length(group)) 
+       stop("The number of rows of 'xyzRaw' needs to equal the length of the 'group' argument.")
+    
     if (!is.null(fill.col)) 
         fill.col <- col.alpha(fill.col, fill.col.alpha)
     if (!is.null(border.col)) 
         border.col <- col.alpha(border.col, border.col.alpha)
     if (!is.null(cross.col) & !all(cross.col == border.col)) 
         cross.col <- col.alpha(cross.col, cross.col.alpha)
-    xyzSqrt <- xyzOrg
+    xyzSqrt <- xyzRaw
     xyzSqrt[, 3] <- sign(xyzSqrt[, 3]) * sqrt(abs(xyzSqrt[, 3]))
     xyz <- xyzSqrt
     xyz[, 3] <- (maxsize * xyzSqrt[, 3])/ifelse(largestSqrtZ %in% 0, 1, largestSqrtZ)
@@ -96,7 +102,7 @@ plot.bubble.zero.cross <- function (xyzOrg, group = rep("A", nrow(xyz)), maxsize
         }
     }
     if (legend) {
-        pretVec <- pretty(c(0, max(xyzOrg[, 3], na.rm = TRUE)))
+        pretVec <- pretty(c(0, max(xyzRaw[, 3], na.rm = TRUE)))
         Usr <- par()$usr
         Np <- length(pretVec)
         if (Np <= 4) {
@@ -110,7 +116,7 @@ plot.bubble.zero.cross <- function (xyzOrg, group = rep("A", nrow(xyz)), maxsize
             Small <- pretVec[Np/2.5]
         }
         text(Usr[1] + (legLoc[1] + 0.05) * (Usr[2] - Usr[1]), Usr[3] + legLoc[2] * (Usr[4] - Usr[3]), legUnits, cex = 0.9)
-        if(Zeros) {
+        if(cross.cex > 0) {
             text(Usr[1] + legLoc[1] * (Usr[2] - Usr[1]), Usr[3] + (legLoc[2] - 0.03) * (Usr[4] - Usr[3]), "+")
             text(Usr[1] + (legLoc[1] + 0.125) * (Usr[2] - Usr[1]), Usr[3] + (legLoc[2] - 0.03) * (Usr[4] - Usr[3]), format(0, nsmall = legNsmall), adj = 1, cex = 0.9)
         }    
@@ -123,4 +129,5 @@ plot.bubble.zero.cross <- function (xyzOrg, group = rep("A", nrow(xyz)), maxsize
     }
     invisible()
 }
+
 
