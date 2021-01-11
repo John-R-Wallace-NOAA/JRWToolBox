@@ -9,12 +9,13 @@ plot.bubble.zero.cross <- function (xyzOrg, group = rep("A", nrow(xyz)), maxsize
             fill.col
         }
     }, cross.col.alpha = ifelse(fill.col.alpha + 0.65 > 1, 1, fill.col.alpha + 0.5), border.lwd = 1.25, PCH = FALSE, legend = TRUE, 
-    legLoc = c(0.1, 0.25), legCol = "grey4", legAlpha = 0.5, legUnits = "Metric Tons", Zeros = TRUE, legNsmall = 1, Extra.Group.Size = rep(1, N), verbose = FALSE, ...) 
-{
+    legLoc = c(0.1, 0.25), legCol = "grey4", legAlpha = 0.5, legUnits = "Metric Tons", Zeros = TRUE, legNsmall = 1, Extra.Group.Size = rep(1, N), verbose = FALSE, ...)  {
+
     " # Need to define below in case toolbox is not attached. "
     '%>>%' <- function (x, y) {
         x > y & !is.na(x)
     }
+	
 
     " **** Data is proportional to the area of the circle **** "
     "%r1%" <- function(e1, e2) ifelse(e1%%e2 == 0, e2, e1%%e2)
@@ -62,7 +63,7 @@ plot.bubble.zero.cross <- function (xyzOrg, group = rep("A", nrow(xyz)), maxsize
       if(xDelta == 0)
          xDelta <- rep(0, N)
       else 
-         xDelta <- seq(0, xDelta * (N - 1), by = xDelta)
+         xDelta <- sort(seq(0, xDelta * (N - 1), by = xDelta))
     }
     
     for (j in 1:N) {
