@@ -1,6 +1,24 @@
 lib <- function (Package, Package.Name = NULL, attach = TRUE, updateCRAN = FALSE, 
     pos = 2, quiet = FALSE, warnPackageUpdateOnly = quiet, force = FALSE, autoAddRepo = TRUE, ...) 
 {
+
+   
+   sourceFunctionURL <- function (URL) {
+         " # For more functionality, see gitAFile() in the rgit package ( https://github.com/John-R-Wallace-NOAA/rgit ) which includes gitPush() and git() "
+         require(xml2)
+         File.ASCII <- tempfile()
+         on.exit(file.remove(File.ASCII))
+             homeDir <- getwd()
+         tempDir <- tempfile()
+         dir.create(tempDir); setwd(tempDir)
+         on.exit(setwd(homeDir), add = TRUE)
+         on.exit(system(paste0("rm -r -f ", tempDir)), add = TRUE)
+         writeLines(paste0('source("', readLines(textConnection(xml2::download_html(URL))), '")'), File.ASCII)
+         source(File.ASCII, local = parent.env(environment()))
+   }  
+   
+   sourceFunctionURL("https://raw.githubusercontent.com/John-R-Wallace-NOAA/JRWToolBox/master/R/get.subs.R")
+
    oldOpts <- options(download.file.method = "auto")  # Sometimes remotes::install_github() throws an error without this
    on.exit(options(oldOpts))
    
