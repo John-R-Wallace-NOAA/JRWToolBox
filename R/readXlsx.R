@@ -1,8 +1,7 @@
 
 
 readXlsx <- function(Xlsx) {
-   File.ASCII <- tempfile()
-   File.ASCII <- paste0(File.ASCII, '.csv')
+   File.ASCII <- tempfile(fileext = ".csv")
    on.exit(file.remove(File.ASCII))
    shell(paste0('echo XlsToCsv.vbs "', Xlsx, '" "', File.ASCII, '" > run.bat'))
    shell("echo exit >> run.bat")
