@@ -1,7 +1,6 @@
 lib <- function (Package, Package.Name = NULL, attach = TRUE, updateCRAN = FALSE, 
     pos = 2, quiet = FALSE, warnPackageUpdateOnly = quiet, force = FALSE, autoAddRepo = TRUE, ...) 
 {
-
    
    sourceFunctionURL <- function (URL) {
          " # For more functionality, see gitAFile() in the rgit package ( https://github.com/John-R-Wallace-NOAA/rgit ) which includes gitPush() and git() "
