@@ -68,6 +68,15 @@ function (plot_set = 3, MappingDetails, Report, Sdreport = NULL,
             category_names = 1:dim(Report$D_xct)[2]
         Ncategories = dim(Report$D_xct)[2]
     }
+    if ("D_gct" %in% names(Report)) {
+        if (is.null(Year_Set)) 
+            Year_Set = 1:dim(Report$D_gct)[3]
+        if (is.null(Years2Include)) 
+            Years2Include = 1:dim(Report$D_gct)[3]
+        if (is.null(category_names)) 
+            category_names = 1:dim(Report$D_gct)[2]
+        Ncategories = dim(Report$D_gct)[2]
+    }
     if ("D_xcy" %in% names(Report)) {
         if (is.null(Year_Set)) 
             Year_Set = 1:dim(Report$D_xcy)[3]
@@ -121,6 +130,8 @@ function (plot_set = 3, MappingDetails, Report, Sdreport = NULL,
                   Mat_xt = Report$R1_xt
                 if ("D_xct" %in% names(Report)) 
                   Mat_xt = Report$R1_xct[, cI, ]
+                if ("D_gct" %in% names(Report)) 
+                  Mat_xt = Report$R1_gct[, cI, ]  
                 if ("D_xcy" %in% names(Report)) 
                   Mat_xt = Report$R1_xcy[, cI, ]
                 if ("D_gcy" %in% names(Report)) 
@@ -133,6 +144,8 @@ function (plot_set = 3, MappingDetails, Report, Sdreport = NULL,
                   Mat_xt = log(Report$R2_xt)
                 if ("D_xct" %in% names(Report)) 
                   Mat_xt = log(Report$R2_xct)[, cI, ]
+                if ("D_gct" %in% names(Report)) 
+                  Mat_xt = log(Report$R2_gct)[, cI, ] 
                 if ("D_xcy" %in% names(Report)) 
                   Mat_xt = log(Report$R2_xcy)[, cI, ]
                 if ("D_gcy" %in% names(Report)) 
@@ -145,6 +158,8 @@ function (plot_set = 3, MappingDetails, Report, Sdreport = NULL,
                   Mat_xt = log(Report$D_xt)
                 if ("D_xct" %in% names(Report)) 
                   Mat_xt = log(Report$D_xct)[, cI, ]
+                if ("D_gct" %in% names(Report)) 
+                  Mat_xt = log(Report$D_gct)[, cI, ]  
                 if ("D_xcy" %in% names(Report)) 
                   Mat_xt = log(Report$D_xcy[, cI, ])
                 if ("D_gcy" %in% names(Report)) 
@@ -154,33 +169,29 @@ function (plot_set = 3, MappingDetails, Report, Sdreport = NULL,
             }
             if (plot_num == 4) {
                 if ("D_xt" %in% names(Report)) 
-                  Mat_xt = log(Report$R2_xt + quantile(Report$R2_xt, 
-                    0.25))
+                  Mat_xt = log(Report$R2_xt + quantile(Report$R2_xt, 0.25))
                 if ("D_xct" %in% names(Report)) 
-                  Mat_xt = log(Report$R2_xct + quantile(Report$R2_xct, 
-                    0.25))[, cI, ]
+                  Mat_xt = log(Report$R2_xct + quantile(Report$R2_xct, 0.25))[, cI, ]
+                if ("D_gct" %in% names(Report)) 
+                  Mat_xt = log(Report$R2_gct + quantile(Report$R2_gct, 0.25))[, cI, ]
                 if ("D_xcy" %in% names(Report)) 
-                  Mat_xt = log(Report$R2_xcy + quantile(Report$R2_xcy, 
-                    0.25))[, cI, ]
+                  Mat_xt = log(Report$R2_xcy + quantile(Report$R2_xcy, 0.25))[, cI, ]
                  if ("D_gcy" %in% names(Report)) 
-                  Mat_xt = log(Report$R2_gcy + quantile(Report$R2_gcy, 
-                    0.25))[, cI, ]
+                  Mat_xt = log(Report$R2_gcy + quantile(Report$R2_gcy, 0.25))[, cI, ]
                 if ("dhat_ktp" %in% names(Report)) 
                   stop("Not implemented for SpatialVAM")
             }
             if (plot_num == 5) {
                 if ("D_xt" %in% names(Report)) 
-                  Mat_xt = log(Report$D_xt + quantile(Report$D_xt, 
-                    0.25))
+                  Mat_xt = log(Report$D_xt + quantile(Report$D_xt, 0.25))
                 if ("D_xct" %in% names(Report)) 
-                  Mat_xt = log(Report$D_xct + quantile(Report$D_xct, 
-                    0.25))[, cI, ]
+                  Mat_xt = log(Report$D_xct + quantile(Report$D_xct, 0.25))[, cI, ]
+                if ("D_gct" %in% names(Report)) 
+                  Mat_xt = log(Report$D_gct + quantile(Report$D_gct, 0.25))[, cI, ]  
                 if ("D_xcy" %in% names(Report)) 
-                  Mat_xt = log(Report$D_xcy + quantile(Report$D_xcy, 
-                    0.25))[, cI, ]
+                  Mat_xt = log(Report$D_xcy + quantile(Report$D_xcy, 0.25))[, cI, ]
                 if ("D_gcy" %in% names(Report)) 
-                  Mat_xt = log(Report$D_gcy + quantile(Report$D_gcy, 
-                    0.25))[, cI, ]
+                  Mat_xt = log(Report$D_gcy + quantile(Report$D_gcy, 0.25))[, cI, ]
                 if ("dhat_ktp" %in% names(Report)) 
                   stop("Not implemented for SpatialVAM")
             }
@@ -189,6 +200,8 @@ function (plot_set = 3, MappingDetails, Report, Sdreport = NULL,
                   Mat_xt = Report$Epsilon1_st
                 if ("D_xct" %in% names(Report)) 
                   Mat_xt = Report$Epsilon1_sct[, cI, ]
+                if ("D_gct" %in% names(Report)) 
+                  Mat_xt = Report$Epsilon1_gct[, cI, ]  
                 if ("D_xcy" %in% names(Report)) 
                   stop("Not implemented for VAST version >= 2.0.0")
                  if ("D_gcy" %in% names(Report)) 
@@ -201,6 +214,8 @@ function (plot_set = 3, MappingDetails, Report, Sdreport = NULL,
                   Mat_xt = Report$Epsilon2_st
                 if ("D_xct" %in% names(Report)) 
                   Mat_xt = Report$Epsilon2_sct[, cI, ]
+                if ("D_gct" %in% names(Report)) 
+                  Mat_xt = Report$Epsilon2_gct[, cI, ]  
                 if ("D_xcy" %in% names(Report)) 
                   stop("Not implemented for VAST version >= 2.0.0")
                 if ("D_gcy" %in% names(Report)) 
@@ -213,6 +228,8 @@ function (plot_set = 3, MappingDetails, Report, Sdreport = NULL,
                   Mat_xt = Report$P1_xt
                 if ("D_xct" %in% names(Report)) 
                   Mat_xt = Report$P1_xct[, cI, ]
+                if ("D_gct" %in% names(Report)) 
+                  Mat_xt = Report$P1_gct[, cI, ]  
                 if ("D_xcy" %in% names(Report)) 
                   Mat_xt = Report$P1_xcy[, cI, ]
                 if ("D_gcy" %in% names(Report)) 
@@ -225,6 +242,8 @@ function (plot_set = 3, MappingDetails, Report, Sdreport = NULL,
                   Mat_xt = Report$P2_xt
                 if ("D_xct" %in% names(Report)) 
                   Mat_xt = Report$P2_xct[, cI, ]
+                if ("D_gct" %in% names(Report)) 
+                  Mat_xt = Report$P2_gct[, cI, ]  
                 if ("D_xcy" %in% names(Report)) 
                   Mat_xt = Report$P2_xcy[, cI, ]
                 if ("D_gcy" %in% names(Report)) 
@@ -249,6 +268,15 @@ function (plot_set = 3, MappingDetails, Report, Sdreport = NULL,
                     stop("Please re-run with Options('SD_site_logdensity'=1,...) to use 'plot_num=10' in 'VAST'")
                   Mat_xt = array(TMB:::summary.sdreport(Sdreport)[which(rownames(TMB:::summary.sdreport(Sdreport)) == 
                     "log(Index_xctl)"), ], dim = c(dim(Report$D_xct), 
+                    dim(Report$Index_ctl)[3], 2), dimnames = list(NULL, 
+                    NULL, NULL, NULL, c("Estimate", "Std. Error")))[, 
+                    cI, , 1, "Std. Error"]
+                }
+                if ("D_gct" %in% names(Report)) {
+                  if (!("log(Index_gctl)" %in% rownames(TMB::summary.sdreport(Sdreport)))) 
+                    stop("Please re-run with Options('SD_site_logdensity'=1,...) to use 'plot_num=10' in 'VAST'")
+                  Mat_xt = array(TMB:::summary.sdreport(Sdreport)[which(rownames(TMB:::summary.sdreport(Sdreport)) == 
+                    "log(Index_gctl)"), ], dim = c(dim(Report$D_gct), 
                     dim(Report$Index_ctl)[3], 2), dimnames = list(NULL, 
                     NULL, NULL, NULL, c("Estimate", "Std. Error")))[, 
                     cI, , 1, "Std. Error"]
@@ -292,4 +320,5 @@ function (plot_set = 3, MappingDetails, Report, Sdreport = NULL,
     }
     invisible(Return)
 }
+
 

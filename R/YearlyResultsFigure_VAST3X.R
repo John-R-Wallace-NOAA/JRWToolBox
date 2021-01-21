@@ -15,12 +15,12 @@ YearlyResultsFigure_VAST3X <- function(spShortName. = NULL, spLongName. = NULL, 
         devtools::install_github("John-R-Wallace/JRWToolBox")
 	    
             
-    JRWToolBox::lib(TeachingDemos, pos = 1000)   # Put in back search position because of a conflict with %<=% function in my tool box.
+    JRWToolBox::lib(TeachingDemos, pos = 1000)   # Put in further back in search position because of a conflict with %<=% function in my tool box.
     
     color.bar <- function(lut, min, max=-min, nticks=11, ticks=seq(min, max, len=nticks), title = '', ...) {
           scale = (length(lut)-1)/(max-min)
           plot(c(0,10), c(min,max), type='n', bty='n', xaxt='n', xlab='', yaxt='n', ylab='', main = title, ...)
-          axis(2, ticks, las=1)
+          axis(2, ticks, las=1, col.axis = 'white')
           for (i in 1:(length(lut)-1)) {
              y = (i-1)/scale + min
              rect(0,y,10,y+1/scale, col=lut[i], border=NA)
@@ -181,12 +181,18 @@ YearlyResultsFigure_VAST3X <- function(spShortName. = NULL, spLongName. = NULL, 
 
     # Converting relative plotting location, 0.5 out of [0, 1] to latitude
     latAdj <- 0.5 * (48.2 - 27 + latExtend) + 27 - latExtend
+    longStatic <- -118.1
+    
+    if(N <= 4) {
+       latAdj <- latAdj + 1.2
+       longStatic <- -119.7
+    }   
     
     # text(-118.5, 37.50, ...
     if(GRAMS)
-        text(-118.1, latAdj, 'Grams per Hectare', cex = 0.80)    
+        text(longStatic, latAdj, 'Grams per Hectare', cex = 0.80, col = 'white')    
     else
-        text(-118.1, latAdj, 'Kg per Hectare', cex = 0.85) 
+        text(longStatic, latAdj, 'Kg per Hectare', cex = 0.85, col = 'white') 
 
     LatMin. <- strata.limits.$south_border[1]
     
@@ -284,10 +290,17 @@ YearlyResultsFigure_VAST3X <- function(spShortName. = NULL, spLongName. = NULL, 
     
     
     # Standard swept area is km2, but here the numbers are converted to hectares, unless the swept area was already in hectares (non-standard)
-     
+    if(N <= 4) {
+       xStart <- 0.720
+       yStart <- 0.632
+    } else {
+       xStart <- 0.850
+       yStart <- 0.625
+    }   
+       
     # Slightly increasing the factor on longitudeDelta (0.00702 & 0.0611) results in a smaller rectangle for the legend
-    xAdj <-  0.850 + c(-1, 1) * (0.04 - longitudeDelta * 0.00702)
-    yAdj <-  0.625 + c(-1, 1) * (0.2875 - longitudeDelta * 0.0611)
+    xAdj <-  xStart + c(-1, 1) * (0.04 - longitudeDelta * 0.00702)
+    yAdj <-  yStart + c(-1, 1) * (0.2875 - longitudeDelta * 0.0611)
     
     if(GRAMS)
         TeachingDemos::subplot( { par(cex = 5); color.bar(Col(ifelse(numCol > 100, numCol, 100)), JRWToolBox::r(1000 * ifelse(sweptAreaInHectares, 1, 0.01) * min(exp(SP.Results.Dpth.)), 0), 
@@ -306,6 +319,7 @@ YearlyResultsFigure_VAST3X <- function(spShortName. = NULL, spLongName. = NULL, 
  
 
  
+
 
 
 
