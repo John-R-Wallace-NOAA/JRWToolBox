@@ -1,6 +1,6 @@
 
 YearlyResultsFigure_VAST3X <- function(spShortName. = NULL, spLongName. = NULL, HomeDir = ".", eastLongitude = -124 - (N + 1) * longitudeDelta, longitudeDelta = 3.5, 
-    Index. = NULL, fit. = fit, DateFile. = DateFile, Region. = Region, Year_Set. = Year_Set, Years2Include. = Years2Include, 
+        Index. = NULL, fit. = fit, DateFile. = DateFile, Region. = Region, Year_Set. = Year_Set, Years2Include. = Years2Include, 
         strata.limits. = if(exists('stata.limits')) strata.limits else Settings$strata.limits, Ages. = NULL, LenMin. = NULL, LenMax. = NULL, yearDelta = 0.5, 
         title = FALSE, relativeAbundance = FALSE, changeUnitsUnder1Kg = TRUE, sweptAreaInHectares = FALSE, rhoConfig. = NULL, numCol = 1000, Graph.Dev = "tif") 
 {
