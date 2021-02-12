@@ -1,6 +1,6 @@
 
 YearlyResultsFigure_VAST3X <- function(spShortName. = NULL, spLongName. = NULL, HomeDir = ".", eastLongitude = -124 - (N + 1) * longitudeDelta, longitudeDelta = 3.5, 
-	Index. = NULL, fit. = fit, DateFile. = DateFile, Region. = Region, Year_Set. = Year_Set, Years2Include. = Years2Include, 
+    Index. = NULL, fit. = fit, DateFile. = DateFile, Region. = Region, Year_Set. = Year_Set, Years2Include. = Years2Include, 
         strata.limits. = if(exists('stata.limits')) strata.limits else Settings$strata.limits, Ages. = NULL, LenMin. = NULL, LenMax. = NULL, yearDelta = 0.5, 
         title = FALSE, relativeAbundance = FALSE, changeUnitsUnder1Kg = TRUE, sweptAreaInHectares = FALSE, rhoConfig. = NULL, numCol = 1000, Graph.Dev = "tif") 
 {
@@ -11,7 +11,7 @@ YearlyResultsFigure_VAST3X <- function(spShortName. = NULL, spLongName. = NULL, 
         install.packages("devtools")
     if (!any(installed.packages()[, 1] %in% "JRWToolBox")) 
         devtools::install_github("John-R-Wallace/JRWToolBox")
-	    
+        
             
     JRWToolBox::lib(TeachingDemos, pos = 1000)   # Put in further back in search position because of a conflict with %<=% function in my tool box.
     
@@ -30,22 +30,22 @@ YearlyResultsFigure_VAST3X <- function(spShortName. = NULL, spLongName. = NULL, 
     graphics.off()
     
     if(any(grepl('D_gcy', names(fit.$Report))))
-	        D_gc <- fit.$Report[["D_gcy"]]
-	   
+            D_gc <- fit.$Report[["D_gcy"]]
+       
     if(any(grepl('D_gct', names(fit.$Report))))
-	        D_gc <- fit.$Report[["D_gct"]]		
-	 
+            D_gc <- fit.$Report[["D_gct"]]        
+     
     cat("\nDimension of D_gc:", dim(D_gc), "\n\n")     
-	
+    
     
    
     map_list. = FishStatsUtils::make_map_info( Region = Region., Extrapolation_List = fit.$extrapolation_list, spatial_list = fit.$spatial_list, 
                         NN_Extrap = fit.$spatial_list$PolygonList$NN_Extrap) 
-	
+    
         
     # D_gcy <- as.data.frame(log(fit$tmb_list$Obj$report()[["D_gcy"]][, 1, ]))
     # D_gcy <- as.data.frame(log(fit.$Report[["D_gcy"]][map_list.$PlotDF$Include[!is.na(map_list.$PlotDF$x2i)], 1, ]))
-	
+    
     SP.Results.Dpth. <- as.data.frame(log(D_gc[map_list.$PlotDF[map_list.$PlotDF[, 'Include'], 'x2i'], 1, ]))
         
     # D_gcy <- log(Obj$report()[["D_gcy"]][, 1, ])
@@ -63,7 +63,7 @@ YearlyResultsFigure_VAST3X <- function(spShortName. = NULL, spLongName. = NULL, 
      
 
     if(hexPolygon) {       
-	  
+      
        JRWToolBox::catf("\n\nCreating the species results by year figure using hexagon shapes (hexbin R package)\n\n")
         
        # numCol Colors 
@@ -74,9 +74,9 @@ YearlyResultsFigure_VAST3X <- function(spShortName. = NULL, spLongName. = NULL, 
        SP.Results$Rescaled.Sum <- apply(SP.Results[,-(1:2)], 1, sum)
        SP.Results$Rescaled.Sum <- SP.Results$Rescaled.Sum - min(SP.Results$Rescaled.Sum)
        SP.Results$Rescaled.Sum <- SP.Results$Rescaled.Sum * (numCol - 1)/max(SP.Results$Rescaled.Sum) + 1
-	}
-	
-	# ------------- VAST Species Results by Year Figure -------------  
+    }
+    
+    # ------------- VAST Species Results by Year Figure -------------  
    
     if(is.null(Index.)) {
         if(exists('Index')) {
@@ -99,14 +99,14 @@ YearlyResultsFigure_VAST3X <- function(spShortName. = NULL, spLongName. = NULL, 
     if(is.null(spLongName.) & !exists('spLongName'))          
         spLongName. <- spShortName.
      
-	if(hexPolygon)
-	    resName <- "SpResults_Hex_ "
+    if(hexPolygon)
+        resName <- "SpResults_Hex_ "
     
     if(!hexPolygon)
-	    resName <- "SpResults "	
+        resName <- "SpResults "    
 
     if(is.null(rhoConfig.))  {
-	
+    
         if(Graph.Dev == "png")      
             png(paste0(DateFile., resName, spShortName., ".png"),  width = 6000, height = 6000, bg = 'white', type = 'cairo')
         
@@ -142,31 +142,31 @@ YearlyResultsFigure_VAST3X <- function(spShortName. = NULL, spLongName. = NULL, 
     
     # JRWToolBox::hexPolygon(SP.Results$Lon, SP.Results$Lat, hexC = hexcoords(dx = 0.01, sep=NA), col = COL, border = COL)
      
-	if(hexPolygon) {
-	  for (i in 1:N) {
+    if(hexPolygon) {
+      for (i in 1:N) {
  
         COL <- Col(numCol)[SP.Results[, N + 3 - i]]
         assign("COL", COL, pos = 1) # Is this needed?
         JRWToolBox::hexPolygon(SP.Results$Lon - i * longitudeDelta, SP.Results$Lat, hexC = hexcoords(dx = 0.01, sep = NA), col = COL, border = COL)
        } 
-	   
-	   #  for (i in 1:N) {
+       
+       #  for (i in 1:N) {
        #  COL <- Col(numCol)[SP.Results[, N + 3 - i]]
        #  assign("COL", COL, pos = 1)
        #  JRWToolBox::hexPolygon(SP.Results$X - i * longitudeDelta, SP.Results$Y, hexC = hexcoords(dx = 0.1, sep = NA), col = COL, border = COL)
     }
-	
-	if(!hexPolygon) {
-	   oldOpt <- options(warn = -1)
+    
+    if(!hexPolygon) {
+       oldOpt <- options(warn = -1)
        for (i in 0:N) {
-	   
+       
             JRWToolBox::plot_variable_JRW( Y_gt = log(D_gc[, 1, ]), projargs = '+proj=longlat', col = COL,
                     map_list = map_list., numYear = ifelse(i == 0, 0, N - i + 1), Delta = - i * longitudeDelta )
           }       
           # plot_variable_JRW(  Y_gt = SP.Results.Dpth., projargs='+proj=longlat', map_list = make_map_info(Region = "California_current", 
           #      Extrapolation_List = Extrapolation_List, spatial_list = Spatial_List), numYear = i, Delta = - i * longitudeDelta )
-   	   options(oldOpt)
-	}
+          options(oldOpt)
+    }
     
     Index.$LongPlotValues <- -124.6437 + seq(-longitudeDelta, by = -longitudeDelta, len = N)
     Index.$LatPlotValues <- rev((48 - 34.2) * (Index.$Estimate_metric_tons - min(Index.$Estimate_metric_tons))/max(Index.$Estimate_metric_tons) + 34.2)
@@ -314,16 +314,4 @@ YearlyResultsFigure_VAST3X <- function(spShortName. = NULL, spLongName. = NULL, 
     # invisible(SP.Results.Dpth.)  
     invisible()  
  }
- 
-
- 
-
-
-
-
-
-
-
-
-
 
