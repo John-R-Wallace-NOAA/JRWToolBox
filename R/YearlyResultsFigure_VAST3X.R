@@ -1,10 +1,10 @@
 
 YearlyResultsFigure_VAST3X <- function(spShortName. = NULL, spLongName. = NULL, HomeDir = ".", eastLongitude = -124 - (N + 1) * longitudeDelta, longitudeDelta = 3.5, 
-        Index. = NULL, fit. = fit, DateFile. = DateFile, Region. = Region, Year_Set. = Year_Set, Years2Include. = Years2Include, 
-        strata.limits. = if(exists('stata.limits')) strata.limits else Settings$strata.limits, Ages. = NULL, LenMin. = NULL, LenMax. = NULL, yearDelta = 0.5, 
+        Index. = NULL, fit. = fit, DateFile. = DateFile, Region. = Region, Year_Set. = Year_Set, Years2Include. = Years2Include,
+        strata.limits. = NULL, Ages. = NULL, LenMin. = NULL, LenMax. = NULL, yearDelta = 0.5, 
         title = FALSE, relativeAbundance = FALSE, changeUnitsUnder1Kg = TRUE, sweptAreaInHectares = FALSE, rhoConfig. = NULL, numCol = 1000, Graph.Dev = "tif") 
 {
- 
+
     hexPolygon <- FALSE  # Now using plot_variable_JRW() - a hacked function of Thorson's plot_variable()
     
     if (!any(installed.packages()[, 1] %in% "devtools")) 
@@ -191,7 +191,14 @@ YearlyResultsFigure_VAST3X <- function(spShortName. = NULL, spLongName. = NULL, 
         text(longStatic, latAdj, 'Grams per Hectare', cex = 0.80, col = 'white')    
     else
         text(longStatic, latAdj, 'Kg per Hectare', cex = 0.85, col = 'white') 
-
+     
+    if(is.null(strata.limits.)) {
+       if(exists('stata.limits')) 
+          strata.limits. <- strata.limits 
+       else 
+          strata.limits. <- Settings$strata.limits
+    }  
+    
     LatMin. <- strata.limits.$south_border[1]
     
     if(LatMin. >= 33.8)
@@ -314,4 +321,4 @@ YearlyResultsFigure_VAST3X <- function(spShortName. = NULL, spLongName. = NULL, 
     # invisible(SP.Results.Dpth.)  
     invisible()  
  }
-
+ 
