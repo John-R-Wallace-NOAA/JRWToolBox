@@ -25,6 +25,7 @@ WA_OR_Coast <- function(longrange = c(-129.5, -121.5), latrange = c(41.5, 49), E
     # --------------------------------------
     
     imap(longlat = list(world.h.land, world.h.borders),  col = c("black", "cyan"), poly = c("grey40", NA), longrange = longrange, latrange = latrange, zoom = zoom)
+    text(-122, c(46.628, 44.371, 41.602), c("WA", "OR", "CA"), col = 'white')
     if(EEZ) {            
        lines(EEZ.Polygon.WestCoast, col = 'grey39')       
        polygon(EEZ.Polygon.WestCoast, col = col.alpha('blue', 0.1))
