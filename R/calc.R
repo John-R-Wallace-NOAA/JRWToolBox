@@ -1,3 +1,3 @@
 calc <- function() {
-    shell('START /wait "demo" calc.exe')
+    shell('START calc.exe')
 }
