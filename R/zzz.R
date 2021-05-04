@@ -1,5 +1,5 @@
  
-.onLoad <- function(libname, pkgname) {
+.onAttach<- function(libname, pkgname) {
 
     packageStartupMessage("#######################################################")
     # packageStartupMessage("Loading JRWToolbox and rgit packages - Welcome")
