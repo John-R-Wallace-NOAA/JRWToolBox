@@ -13,7 +13,7 @@
 		    packageStartupMessage("")
             RhpcBLASctl::blas_set_num_threads(RhpcBLASctl::get_num_cores()) # RhpcBLASctl::get_num_cores() gives max # of cores on a machine
             # RhpcBLASctl::blas_get_num_procs() Gives current numnber of threads set (regardless of the 'procs' name)
-            packageStartupMessage(paste0("\nR-MKL (Intel libraries) on Windows, version: ", getRversion(), " with threads set to the maximum of: ", RhpcBLASctl::blas_get_num_procs()))
+            packageStartupMessage(paste0("\nR-MKL (Intel libraries) on Windows, version: ", getRversion(), " with threads set to the machine maximum of: ", RhpcBLASctl::blas_get_num_procs()))
             
         } else
             packageStartupMessage(paste0("R on Windows, version: ", getRversion()))
