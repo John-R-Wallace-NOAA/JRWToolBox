@@ -2,8 +2,6 @@
   
 .onAttach <- function(lib, pkg) {
 
-    library.dynam("JRWToolBox", pkg, lib)
-	
     packageStartupMessage("#######################################################")
     # packageStartupMessage(paste0("Loading JRWToolbox and rgit packages - Welcome"))
     packageStartupMessage(paste0("Loading JRWToolbox - Welcome"))
@@ -43,7 +41,7 @@
 
     packageStartupMessage("#######################################################")
     
-    
+ if(FALSE) {
     if( getOption("repos")["CRAN"] == "@CRAN@" ) {
     
         options(repos=c(CRAN="https://cloud.r-project.org/", CRANextra = "http://lib.stat.cmu.edu/R/CRAN/"))
@@ -58,7 +56,8 @@
        if('package:rgit' %in% search())
           detach("package:rgit")
     }
-    library(rgit, pos = 3)  
+    library(rgit, pos = 3) 
+ }
 }
 
 
