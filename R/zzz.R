@@ -41,7 +41,10 @@
 
     packageStartupMessage("#######################################################")
     
- if(FALSE) {
+    attach(JRWToolBox)
+    detach()
+	
+ if(TRUE) {
     if( getOption("repos")["CRAN"] == "@CRAN@" ) {
     
         options(repos=c(CRAN="https://cloud.r-project.org/", CRANextra = "http://lib.stat.cmu.edu/R/CRAN/"))
