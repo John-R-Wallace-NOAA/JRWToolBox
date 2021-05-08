@@ -108,7 +108,9 @@
       "If you do so, make sure to restart R.\n")
   }
   packageStartupMessage(startup_message)
-  
+	 
+  packageStartupMessage(paste0("\nNote the gitAFile() function has been moved to the 'rgit' package (see the repo for more info).\nPlease install this package using:\n\n\t remotes::install_github('John-R-Wallace-NOAA/rgit')\n"))
+  packageStartupMessage(paste0("\n(Installing GitHub R packages using .onAttach() is very problematic and may not be possible.)"))
   packageStartupMessage("##################################################################################################")
   
 	
