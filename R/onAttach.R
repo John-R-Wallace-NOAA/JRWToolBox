@@ -3,8 +3,8 @@
 .onAttach <- function(lib, pkg) {
 
     packageStartupMessage("##################################################################################################")
-    # packageStartupMessage(paste0("Loading JRWToolbox and rgit packages - Welcome"))
-    packageStartupMessage(paste0("Loading JRWToolbox - Welcome"))
+    # packageStartupMessage(paste0("Attaching JRWToolbox and rgit packages - Welcome"))
+    packageStartupMessage(paste0("Attaching JRWToolbox - Welcome"))
   
     # Set max threads (or less if desired) if using R-MKL on Windows [depending on the system, threads (or cores) are often half the number of logical processors on a machine].    
     if(.Platform$OS.type == "windows") {
@@ -112,7 +112,7 @@
   packageStartupMessage("##################################################################################################")
   
 	
- if(FALSE) {
+ local({
     if( getOption("repos")["CRAN"] == "@CRAN@" ) {
     
         options(repos=c(CRAN="https://cloud.r-project.org/", CRANextra = "http://lib.stat.cmu.edu/R/CRAN/"))
@@ -128,7 +128,7 @@
           detach("package:rgit")
     }
     library(rgit, pos = 3) 
- }
+ })
 }
 
 
