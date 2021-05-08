@@ -39,9 +39,8 @@
     
     }
 
-    packageStartupMessage("#######################################################")
-  
-    # notify the option to update? (5 possible cases)  - This section is from https://github.com/jinkim3/kim/R/onAttach.R
+    
+  # notify the option to update? (5 possible cases)  - This section is from https://github.com/jinkim3/kim/R/onAttach.R
   # 1. error in getting the current package version -> yes
   # 2. error in getting the github package version -> yes
   # 3. current package version < github package version -> yes
@@ -108,7 +107,10 @@
       "with the function `updateTools()`. ",
       "If you do so, make sure to restart R.\n")
   }
-  packageStartupMessage(startup_message)	
+  packageStartupMessage(startup_message)
+  
+  packageStartupMessage("#######################################################")
+  
 	
  if(FALSE) {
     if( getOption("repos")["CRAN"] == "@CRAN@" ) {
