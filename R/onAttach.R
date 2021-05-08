@@ -112,7 +112,7 @@
   packageStartupMessage("##################################################################################################")
   
 	
- local({
+ if(FALSE) {
     if( getOption("repos")["CRAN"] == "@CRAN@" ) {
     
         options(repos=c(CRAN="https://cloud.r-project.org/", CRANextra = "http://lib.stat.cmu.edu/R/CRAN/"))
@@ -128,7 +128,7 @@
           detach("package:rgit")
     }
     library(rgit, pos = 3) 
- })
+ }
 }
 
 
