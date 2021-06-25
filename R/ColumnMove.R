@@ -10,11 +10,11 @@ ColumnMove <-  function(TABLE,  NewPos, OldPos = N) {
    if(is.character(NewPos)) 
        NewPos <- (1:N)[names(TABLE) %in% NewPos]  
 
-   ColToMove <- TABLE[, OldPos, drop=FALSE]
+   ColToMove <- TABLE[, OldPos, drop = FALSE]
    TABLE <- TABLE[, -OldPos]
    NewPos <- NewPos - sum(OldPos < NewPos)
 
-   cbind(TABLE[,1:NewPos], ColToMove, TABLE[,(NewPos + 1):ncol(TABLE), drop=FALSE]) # Can't use 'N" here since TABLE has been changed
+   cbind(TABLE[,1:NewPos], ColToMove, TABLE[,(NewPos + 1):ncol(TABLE), drop = FALSE]) # Can't use 'N" here since TABLE has been changed
 }
 
 
