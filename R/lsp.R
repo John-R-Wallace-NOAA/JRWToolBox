@@ -1,5 +1,5 @@
 lsp <- function(package, what, pattern) {
-  '  # https://stackoverflow.com/questions/12114355/show-names-of-everything-in-a-package '
+  # https://stackoverflow.com/questions/12114355/show-names-of-everything-in-a-package 
   if (!is.character(substitute(package)))
     package <- deparse(substitute(package))
   ns <- asNamespace(package)
