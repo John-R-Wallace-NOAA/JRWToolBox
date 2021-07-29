@@ -13,7 +13,7 @@ plot.bubble.zero.cross <- function (xyzRaw, group = rep("A", nrow(xyzRaw)), Grou
     }, cross.col.alpha = ifelse(fill.col.alpha + 0.65 > 1, 1, fill.col.alpha + 0.5), border.lwd = 1.25, PCH = FALSE, legend = TRUE, maxZ = NULL,
     
     
-    legLoc = c(0.1, 0.25), legCol = "grey4", legAlpha = 0.5, legUnits = "Metric Tons", legNsmall = 1, Extra.Group.Size = rep(1, N), verboseGroup = FALSE, verboseTimeBar = FALSE, ...)  {
+    legLoc = c(0.1, 0.25), legCol = "grey4", legAlpha = 0.5, legUnits = "Metric Tons", legNsmall = 1, Extra.Group.Size = rep(1, N), verbose = FALSE, ...)  {
     
     '  # **** Data is proportional to the area of the circle ****  '
 
@@ -89,8 +89,10 @@ plot.bubble.zero.cross <- function (xyzRaw, group = rep("A", nrow(xyzRaw)), Grou
     
     for (j in 1:N) {
         XYZ <- xyz[group %in% Groups[j], ]
+        if(nrow(XYZ) == 0)
+             next
         XYZ <- JRWToolBox::sort.f(XYZ, 3, rev = TRUE)
-        if(verboseGroup) cat(paste0("\n\nGroup = ", Groups[j], "; Color = ", fill.col[j %r1% length(fill.col)], " with alpha level = ", fill.col.alpha, "\n"))
+        if(verbose) cat(paste0("\n\nGroup = ", Groups[j], "; Color = ", fill.col[j %r1% length(fill.col)], " with alpha level = ", fill.col.alpha, "\n"))
         XYZ[,1] <- XYZ[,1] + xDelta[j]
         if(PCH){
             # Alpha level < 1 made the PNG output very slow????
@@ -104,7 +106,7 @@ plot.bubble.zero.cross <- function (xyzRaw, group = rep("A", nrow(xyzRaw)), Grou
             # cat("\n", c(nrow(XYZ[XYZ[, 3] %in% 0, 1:2]), nrow(XYZ[TF, 1:2]), min(XYZ[TF, 3]), max(XYZ[TF, 3])), "\n")
         } else {
             for (i in 1:nrow(XYZ)) {
-               if(verboseTimeBar) JRWToolBox::bar(i, nrow(XYZ)) 
+               if(verbose) JRWToolBox::bar(i, nrow(XYZ)) 
                if (XYZ[i, 3] %in% 0 & cross.cex > 0) 
                    points(XYZ[i, 1], XYZ[i, 2], pch = 3, cex = cross.cex, col = cross.col[j %r1% length(cross.col)], lwd = 1)
                
@@ -133,7 +135,7 @@ plot.bubble.zero.cross <- function (xyzRaw, group = rep("A", nrow(xyzRaw)), Grou
             Mid <- pretVec[Np/1.5]
             Small <- pretVec[Np/2.5]
         }
-        text(Usr[1] + (legLoc[1] + 0.05) * (Usr[2] - Usr[1]), Usr[3] + legLoc[2] * (Usr[4] - Usr[3]), legUnits, cex = ifelse(nchar(legUnits) < 20, 0.9, 0.7))
+        text(Usr[1] + (legLoc[1] + 0.05) * (Usr[2] - Usr[1]), Usr[3] + legLoc[2] * (Usr[4] - Usr[3]), legUnits, cex = ifelse(nchar(legUnits) < 25, 0.9, 0.7))
         if(cross.cex > 0) {
             text(Usr[1] + legLoc[1] * (Usr[2] - Usr[1]), Usr[3] + (legLoc[2] - 0.03) * (Usr[4] - Usr[3]), "+", col = cross.col, cex = 2)
             text(Usr[1] + (legLoc[1] + 0.125) * (Usr[2] - Usr[1]), Usr[3] + (legLoc[2] - 0.03) * (Usr[4] - Usr[3]), format(0, nsmall = legNsmall), adj = 1, cex = 0.9)
@@ -157,6 +159,7 @@ plot.bubble.zero.cross <- function (xyzRaw, group = rep("A", nrow(xyzRaw)), Grou
     }
     invisible()
 }
+
 
 
 
