@@ -1,4 +1,4 @@
-plot.bubble.zero.cross <- function (xyzRaw, group = rep("A", nrow(xyzRaw)), Groups = unique(group), Circle.Area.Prop.to.Z = TRUE, maxsize = scale.size * diff(range(xyzRaw[, 2], na.rm = TRUE)),
+plot.bubble.zero.cross <- function (xyzRaw, group = rep("A", nrow(xyzRaw)), Groups = unique(group), Groups.subset = Groups, Circle.Area.Prop.to.Z = TRUE, maxsize = scale.size * diff(range(xyzRaw[, 2], na.rm = TRUE)),
     scale.size = 0.07, largestSqrtZ = max(xyzSqrt[, 3], na.rm = TRUE), center.points = FALSE, center.cex = 0.5, xDelta = 0, add = FALSE, 
     xlab = dimnames(xyz)[[2]][1], ylab = dimnames(xyz)[[2]][2], main = NULL, range.bump = FALSE, cross.cex = 1, adj = NULL, 
     fill.col = colorRampPalette(colors = c("dodgerblue", "orange", "cyan", "magenta", "green", "red", "blue", "violetred4", "cyan3", "mediumorchid3", "seagreen4", "black"))(length(Groups)), fill.col.alpha = 0.2, 
@@ -45,6 +45,10 @@ plot.bubble.zero.cross <- function (xyzRaw, group = rep("A", nrow(xyzRaw)), Grou
     
     if (!is.null(fill.col)) 
         fill.col.a <- col.alpha(fill.col, fill.col.alpha)
+    if(verbose) {
+        cat("\n\n")
+        print(data.frame(fill.col = fill.col, fill.col.a  = fill.col.a))
+    }    
     if (!is.null(border.col)) 
         border.col <- col.alpha(border.col, border.col.alpha)
     if (!is.null(cross.col) & !all(cross.col == border.col)) 
@@ -63,8 +67,8 @@ plot.bubble.zero.cross <- function (xyzRaw, group = rep("A", nrow(xyzRaw)), Grou
     tf <- !apply(xyz, 1, function(x) any(is.na(x)))
     xyz <- xyz[tf, ]
     group <- group[tf]
-    N <- length(Groups)
-   
+    N = length(Groups)
+       
 	if (!add) {
         if (range.bump) {
             xlim <- c(min(xyz[, 1], na.rm = T) - 0.2 * diff(range(xyz[, 
@@ -87,12 +91,12 @@ plot.bubble.zero.cross <- function (xyzRaw, group = rep("A", nrow(xyzRaw)), Grou
          xDelta <- sort(seq(0, xDelta * (N - 1), by = xDelta))
     }
     
-    for (j in 1:N) {
+    for (j in pmatch(Groups.subset, Groups)) {
         XYZ <- xyz[group %in% Groups[j], ]
         if(nrow(XYZ) == 0)
              next
         XYZ <- JRWToolBox::sort.f(XYZ, 3, rev = TRUE)
-        if(verbose) cat(paste0("\n\nGroup = ", Groups[j], "; Color = ", fill.col[j %r1% length(fill.col)], " with alpha level = ", fill.col.alpha, "\n"))
+        if(verbose) cat(paste0("\n\nGroup = ", Groups[j], "; Fill Color Number = ", j %r1% length(fill.col), "; Color = ", fill.col[j %r1% length(fill.col)], " with alpha level = ", fill.col.alpha, "\n"))
         XYZ[,1] <- XYZ[,1] + xDelta[j]
         if(PCH){
             # Alpha level < 1 made the PNG output very slow????
@@ -159,6 +163,7 @@ plot.bubble.zero.cross <- function (xyzRaw, group = rep("A", nrow(xyzRaw)), Grou
     }
     invisible()
 }
+
 
 
 
