@@ -1,7 +1,7 @@
 
 
   
-.onAttach <- function(lib, pkg) {
+.onAttach.BAD <- function(lib, pkg) {
 
     packageStartupMessage("##################################################################################################\n")
     # packageStartupMessage(paste0("Attaching JRWToolbox and rgit packages - Welcome"))
@@ -62,7 +62,7 @@
 
 
   
-.onAttach.OLD <- function(lib, pkg) {
+.onAttach <- function(lib, pkg) {
 
     packageStartupMessage("\n##################################################################################################\n")
     # packageStartupMessage(paste0("Attaching JRWToolbox and rgit packages - Welcome"))
