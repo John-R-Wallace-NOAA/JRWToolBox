@@ -15,7 +15,7 @@
                                repos = getOption("repos"),
                                type = getOption("pkgType"),
                                ...) {
-        require(remotes)                       
+       # require(remotes)                       
          
         remote <- remotes:::github_remote(repo, ref = ref, subdir = subdir, auth_token = auth_token, host = host)
     
