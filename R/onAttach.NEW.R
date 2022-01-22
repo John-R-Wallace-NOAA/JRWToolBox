@@ -1,5 +1,5 @@
   
-.onAttach <- function(lib, pkg) {
+onAttach.NEW <- function(lib, pkg) {
 
     local_and_remote_SHA <- function(repo,
                                ref = "HEAD",
