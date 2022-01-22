@@ -2,7 +2,7 @@
   
 .onAttach <- function(lib, pkg) {
 
-    packageStartupMessage("/n##################################################################################################\n")
+    packageStartupMessage("\n##################################################################################################\n")
     # packageStartupMessage(paste0("Attaching JRWToolbox and rgit packages - Welcome"))
     packageStartupMessage(paste0("Attaching JRWToolbox - Welcome"))
   
