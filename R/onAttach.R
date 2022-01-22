@@ -103,9 +103,8 @@
     startup_message <- paste0(
       "Package attached: JRWToolBox v", current_pkg_version,
       "; Most recent version available on GitHub: v", github_pkg_version,
-      "\n\nYou have an option to update the package ",
-      "with the function `updateTools()`. ",
-      "If you do so, make sure to restart R.\n")
+      "\n\nYou have an option to update the library with the this package's updateTools() function.\n",
+      "If the library is locked, you may have to restart R before using updateTools().\n")
   }
   packageStartupMessage(startup_message)
 	
