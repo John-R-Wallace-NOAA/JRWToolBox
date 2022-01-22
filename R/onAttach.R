@@ -117,7 +117,7 @@
        "drag-and-drop '.RData' files. (FYI, drag-and-drop doesn't work in RStudio.)\n"))
        
    packageStartupMessage(paste0("The existence of the R object 'baseLoad' (e.g. baseLoad <- \"\") is a flag to revert back to\n", 
-       "base::load() for drag-and-drop, since JRWToolBox::load() can be slow for very large '.RData' files.\n"))
+       "base::load() for drag-and-drop since JRWToolBox::load() can be slow for very large '.RData' files.\n"))
        
    packageStartupMessage("##################################################################################################")
   
