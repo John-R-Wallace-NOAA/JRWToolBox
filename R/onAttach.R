@@ -2,7 +2,7 @@
   
 .onAttach <- function(lib, pkg) {
 
-    packageStartupMessage("##################################################################################################")
+    packageStartupMessage("##################################################################################################\n")
     # packageStartupMessage(paste0("Attaching JRWToolbox and rgit packages - Welcome"))
     packageStartupMessage(paste0("Attaching JRWToolbox - Welcome"))
   
@@ -108,9 +108,11 @@
       "If you do so, make sure to restart R.\n")
   }
   packageStartupMessage(startup_message)
-	 
+	
   packageStartupMessage(paste0("\nNote the gitAFile() function has been moved to the 'rgit' package (see the repo for more info).\nPlease install the rgit package using:\n\n\t remotes::install_github('John-R-Wallace-NOAA/rgit')\n"))
   packageStartupMessage(paste0("\n(Installing GitHub R packages using .onAttach() is very problematic and may not be possible.)"))
+  packageStartupMessage(paste0("\n\nThis package's 'load' function over-loads 'base::load' to enable the automatic viewing of drag-and-drop '.RData' files (drag-and-drop doesn't work in RStudio)."))
+  packageStartupMessage(paste0("The existence of the R object 'baseLoad' (e.g. baseLoad <- \"\") is a flag to instead use base::load() for drag-and-drop since JRWToolBox::load() can be slow for very large '.RData' files.\n"))
   packageStartupMessage("##################################################################################################")
   
   
@@ -135,5 +137,3 @@
       )
  } 
 }
-
-
