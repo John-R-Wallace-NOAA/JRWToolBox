@@ -48,7 +48,7 @@ Library <- function (Package, Package.Name = NULL, attach = TRUE, update = "ask"
         if (any(utils::installed.packages()[, 1] %in% Package.Name))  
              SHA.OLD <- packageDescription(Package.Name)$RemoteSha 
         
-        if(!is.logical(updateGitHUb))
+        if(!is.logical(updateGitHub))
               updateGitHUb <- casefold(updateGitHub)  
               
         remotes::install_github(Package, quiet = quiet, force = force, INSTALL_opts = INSTALL_opts, update = updateGitHub, ...)

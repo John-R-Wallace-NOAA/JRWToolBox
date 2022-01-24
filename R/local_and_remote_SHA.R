@@ -15,7 +15,7 @@ local_and_remote_SHA <- function(repo,
                            ...) {
     # require(remotes)                       
      
-    remote <- remotes:::github_remote(repo, ref = ref, subdir = subdir, auth_token = auth_token, host = host)
+    remote <- remotes:::github_remote(repo, ref = ref, subdir = subdir, auth_token = auth_token, host = host, ...)
 
     stopifnot(remotes:::is.remote(remote))
     package_name <- remotes:::remote_package_name(remote)
@@ -23,3 +23,16 @@ local_and_remote_SHA <- function(repo,
     remote_sha <- remotes:::remote_sha(remote, local_sha)
     c(local_sha = local_sha , remote_sha = remote_sha)
 }
+
+
+if(FALSE)  {
+
+   SHAs <- local_and_remote_SHA( "John-R-Wallace-NOAA/rgit")
+   
+   SHAs
+    
+   SHAs[1] == SHAs[2] 
+
+}
+
+
