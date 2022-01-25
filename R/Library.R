@@ -1,5 +1,6 @@
-Library <- function (Package, Package.Name = NULL, attach = TRUE, update = "ask", updateGitHub = update, updateCRAN = update, pos = 2, quiet = FALSE, 
-         warnPackageUpdateOnly = quiet, force = FALSE, autoAddRepo = TRUE, INSTALL_opts = "", ...) {
+
+Library <- function (Package, Package.Name = NULL, attach = TRUE, update = FALSE, pos = 2, quiet = TRUE, warnPackageUpdate = TRUE, 
+             force = FALSE, autoAddRepo = TRUE, INSTALL_opts = "", ...) {
    
     sourceFunctionURL <- function (URL) {
         " # For more functionality, see gitAFile() in the rgit package ( https://github.com/John-R-Wallace-NOAA/rgit ) which includes gitPush() and git() "
@@ -8,7 +9,7 @@ Library <- function (Package, Package.Name = NULL, attach = TRUE, update = "ask"
         on.exit(file.remove(File.ASCII))
         getTMP <- httr::GET(URL)
         write(paste(readLines(textConnection(httr::content(getTMP))), collapse = "\n"), File.ASCII)
-       source(File.ASCII, local = parent.env(environment()))
+        source(File.ASCII, local = parent.env(environment()))
     }
 	 
     sourceFunctionURL("https://raw.githubusercontent.com/John-R-Wallace-NOAA/JRWToolBox/master/R/get.subs.R")
@@ -28,7 +29,7 @@ Library <- function (Package, Package.Name = NULL, attach = TRUE, update = "ask"
         
     if (grepl("/", Package)) {
         if (any(utils::installed.packages()[, 1] %in% "remotes")) {
-            if (updateCRAN) 
+            if (update) 
                 update.packages("remotes", ask = FALSE)
         } else 
             install.packages("remotes", quiet = quiet)
@@ -44,42 +45,53 @@ Library <- function (Package, Package.Name = NULL, attach = TRUE, update = "ask"
             
 		if (!quiet) 
 	        on.exit(cat("\nPackage = ", Package, "; Package.Name = ", Package.Name, "\n\n", sep = ""), add = TRUE)
-            
-        if (any(utils::installed.packages()[, 1] %in% Package.Name))  
-             SHA.OLD <- packageDescription(Package.Name)$RemoteSha 
         
-        if(!is.logical(updateGitHub))
-              updateGitHUb <- casefold(updateGitHub)  
-              
-        remotes::install_github(Package, quiet = quiet, force = force, INSTALL_opts = INSTALL_opts, update = updateGitHub, ...)
+        if(!quiet) cat("\n")       
+        SHAs <- JRWToolBox::local_and_remote_SHA(Package, quiet = quiet)
+        if(!quiet) cat("\n")
+        SHA_Local_Old <- SHAs[1]
+        SHA_GitHub <- SHAs[2]
         
-        if (!any(utils::installed.packages()[, 1] %in% Package.Name)) 
-            stop(paste0("R '", Package.Name, "' package from Github is not installed. Note that the R package name may not be the same\n", 
-            "           as the GitHub directory name, if so, use the Package.Name argument. Find the R package name using quiet = FALSE."))
-        
-        if (exists('SHA.OLD') && length(SHA.OLD) > 0) {
-          if (packageDescription(Package.Name)$RemoteSha == SHA.OLD & !warnPackageUpdateOnly & !quiet)
-              warning(paste0("R '", Package.Name, "' package's SHA number did not change, however the package was placed in position ", pos, 
-              " of the search() path."))
-              
-          if (packageDescription(Package.Name)$RemoteSha != SHA.OLD & warnPackageUpdateOnly)
-              warning(paste0("R '", Package.Name, "' package was updated to the latest version"))                 
+        if(!is.na(SHA_Local_Old) & SHA_Local_Old == SHA_GitHub & !force & !quiet) {
+             update <- FALSE
+             cat(paste0("\nNo update needed, local and remote SHA numbers are equal (Use force = TRUE to force an update.)\n\n"))
         }
+        
+        if(!is.na(SHA_Local_Old) & SHA_Local_Old != SHA_GitHub & !update & !quiet)     
+             warning(paste0("R '", Package.Name, "' is newer on GitHub. (Use update = TRUE to update.)"))
+             
+        if(is.na(SHA_Local_Old) | update | force)     
+             remotes::install_github(Package, quiet = quiet, force = force, INSTALL_opts = INSTALL_opts, ...)
+          
+        if (!any(utils::installed.packages()[, 1] %in% Package.Name)) 
+             stop(paste0("R '", Package.Name, "' package from Github is not installed. Note that the R package name may not be the same\n", 
+             "           as the GitHub directory name, if so, use the Package.Name argument. Find the R package name using quiet = FALSE."))
+         
+        if(!quiet) cat("\n")          
+        SHAs <- JRWToolBox::local_and_remote_SHA(Package, quiet = quiet)
+        if(!quiet) cat("\n")
+        SHA_Local_New <- SHAs[1]
+                       
+        if (!is.na(SHA_Local_Old) & SHA_Local_Old == SHA_Local_New & !quiet)
+            warning(paste0("R '", Package.Name, "' package's SHA number did not change."))
+       
+        if ((SHA_Local_Old != SHA_GitHub) & (SHA_Local_New == SHA_GitHub) & warnPackageUpdate)
+            cat(paste0("\nThe '", Package.Name, "' package was updated to the latest version\n\n"))                 
         
         if (attach) {
             unloadNamespace(Package.Name)   
             library(Package.Name, pos = pos, character.only = TRUE)
-        }    
+            if(!quiet)
+               cat(paste0("\n", Package.Name, " was placed in position ", pos, " of the search() path.\n\n"))
+        } 
+        
     } else {
+        #  Downloading all of CRAN's packages via available.packages() is prohibitively time consuming, hence no check is done here.
         if (any(utils::installed.packages()[, 1] %in% Package)) {
-             
-            if (is.logical(updateCRAN)) {            
-               if(updateCRAN)                               
-                   update.packages(Package, ask = FALSE)
-            } else {            
-               if(casefold(updateCRAN) == "ask")
-                   update.packages(Package, ask = TRUE)             
-            }   
+        
+            if (update) 
+                update.packages(Package, ask = FALSE)
+                
         } else 
             install.packages(Package, quiet = quiet, INSTALL_opts = INSTALL_opts, ...)
         
@@ -89,6 +101,8 @@ Library <- function (Package, Package.Name = NULL, attach = TRUE, update = "ask"
         if (attach)  {
             unloadNamespace(Package)  
             library(Package, pos = pos, character.only = TRUE)
+            if(!quiet)
+               cat("\n", Package.Name, "was placed in position", pos, "of the search() path.\n\n")
         }
     }
 	
