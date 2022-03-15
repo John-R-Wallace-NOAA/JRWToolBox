@@ -25,7 +25,7 @@ function(func = JRWToolBox::Butterfly, x.range = c(-4, 4), y.range = c(-5, 5), f
 	second.par.limits = c(-5, 5), func.col = NULL, crosshair.col = "blue", canvas = "slategray1", ...)
 {
 '   '
-'   #   DATE WRITTEN:  circa 1990's in Splus     LAST REVISED:  12  March 2022   '
+'   #   DATE WRITTEN:  circa 1990s in Splus     LAST REVISED:  12  March 2022   '
 '   #   AUTHOR:  John R. Wallace (John.Wallace@noaa.gov)   '
 '   '
     windows.options(canvas = canvas, ...)
