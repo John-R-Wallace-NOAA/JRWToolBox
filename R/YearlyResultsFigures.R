@@ -43,7 +43,7 @@ YearlyResultsFigures <- function(spShortName. = NULL, spLongName. = NULL, HomeDi
        SP.Results.Dpth. <- JRWToolBox::plot_maps_JRW(plot_set = 3, MappingDetails=MapDetails_List.[["MappingDetails"]], Report=Report., Sdreport=Opt.$SD, PlotDF=MapDetails_List.[["PlotDF"]], 
                      MapSizeRatio=MapDetails_List.[["MapSizeRatio"]], Xlim=MapDetails_List.[["Xlim"]], Ylim=MapDetails_List.[["Ylim"]], FileName=paste0(DateFile.,"Yearly_"), 
                      Year_Set=Year_Set., Years2Include = Years2Include.[1], Rotate=MapDetails_List.[["Rotate"]], mar=c(0,0,2,0), oma=c(3.5,3.5,0,0), Cex=MapDetails_List.[["Cex"]], 
-                     cex=1.8, Legend=MapDetails_List.[["Legend"]], zone=MapDetails_List.[["Zone"]], add = FALSE, mfrow = c(4, 4))
+                     cex=1.8, Legend=MapDetails_List.[["Legend"]], zone=MapDetails_List.[["Zone"]], add = FALSE, mfrow = c(4, 5))
  
       for( i in 2:length(Years2Include.)) { # This needs to loop each time for the color bins to reset with each year
          SP.Results.Dpth. <- cbind(SP.Results.Dpth., JRWToolBox::plot_maps_JRW(plot_set = 3, MappingDetails=MapDetails_List.[["MappingDetails"]], Report=Report., Sdreport=Opt.$SD, PlotDF=MapDetails_List.[["PlotDF"]], 
@@ -263,6 +263,7 @@ YearlyResultsFigures <- function(spShortName. = NULL, spLongName. = NULL, HomeDi
  
 
  
+
 
 
 
