@@ -1,6 +1,6 @@
 plotCI.jrw3 <- function (x, y = NULL, uiw, liw = uiw, ylo = NULL, yhi = NULL, 
     sfrac = 0.01, ymax = NULL, ylim = NULL, add = FALSE, maxValue = NULL, 
-    col = "black", lwd = 1, ...) 
+    col = "black", lwd = 1, x_offset = 0, ...) 
 {
     if (is.list(x)) {
         y <- x$y
@@ -19,6 +19,7 @@ plotCI.jrw3 <- function (x, y = NULL, uiw, liw = uiw, ylo = NULL, yhi = NULL,
     li <- y - liw
     if (is.null(ylim)) 
         ylim <- range(c(y, ui, li, ylo, yhi, ymax))
+    x <- x + x_offset   
     if (!add) 
         plot(x, y, ylim = ylim, col = col, lwd = lwd, ...)
     else points(x, y, col = col, ...)
@@ -29,3 +30,4 @@ plotCI.jrw3 <- function (x, y = NULL, uiw, liw = uiw, ylo = NULL, yhi = NULL,
     segments(x2 - smidge, ul, x2 + smidge, ul, col = col, lwd = lwd)
     invisible(list(x = x, y = y))
 }
+
