@@ -4,12 +4,12 @@ rotate.persp <-  function(x, y, z, w.marginal= NULL, name = "1", parametric = F,
         zlab = deparse(substitute(z)), span = 1, degree = 2, nx = 50, ny = nx, col. = c(rep(2, 20), rep(3, 20), rep(4, 20), rep(5, 12)), 
 		Type = c('Both', 'Predict', 'Fitted')[1], GoogleEarth = FALSE, NCEI = FALSE, ...)
 {
-#
-# Example:
-# attach(environmental)
-# rotate.persp(wind, temperature, ozone^(1/3), factor.f(radiation, breaks = c(6,150,Inf)))
-# detach()
-#      
+
+'  # Example:  '
+'  # attach(lattice::environmental)  '
+'  # rotate.persp(wind, temperature, ozone^(1/3), factor.f(radiation, breaks = c(6,150,Inf)))  '
+'  # detach()  '
+     
    
    lib(rgl) 
    lib(mgcv)
