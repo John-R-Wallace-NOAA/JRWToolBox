@@ -1,5 +1,5 @@
 
-dev.con <- function() {
+console.focus <- dev.con <- function() {
   Temp <- tempfile('Dummy', fileext = '.png')
   png(Temp)
   dev.off()
