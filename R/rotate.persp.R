@@ -10,7 +10,7 @@ rotate.persp <-  function(x, y, z, w.marginal= NULL, name = "1", parametric = F,
 '  # rotate.persp(wind, temperature, ozone^(1/3), factor.f(radiation, breaks = c(6,150,Inf)))  '
 '  # detach()  '
      
-   
+   library(JRWToolBox)
    lib(rgl) 
    lib(mgcv)
    # Fit <- loess(z ~ x * y, parametric = parametric, span = span, degree = degree)
@@ -20,7 +20,7 @@ rotate.persp <-  function(x, y, z, w.marginal= NULL, name = "1", parametric = F,
    
    if(F) {
    lib(akima) 
-   Interp <- interp(x, y, z, nx = nx, ny = ny, duplicate="mean", ...)
+   Interp <- akima::interp(x, y, z, nx = nx, ny = ny, duplicate="mean", ...)
    names(Interp) <- c(xlab, ylab, zlab)
    }
    
@@ -29,23 +29,28 @@ rotate.persp <-  function(x, y, z, w.marginal= NULL, name = "1", parametric = F,
    quiet <- FALSE
    Rez <- 1/1200
    Coverage <- c('crm', 'Socal_1as')[2]
-   URL <- paste0("https://gis.ngdc.noaa.gov/mapviewer-support/wcs-proxy/", 
-               "wcs.groovy?filename=", "TMP.xyz&", "request=getcoverage&version=1.0.0&service=wcs&", 
-               "coverage=", Coverage, "&CRS=EPSG:4326&format=xyz&", 
-               "resx=", Rez, "&resy=", Rez, "&bbox=", min(x), ",", min(y), ",", max(x), ",", max(y))                
-   if(!quiet) cat("\n\nURL =", URL, "\n\n") 
-                
-   Fname <- "TMP.xyz"
-   if(quiet) {
-       optUSR <- options(warn = -2)
-       on.exit(options(optUSR))
-   }
-   utils::download.file(URL, Fname, method = 'auto', mode = "wb", cacheOK = FALSE, quiet = quiet)
    
-   XYZ <- read.table("TMP.xyz")
+   
+   # URL <- paste0("https://gis.ngdc.noaa.gov/mapviewer-support/wcs-proxy/", 
+   #             "wcs.groovy?filename=", "TMP.xyz&", "request=getcoverage&version=1.0.0&service=wcs&", 
+   #             "coverage=", Coverage, "&CRS=EPSG:4326&format=xyz&", 
+   #             "resx=", Rez, "&resy=", Rez, "&bbox=", min(x), ",", min(y), ",", max(x), ",", max(y))                
+   # if(!quiet) cat("\n\nURL =", URL, "\n\n") 
+    
+   # Fname <- "TMP.xyz"
+   # if(quiet) {
+   #     optUSR <- options(warn = -2)
+   #     on.exit(options(optUSR))
+   # }
+   # utils::download.file(URL, Fname, method = 'auto', mode = "wb", cacheOK = FALSE, quiet = quiet)
+   
+   # XYZ <- read.table("TMP.xyz")
+   
+   XYZ <- data.frame(rasterToPoints(plotRAST(longrange = c(min(x), max(x)), latrange = c(min(y), max(y)), verbose = !quiet)))
+   
    names(XYZ) <- c("Latitude", "Longitude", "Depth")
-   XYZ$Depth <- XYZ$Depth
-   I.xyz <- interp(XYZ$Latitude, XYZ$Longitude, XYZ$Depth, nx = 50, ny = 50, duplicate="mean")
+   # XYZ$Depth <- XYZ$Depth
+   I.xyz <- akima::interp(XYZ$Latitude, XYZ$Longitude, XYZ$Depth, nx = 50, ny = 50, duplicate="mean")
    
    if(any(Type %in% c('Both', 'Predict'))) {
 
@@ -76,8 +81,10 @@ rotate.persp <-  function(x, y, z, w.marginal= NULL, name = "1", parametric = F,
           # plotKML::plotKML(eval(parse(text = predRasterName)), raster_name = predRasterName, colour_scale = rev(terrain.colors(255)), alpha = 0.3)
 		  eval(parse(text = paste("plotKML::plotKML(", predRasterName, ", raster_name = predRasterName, colour_scale = rev(terrain.colors(255)), alpha = 0.3)")))
 		  
-		  if(NCEI) 
-		     Imap::plotGIS(longrange = c(min(x), max(x)), latrange = c(min(y), max(y)), GoogleEarth = TRUE)
+		  if(NCEI) {
+             lib(Imap)
+		     Imap::plotRAST(longrange = c(min(x), max(x)), latrange = c(min(y), max(y)), GoogleEarth = TRUE)
+          }   
        }
      
        # persp3d(xSC3, ySC3, zSC3, col = 'tan4', xlim = c(min(x), max(x)), ylim = c(min(y), max(y)), xlab = "Longitude", ylab = "Latitude", zlab="Depth", add = TRUE)
@@ -100,11 +107,12 @@ rotate.persp <-  function(x, y, z, w.marginal= NULL, name = "1", parametric = F,
           Col <- cm.colors(20)[1 + round(19*(fit - min(fit))/diff(range(fit)))]
           dxyz <- deldir::deldir(x, y, z = fit, plot = FALSE, wl='tr', suppressMsge = TRUE)
           persp3d(dxyz, aspect = c(1, 1, 0.25), col = Col, xlab = xlab, ylab = ylab, zlab = zlab, smooth = TRUE)
-          points3d(x, y, z, col = "blue", add=TRUE)
+          points3d(x, y, z, col = "blue", add = TRUE)
           persp3d(I.xyz, aspect = c(1, 1, 0.25), col = 'tan4', , xlab = "Longitude", ylab = "Latitude", zlab="Depth", add = TRUE)
        }
    }
 }
+
 
 
 
