@@ -117,13 +117,8 @@ panel.xyplot.loess <- function (x, y, type = "p", groups = NULL, pch = if (is.nu
         else {
             llowess.line(x[ok], y[ok], smoothing.param = span, 
                 col = col.line, lwd = loess.lwd, ...)
-            if (F) {
-                smooth <- loess.smooth(x[ok], y[ok], span = span, 
-                  family = family, degree = degree, evaluation = evaluation)
-                panel.lines(x = smooth$x, y = smooth$y, col = col.line, 
-                  lty = lty, lwd = lwd, ...)
-            }
         }
     }
 }
+
 
