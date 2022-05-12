@@ -99,7 +99,7 @@ panel.xyplot.lowess <- function (x, y, type = "p", groups = NULL, span = 2/3, pc
             panel.lmline(x, y, col = col.line, lty = lty, lwd = lwd, ...)
         if ("smooth" %in% type) 
             panel.loess(x, y, horizontal = horizontal, col = col.line, lty = lty, lwd = lwd, ...)    
-        if ("lowess" %in% type)) {
+        if ("lowess" %in% type) {
 		# catf("\n\nSmooth\n")
 		# catf('span = ', span, "\n\n")
             JRWToolBox::panel.lowess(x, y, horizontal = horizontal, span = span, col = col.line.lowess, lty = lty, lwd = lwd, ...)
