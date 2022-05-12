@@ -12,6 +12,7 @@ panel.xyplot.loess <- function (x, y, type = "p", groups = NULL, pch = if (is.nu
     factor = 0.5, amount = NULL, evaluation = 50, span = 0.75, 
     loess.lwd = 1, loess.points.alpha = 1) 
 {
+    ' #  lowess is used when horizontal = FALSE  '    
     llowess.line <- function(x, y, smoothing.param = 2/3, ...) {
         tmp <- na.omit(cbind(x, y))
         llines(stats::lowess(tmp[, 2] ~ tmp[, 1], f = smoothing.param), 

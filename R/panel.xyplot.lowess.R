@@ -11,7 +11,7 @@ panel.xyplot.lowess <- function (x, y, type = "p", groups = NULL, span = 2/3, pc
     horizontal = FALSE, ..., grid = FALSE, abline = NULL, jitter.x = FALSE, 
     jitter.y = FALSE, factor = 0.5, amount = NULL, identifier = "xyplot") 
 {
-
+ 
 # cat("\npanel.xyplot.Loess\n")
 # catf('span = ', span, "\n\n")
 
@@ -98,7 +98,7 @@ panel.xyplot.lowess <- function (x, y, type = "p", groups = NULL, span = 2/3, pc
         if ("r" %in% type) 
             panel.lmline(x, y, col = col.line, lty = lty, lwd = lwd, ...)
         if ("smooth" %in% type) 
-            panel.loess(x, y, horizontal = horizontal, col = col.line, lty = lty, lwd = lwd, ...)    
+            panel.loess(x, y, horizontal = horizontal, span = span, col = col.line, lty = lty, lwd = lwd, ...)    
         if ("lowess" %in% type) {
 		# catf("\n\nSmooth\n")
 		# catf('span = ', span, "\n\n")
