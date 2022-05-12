@@ -1,5 +1,5 @@
 panel.xyplot.lowess <- function (x, y, type = "p", groups = NULL, span = 2/3, pch = if (is.null(groups)) plot.symbol$pch else superpose.symbol$pch, 
-    col, col.line = if (is.null(groups)) plot.line$col else superpose.line$col, col.line.lowess = col.line,
+    col, col.line = if (is.null(groups)) plot.line$col else superpose.line$col, 
     col.symbol = if (is.null(groups)) plot.symbol$col else superpose.symbol$col, 
     font = if (is.null(groups)) plot.symbol$font else superpose.symbol$font, 
     fontfamily = if (is.null(groups)) plot.symbol$fontfamily else superpose.symbol$fontfamily, 
@@ -47,8 +47,8 @@ panel.xyplot.lowess <- function (x, y, type = "p", groups = NULL, span = 2/3, pc
             col.line = col.line, col.symbol = col.symbol, font = font, 
             fontfamily = fontfamily, fontface = fontface, lty = lty, 
             cex = cex, fill = fill, lwd = lwd, horizontal = horizontal, 
-            panel.groups = function(...) {panel.xyplot.lowess(..., span = span)}, jitter.x = jitter.x, 
-            jitter.y = jitter.y, factor = factor, amount = amount, grid = FALSE, ...)
+            panel.groups = function(...) {panel.xyplot.lowess(..., span = span)}, 
+            jitter.x = jitter.x, jitter.y = jitter.y, factor = factor, amount = amount, grid = FALSE, ...)
     else {
         x <- as.numeric(x)
         y <- as.numeric(y)
@@ -102,7 +102,7 @@ panel.xyplot.lowess <- function (x, y, type = "p", groups = NULL, span = 2/3, pc
         if ("lowess" %in% type) {
 		# catf("\n\nSmooth\n")
 		# catf('span = ', span, "\n\n")
-            JRWToolBox::panel.lowess(x, y, horizontal = horizontal, span = span, col = col.line.lowess, lty = lty, lwd = lwd, ...)
+            JRWToolBox::panel.lowess(x, y, horizontal = horizontal, span = span, col.line = col.line, lty = lty, lwd = lwd, ...)
 	    }
         if ("spline" %in% type) 
             panel.spline(x, y, horizontal = horizontal, col = col.line, lty = lty, lwd = lwd, ...)
