@@ -7,7 +7,8 @@ plot.design.jrw <- function(x, y = NULL, fun = mean, xaxt = "n", xlab = "Factors
 
 
 	na.range <- function(x)
-	range(x[!is.na(x)])
+	    range(x[!is.na(x)])
+        
 	Tapply <- function(y, fac, fun, ll)
 	{
 		k <- length(ll)
@@ -17,6 +18,8 @@ plot.design.jrw <- function(x, y = NULL, fun = mean, xaxt = "n", xlab = "Factors
 		names(ans) <- ll
 		ans
 	}
+    
+    
 	if(!inherits(x, "data.frame")) {
 		x <- model.frame(x, y)
 		y <- NULL
@@ -72,7 +75,7 @@ plot.design.jrw <- function(x, y = NULL, fun = mean, xaxt = "n", xlab = "Factors
 		on.exit(par(oldpar))
 	}
 	statslist <- xrep <- fn <- vector("list", nf)
-	for(j in 1:nresp) {
+    for(j in 1:nresp) {
 		yj <- y[[j]]
 		out <- is.na(yj) | nas
 		if(any(out))
@@ -88,21 +91,24 @@ plot.design.jrw <- function(x, y = NULL, fun = mean, xaxt = "n", xlab = "Factors
 		stats <- unlist(statslist)
 		if(missing(ylim))
 			ylim <- na.range(stats)
-		if(missing(ylab))
+ 		if(missing(ylab))
 			plot(c(0, nf + 1), ylim, type = "n", xaxt = xaxt, xlab = xlab, ylab = what[j], ...)
 		else plot(c(0, nf + 1), ylim, type = "n", xaxt = xaxt, xlab = xlab, ylab = ylab, ...)
 		xr <- unlist(xrep)
-		if(stagger.text) {
-			for(XR in unique(xr)) {
-				tf <- xr == XR
+        
+        if(stagger.text) {
+             N <- length(unique(xr))
+             if(length(delta.stagger) == 1)
+                delta.stagger <- rep(delta.stagger, N) 
+			for(k in 1:N) {
+				tf <- xr == unique(xr)[k]
 				xr. <- xr[tf]
 				stats. <- stats[tf]
 				fn. <- unlist(fn)[tf]
 				POS <- rep(c(2,4), len = length(xr.))
-				OFFSET <- rep(c(1, 1, 1 + delta.stagger, 1 + delta.stagger), len = length(xr.))
-				for(i in 1:length(xr.)) 
+				OFFSET <- rep(c(1, 1, 1 + delta.stagger[k], 1 + delta.stagger[k]), len = length(xr.))
+                for(i in 1:length(xr.)) 
 				   text(xr.[order(stats.)[i]], stats.[order(stats.)[i]], fn.[order(stats.)[i]], adj = 1, cex = text.cex, pos=POS[i], offset= OFFSET[i])
-				
 			}
 		}
 		else text(xr - 0.1, stats, unlist(fn), adj = 1)
@@ -114,4 +120,5 @@ plot.design.jrw <- function(x, y = NULL, fun = mean, xaxt = "n", xlab = "Factors
 		segments(0.5, gm, nf + 0.5, gm)
 	}
 }
+
 

@@ -9,7 +9,7 @@ YearlyResultsFigures <- function(spShortName. = NULL, spLongName. = NULL, HomeDi
     if (!any(installed.packages()[, 1] %in% "JRWToolBox")) 
         devtools::install_github("John-R-Wallace/JRWToolBox")
         
-    JRWToolBox::lib(TeachingDemos, pos=1000)   # Put in back search position because of a conflict with %<=% function in my tool box.
+    JRWToolBox::lib(TeachingDemos, pos=1000)   # Put in back search position because of a conflict with %<=% function in my toolbox.
     
     color.bar <- function(lut, min, max=-min, nticks=11, ticks=seq(min, max, len=nticks), title = '', ...) {
           scale = (length(lut)-1)/(max-min)
@@ -64,8 +64,8 @@ YearlyResultsFigures <- function(spShortName. = NULL, spLongName. = NULL, HomeDi
     JRWToolBox::catf("\n\nCreating the species results by year figure using hexagon shapes (hexbin R package)\n\n")
      
     # numCol colors 
-    SP.Results <- SP.Results.Dpth.[,-(1:2)]
-    SP.Results[,-(1:2)] <- SP.Results[,-(1:2)] - min(SP.Results[,-(1:2)])
+    SP.Results <- SP.Results.Dpth.[,-(1:2)]  # Removing the Eastings and Northings
+    SP.Results[,-(1:2)] <- SP.Results[,-(1:2)] - min(SP.Results[,-(1:2)])  # Now -(1:2) is removing the lat/long from the calculations
     SP.Results[,-(1:2)] <- SP.Results[,-(1:2)] * (numCol - 1)/max(SP.Results[,-(1:2)]) + 1 
     SP.Results$Rescaled.Sum <- apply(SP.Results[,-(1:2)], 1, sum)
     SP.Results$Rescaled.Sum <- SP.Results$Rescaled.Sum - min(SP.Results$Rescaled.Sum)
