@@ -72,11 +72,12 @@ panel.conf.pred.band <- function(x, y, type = "p", cex = plot.symbol$cex, pch = 
 		panel.abline(glm.fit$coef, lwd = 1)
 		
 		"Lowess Line"
-		JRWToolBox::panel.Lowess(x, y, lty = 3, col = 'indianred1', lwd = 2)
+		JRWToolBox::panel.lowess(x, y, lty = 3, col = 'indianred1', lwd = 2)
 		
 		"1-1 Line"
 		" panel.abline(0, 1, lty = 4) "
 	}
 }
+
 
 
