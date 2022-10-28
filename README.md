@@ -91,32 +91,44 @@ Code to put on the top of a function to start using lib() and other functions in
 - %ino% preserves the order when using matching operators unlike %in%.  See my entry on Stack Overflow:
 https://stackoverflow.com/questions/10586652/r-preserve-order-when-using-matching-operators-in
 
+- local_and_remote_SHA() gives both the local and remote SHA numbers
+
+      local_and_remote_SHA("John-R-Wallace-NOAA/JRWToolBox")
+      
+                                       local_sha                                 remote_sha 
+      "1ef216ef2a8248868b3921dc8d18c3d667e0f2c1" "455dcefd8a5a7490ac9ff5595d1f2bf5146d4769" 
+      
+       # packageDescription() calls the local_sha 'RemoteSha', this is not correct otherwise the call 
+       #     created by gitHub_SHA() below would not work.
+       packageDescription('JRWToolBox')$RemoteSha  
+       [1] "1ef216ef2a8248868b3921dc8d18c3d667e0f2c1"
+
 
 - gitHub_SHA() shows the current (full) SHA for a given repo.  A call is also given that can be used to revert to that commit in the future. Saving these calls for each relevant package with your current code insures you are using the commits that your code works with and that your results are reproducible. The date and call are also invisibly returned and hence can be used to install the commit at any time in the future:
       
-      JRWToolBox.Commit <- SHA("JRWToolBox")
+      JRWToolBox.Commit <- gitHub_SHA("John-R-Wallace-NOAA/JRWToolBox")  
       
-      SHA: 278e298b805ef862065d8e5e733e96d54c1b3e9c
-      
-      Current call to revert to this Commit in the future with build date and time:
-      
-      devtools::install_github('John-R-Wallace/JRWToolBox', ref = '278e298b805ef862065d8e5e733e96d54c1b3e9c')  # R 3.5.0; ; 2018-08-10 21:53:30 UTC; windows
-      
+      SHA: 455dcefd8a5a7490ac9ff5595d1f2bf5146d4769 from reference: master
+
+      Current date and time and the call to revert to this Commit in the future:
+
+      2022-10-27 20:45:24
+      remotes::install_github('John-R-Wallace-NOAA/JRWToolBox', ref = '455dcefd8a5a7490ac9ff5595d1f2bf5146d4769')
+
       
       JRWToolBox.Commit 
-      $`Build`
-      [1] "R 3.5.0; ; 2018-08-10 21:53:30 UTC; windows"
-      
+      $Date
+      [1] "2022-10-27 20:22:54 PDT"
+
       $Call
-      [1] "devtools::install_github('John-R-Wallace/JRWToolBox', ref = '278e298b805ef862065d8e5e733e96d54c1b3e9c')"
-      
+      [1] "remotes::install_github('John-R-Wallace-NOAA/JRWToolBox', ref = '455dcefd8a5a7490ac9ff5595d1f2bf5146d4769')"
+
+      # Download the repo with the given reference number
       eval(parse(text = JRWToolBox.Commit$Call))
       Downloading GitHub repo John-R-Wallace/JRWToolBox@278e298b805ef862065d8e5e733e96d54c1b3e9c ...
       ...
-      
-      packageDescription('JRWToolBox')$RemoteSha
-
-
+     
+     
 - Ls() is a replacement for ls() to avoid the quotes on the object names. Setting the argument all=TRUE will list all object names in the search() path consistent with the search pattern given (find(..., simple=F) only gives back items in the search list, not the object names themselves).
 
 - dir.use() is a wrapper function which creates the path of a sub-directory within a function call, if it doesn't already exist, and then returns the path: some.function(..., path = dir.use('c:/create_this_path_if_needed')
