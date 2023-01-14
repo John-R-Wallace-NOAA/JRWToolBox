@@ -10,7 +10,7 @@ predict.lowess <- function(loFit, newdata = loFit$x, method = c("fmm", "periodic
       "  # x.new <- c(5.3, 6.8, 20.5, 25.2)   "
       "  # points(x.new, predict.lowess(lo.car, x.new), col = 'red', pch = 19)   "
       "  "
-   stats::splinefun(loFit, method = method, ties = ties)(newdata)
+   (stats::splinefun(loFit, method = method, ties = ties))(newdata)
 }
  
  
