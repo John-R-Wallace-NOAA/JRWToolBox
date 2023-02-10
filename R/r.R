@@ -8,7 +8,7 @@ r <- function (x, digits = 7)  {
        } else {
                 onlyMatrix <- is.matrix(x) & !is.data.frame(x)
                 rowNames <- rownames(x)
-                x <- JRWToolBox::renum(x)
+                x <- renum(x)
                 
                 out <- data.frame(lapply(data.frame(x), function(y) if (is.numeric(y)) {
                     round(y, digits = digits) } else y))
