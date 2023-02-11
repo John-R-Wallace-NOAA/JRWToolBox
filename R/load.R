@@ -27,8 +27,9 @@ load <- function (file, str. = TRUE, list.len = 15, nrow = 5, ...)
     
     base::load(file, .GlobalEnv, ...)
     
-    if(!exists('baseLoad') & !rev(JRWToolBox::get.subs("W:\\ALL_USR\\JRW\\SIDT\\Sablefish\\.RData", "\\"))[1] %in% c('.RData', '.Rhistory'))
+    if(!exists('baseLoad') & !rev(JRWToolBox::get.subs(file, '\\'))[1] %in% c('.RData', '.Rhistory'))
        ls.ext(file, str. = str., list.len = list.len, nrow = nrow)
 }
+
 
 
