@@ -53,7 +53,7 @@ To save a script (not an R function) as a file in the current working directory 
 Install or upgrade this package with:
 
     # Get devtools if you don't already have it.
-    if (!any(installed.packages()[, 1] %in% "remotes"))  install.packages('devtools')  
+    if (!any(installed.packages()[, 1] %in% "remotes"))  install.packages('remotes')  
     
     remotes::install_github("John-R-Wallace-NOAA/JRWToolBox", INSTALL_opts = "--no-staged-install")
     
