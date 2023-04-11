@@ -1,6 +1,6 @@
 plotCI.jrw3 <- function (x, y = NULL, uiw, liw = uiw, ylo = NULL, yhi = NULL, 
     sfrac = 0.01, ymax = NULL, ylim = NULL, add = FALSE, maxValue = NULL, 
-    col = "black", col.seg = "black", lwd = 1, x_offset = 0, ...) 
+    col = "black", col.seg.vert = col, col.seg.horiz = col, lwd = 1, x_offset = 0, ...) 
 {
     if (is.list(x)) {
         y <- x$y
@@ -24,11 +24,12 @@ plotCI.jrw3 <- function (x, y = NULL, uiw, liw = uiw, ylo = NULL, yhi = NULL,
         plot(x, y, ylim = ylim, col = col, lwd = lwd, ...)
     else points(x, y, col = col, ...)
     smidge <- diff(par("usr")[1:2]) * sfrac
-    segments(x, li, x, ui, col = col, lwd = lwd)
+    segments(x, li, x, ui, col = col.seg.vert, lwd = lwd)
     x2 <- c(x, x)
     ul <- c(li, ui)
-    segments(x2 - smidge, ul, x2 + smidge, ul, col = col.seg, lwd = lwd)
+    segments(x2 - smidge, ul, x2 + smidge, ul, col = col.seg.horiz, lwd = lwd)
     invisible(list(x = x, y = y))
 }
+
 
 
