@@ -1,4 +1,4 @@
-plotCI.jrw4 <- function (x, y = NULL, uiw, liw = uiw, ylo = NULL, yhi = NULL, 
+plotCI.jrw3 <- function (x, y = NULL, uiw, liw = uiw, ylo = NULL, yhi = NULL, 
     sfrac = 0.01, ymax = NULL, ylim = NULL, add = FALSE, maxValue = NULL, 
     col = "black", col.seg = "black", lwd = 1, x_offset = 0, ...) 
 {
