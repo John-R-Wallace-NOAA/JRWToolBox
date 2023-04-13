@@ -3,14 +3,14 @@ lib <- function (Package, Package.Name = NULL, attach = TRUE, updateCRAN = FALSE
    
    sourceFunctionURL <- function (URL) {
        " # For more functionality, see gitAFile() in the rgit package ( https://github.com/John-R-Wallace-NOAA/rgit ) which includes gitPush() and git() "
-       require(httr)
+       if (!any(installed.packages()[, 1] %in% "httr"))  install.packages("httr") 
        File.ASCII <- tempfile()
        on.exit(file.remove(File.ASCII))
        getTMP <- httr::GET(URL)
        write(paste(readLines(textConnection(httr::content(getTMP))), collapse = "\n"), File.ASCII)
-      source(File.ASCII, local = parent.env(environment()))
+       source(File.ASCII, local = parent.env(environment()))
    }
-	
+
    sourceFunctionURL("https://raw.githubusercontent.com/John-R-Wallace-NOAA/JRWToolBox/master/R/get.subs.R")
 
    oldOpts <- options(download.file.method = "auto")  # Sometimes remotes::install_github() throws an error without this
@@ -43,8 +43,8 @@ lib <- function (Package, Package.Name = NULL, attach = TRUE, updateCRAN = FALSE
         if (Package.Name == "NULL") 
             Package.Name <- get.subs(Package, "/")[[length(get.subs(Package, "/"))]]
             
-		if(!quiet) 
-	        on.exit(cat("\nPackage = ", Package, "; Package.Name = ", Package.Name, "\n\n", sep = ""), add = TRUE)
+        if(!quiet) 
+            on.exit(cat("\nPackage = ", Package, "; Package.Name = ", Package.Name, "\n\n", sep = ""), add = TRUE)
             
         if (any(utils::installed.packages()[, 1] %in% Package.Name))  
              SHA.OLD <- packageDescription(Package.Name)$RemoteSha 
@@ -78,8 +78,9 @@ lib <- function (Package, Package.Name = NULL, attach = TRUE, updateCRAN = FALSE
         if (attach) 
             library(Package, pos = pos, character.only = TRUE)
     }
-	
+
 }
+
 
 
 

@@ -9,7 +9,7 @@ ratioXoverY.SD.Boot <- function (x, y, N = 1e+06, XoverXplusY = FALSE, iter.min 
     "  # - Convergence criteria is number of bootstraps greater than iter.min and the number of the last 10 ARE less than tol, being greater than or equal to the Times.LT.tol value.  "
     "  # - Using multiple threads via the snow package did not give better performance.  "
     "  # - BurnIn.Prop argument is only for the amount of zoom of the middle graphic, it does not play into the calculations of SD.  "
-	  "  # - N is the total number of iterations; progress is the nuunber if iterations between updates.  "
+	  "  # - N is the total number of iterations; progress is the number if iterations between updates.  "
     "  "
     "  # Usage  "
     "  "
