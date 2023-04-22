@@ -12,7 +12,7 @@ load <- function (file, str. = TRUE, list.len = 15, nrow = 5, all.names = TRUE, 
                   str(OBJ, list.len = list.len)
                   cat("\n")
                   if (is.matrix(OBJ) | is.data.frame(OBJ)) {
-                    print(head(OBJ, nrow))
+                    print(head(OBJ, ifelse(nrow(OBJ) <= 20, nrow(OBJ), nrow)))
                     flush.console()
                     cat("\nDimension:", dim(OBJ), "\n\n")
                     flush.console()
@@ -30,6 +30,7 @@ load <- function (file, str. = TRUE, list.len = 15, nrow = 5, all.names = TRUE, 
     if(!exists('baseLoad') & !rev(JRWToolBox::get.subs(file, '\\'))[1] %in% c('.RData', '.Rhistory'))
        ls.ext(file, str. = str., list.len = list.len, nrow = nrow, all.names = all.names)
 }
+
 
 
 
