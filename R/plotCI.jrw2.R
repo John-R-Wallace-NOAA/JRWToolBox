@@ -1,6 +1,6 @@
-plotCI.jrw2 <- function (x, y = NULL, li = NULL, ui = NULL, uiw = NULL, liw = uiw, 
+plotCI.jrw2 <- function (x, y = NULL, ui = NULL, li = NULL, uiw = NULL, liw = NULL, 
     ylo = NULL, yhi = NULL, sfrac = 0.01, ymax = NULL, ylim = NULL, 
-    add = FALSE, maxValue = NULL, col = "black", lwd = lwd, ...) 
+    add = FALSE, maxValue = NULL, col = "black", lwd = 1, ...) 
 {
     if (is.list(x)) {
         y <- x$y
@@ -21,7 +21,7 @@ plotCI.jrw2 <- function (x, y = NULL, li = NULL, ui = NULL, uiw = NULL, liw = ui
     if (is.null(li)) 
         li <- y - liw
     if (is.null(ylim)) 
-        ylim <- range(c(y, ui, li, ylo, yhi, ymax))
+        ylim <- range(c(y, ui, li, ylo, yhi, ymax), na.rm = TRUE)
     if (!add) 
         plot(x, y, ylim = ylim, col = col, lwd = lwd, ...)
     else points(x, y, col = col, ...)
@@ -32,3 +32,4 @@ plotCI.jrw2 <- function (x, y = NULL, li = NULL, ui = NULL, uiw = NULL, liw = ui
     segments(x2 - smidge, ul, x2 + smidge, ul, col = col, lwd = lwd)
     invisible(list(x = x, y = y))
 }
+
