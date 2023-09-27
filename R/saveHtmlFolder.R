@@ -19,7 +19,7 @@ saveHtmlFolder <- function(folderName = NULL, howRecent = 1, view = TRUE, patter
     
        
     if(is.null(folderName))   
-       folderName <- paste0("Html_figure_", Date(time = TRUE)) 
+       folderName <- paste0("Html_figure_", Date(Time = TRUE)) 
     
     p <- paste0(tempdir(), "\\", list.files(tempdir(), pattern = pattern))
     # print(file.info(p))
