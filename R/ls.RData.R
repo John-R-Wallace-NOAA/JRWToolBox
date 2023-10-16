@@ -1,8 +1,11 @@
-ls.RData <- 
-function (file) 
+ls.RData <- function (file, longList = FALSE) 
 {
     local({
         base::load(file)
-        base::ls()
+        if(longList)
+           JRWToolBox::ll()
+        else   
+           base::ls()
     })
 }
+
