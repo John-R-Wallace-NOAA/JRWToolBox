@@ -1,7 +1,10 @@
 
-browserPlot <- function(plotCode, width = 16, height = 10, res = 600, file = tempfile(fileext = "png"), browser = "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe") {
+browserPlot <- function(plotCode, width = 16, height = 10, res = 600, file = tempfile(fileext = ifelse(pdf, "pdf", "png")), browser = "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe", pdf = FALSE) {
 
-    png(width = width, height = height, units = 'in', res = res, file = file)
+    if(pdf)
+       pdf(width = width, height = height, file = file)
+    else  
+       png(width = width, height = height, units = 'in', res = res, file = file)
     eval(parse(text = plotCode))
     dev.off()
     browseURL(paste0(getwd(),'/', file), browser = browser)
