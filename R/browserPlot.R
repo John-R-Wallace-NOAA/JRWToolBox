@@ -4,7 +4,7 @@ browserPlot <- function(plotCode, width = 16, height = 10, res = 600, file = tem
     png(width = width, height = height, units = 'in', res = res, file = file)
     eval(parse(text = plotCode))
     dev.off()
-    browseURL(file, browser = browser)
+    browseURL(paste0(getwd(),'/', file), browser = browser)
     invisible()
 }       
 
@@ -20,4 +20,5 @@ browserPlot <- function(plotCode, width = 16, height = 10, res = 600, file = tem
 #     dev.off()
 #     browseURL(tempFile, browser = browser)
 # }     
+  
   
