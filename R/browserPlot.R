@@ -14,14 +14,15 @@ browserPlot <- function(plotCode, width = 16, height = 10, res = 600, file = tem
     else  
        png(width = width, height = height, units = 'in', res = res, file = file)
     eval(parse(text = plotCode))
-    dev.off()
-    print(file)
+    dev.off()   
     if(grepl(':/', switchSlash(file)))
        browseURL(file, browser = browser)
-    else
+    else {
+       cat("\n\nFigure saved at:", file, "\n")
        browseURL(paste0(getwd(),'/', file), browser = browser)
+    }   
     invisible()
-}       
+}
 
 
 
