@@ -1,4 +1,3 @@
-
 browserPlot <- function(plotCode, width = 16, height = 10, res = 600, file = tempfile(fileext = ifelse(pdf, ".pdf", ".png")), browser = "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe", pdf = FALSE) {
 
    switchSlash <- function (backSlash = readClipboard()) {
@@ -9,34 +8,23 @@ browserPlot <- function(plotCode, width = 16, height = 10, res = 600, file = tem
 
  '  ---------------------------------------------------------------  '
 
+ '  # unlink() needs to used with "recursive" arg set to TRUE to remove directories. Directories are moved out of temp areas e.g. by JRWToolBox::saveHtmlFolder() used to save ggplotly() HTML figure directories.  '       
+    unlink(file, recursive = TRUE)
+    
     if(pdf)
        pdf(width = width, height = height, file = file)
     else  
        png(width = width, height = height, units = 'in', res = res, file = file)
+       
     eval(parse(text = plotCode))
-    dev.off()   
+    dev.off() 
+    
     if(grepl(':/', switchSlash(file)))
        browseURL(file, browser = browser)
     else {
        cat("\n\nFigure saved at:", file, "\n")
        browseURL(paste0(getwd(),'/', file), browser = browser)
-    }   
+    }  
+    
     invisible()
 }
-
-
-
-# -- Odd results on some plots using below --
-# browserPlot <- function(plotCode, browser = "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe", ...) {
-# 
-#     tempFile <- tempfile(fileext = "png")
-#     png(width = 16, height = 10, units = 'in', res = 600, file = tempFile)
-#    
-#     all.dots <- list(...)
-#     do.call(plotCode, arg = list(...))
-#    
-#     dev.off()
-#     browseURL(tempFile, browser = browser)
-# }     
-  
-  
