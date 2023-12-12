@@ -47,7 +47,7 @@ dataWareHouseTrawlCatch <- function (commonName = "canary rockfish", species = N
                                          'Video Study'                 WCGBTS.Video
     ") 
     
-    if(	projectShort[1] %in% c('Ask', 'ask', 'ASK'))  {
+    if( projectShort[1] %in% c('Ask', 'ask', 'ASK'))  {
         cat("\n\nSelect a project [enter 0 (zero) to abort]:\n\n"); flush.console()
         projectShort <- switch(menu(c("AFSC.Shelf  (# Triennial)","AFSC.Shelf.Canada","AFSC.Slope","WCGBTS.Combo","WCGBTS.Shelf","WCGBTS.Slope","WCGBTS.Hypoxia","WCGBTS.Santa.Barb.Basin","WCGBTS.Shelf.Rockfish","WCGBTS.Video")) + 1,
         stop("No project selected"), "AFSC.Shelf","AFSC.Shelf.Canada","AFSC.Slope","WCGBTS.Combo","WCGBTS.Shelf","WCGBTS.Slope","WCGBTS.Hypoxia","WCGBTS.Santa.Barb.Basin","WCGBTS.Shelf.Rockfish","WCGBTS.Video")
@@ -105,7 +105,7 @@ dataWareHouseTrawlCatch <- function (commonName = "canary rockfish", species = N
             SP <- SP[, c("Year", "Vessel", "Tow", "Common_Name", "Scientific_Name", "Subsample_count", "Subsample_wt_kg", "Total_sp_numbers", "Total_sp_wt_kg")]
             
             " # Match SP to all tows to get the zeros "
-            Vars <- c("project", "year", "vessel", "pass", "tow", "datetime_utc_iso", "depth_m", "longitude_dd", "latitude_dd", "area_swept_ha_der", "trawl_id")
+            Vars <- c("project", "year", "vessel", "pass", "tow", "datetime_utc_iso", "depth_m", "longitude_dd", "latitude_dd", "area_swept_ha_der", "sample_duration_hr_der", "trawl_id")
             
             " # Beth still needs to add  is_assessment_acceptable  to the other surveys"
             if (P %in% c('AFSC.Shelf', 'AFSC.Slope')) 
@@ -129,14 +129,14 @@ dataWareHouseTrawlCatch <- function (commonName = "canary rockfish", species = N
                 print(All.Tows[1:4, ])
                 cat("\n\n")
             }
-            All.Tows <- rename_columns(All.Tows, newname = c("Project", "Trawl_id", "Year", "Pass", "Vessel", "Tow", "Date", "Depth_m", "Longitude_dd", "Latitude_dd", "Area_Swept_ha"))
+            All.Tows <- rename_columns(All.Tows, newname = c("Project", "Trawl_id", "Year", "Pass", "Vessel", "Tow", "Date", "Depth_m", "Longitude_dd", "Latitude_dd", "Area_Swept_ha", "Duration_hr"))
             if (verbose) {
                 print(All.Tows[1:4, ])
                 cat("\n\n")
             }
             " # There should be no duplicates "
             All.Tows <- All.Tows[!duplicated(paste(All.Tows$Year, All.Tows$Pass, 
-                All.Tows$Vessel, All.Tows$Tow)), c("Project", "Trawl_id", "Year", "Pass", "Vessel", "Tow", "Date", "Depth_m", "Longitude_dd", "Latitude_dd", "Area_Swept_ha")]
+                All.Tows$Vessel, All.Tows$Tow)), c("Project", "Trawl_id", "Year", "Pass", "Vessel", "Tow", "Date", "Depth_m", "Longitude_dd", "Latitude_dd", "Area_Swept_ha", "Duration_hr")]
             " # Note that tow number is within vessel and within year, but not within pass (the Noahs Ark did both passes in 2012 and the tow number max is ~ twice the one pass per year total)  "
              
             Out <- JRWToolBox::match.f(All.Tows, SP, c("Year", "Vessel", "Tow"), c("Year", "Vessel", "Tow"), c("Common_Name", "Scientific_Name", "Subsample_count", "Subsample_wt_kg", "Total_sp_numbers", "Total_sp_wt_kg"))
@@ -166,9 +166,3 @@ dataWareHouseTrawlCatch <- function (commonName = "canary rockfish", species = N
     cat("\n")
     invisible(OutAll)
 }
-
-
-
-
-
-
