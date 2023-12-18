@@ -6,16 +6,12 @@ plot_Lines_or_Data_Imap <- function(XY, type = c('l', 'p', 'o', 'b')[1], labels 
          latrange = c(min(XY[,2]) - figureDelta, max(XY[,2]) + figureDelta))
    
    N <- nrow(XY)
-   
    lines(XY, type = type, col = colLine)  
-
    if(!is.null(colPts))
        points(XY, col = colPts)   
-   
    if(is.logical(labels)) {
        if(labels) 
             text(XY + data.frame(rep(labelDelta, N), rep(0, N)), label =  seq_along(XY[,1]), cex = cex)
    } else 
        text(XY + data.frame(rep(labelDelta, N), rep(0, N)), label = labels, cex = cex)
-     
 }
