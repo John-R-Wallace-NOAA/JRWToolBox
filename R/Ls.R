@@ -55,6 +55,8 @@ Ls <- function(pattern = "[!.]*", pos = 1, cases = TRUE, all = FALSE, long = FAL
        Lss(pattern, pos = pos, all = all, long = long, open = open, fix = fix, ...)
   
     else {
+       cat("\n")
+       Lss(pattern, pos = pos, all = all, long = long, open = open, fix = fix, ...)
        if(cases) {
           Pat <- tolower(pattern)
           cat("\n--", Pat, "--\n")
@@ -68,11 +70,5 @@ Ls <- function(pattern = "[!.]*", pos = 1, cases = TRUE, all = FALSE, long = FAL
           cat("\n--", Pat, "--\n")
           Lss(Pat, pos = pos, all = all, long = long, open = open, fix = fix, ...)
        }
-       else
-         Lss(pattern, pos = pos, all = all, long = long, open = open, fix = fix, ...)
-       
     }
 }
-
-
-
