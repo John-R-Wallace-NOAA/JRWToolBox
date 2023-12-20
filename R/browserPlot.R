@@ -1,4 +1,6 @@
-browserPlot <- function(plotCode, width = 16, height = 10, res = 600, file = tempfile(fileext = ifelse(pdf, ".pdf", ".png")), browser = "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe", pdf = FALSE) {
+
+browserPlot <- function(plotCode, width = 16, height = 10, res = 600, file = tempfile(fileext = ifelse(pdf, ".pdf", ".png")), 
+                          browser = "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe", pdf = FALSE) {
 
    switchSlash <- function (backSlash = readClipboard()) {
       forwardSlash <- gsub("//", "/", gsub("\\\\", "/", backSlash))
@@ -24,7 +26,12 @@ browserPlot <- function(plotCode, width = 16, height = 10, res = 600, file = tem
     else {
        cat("\n\nFigure saved at:", file, "\n")
        browseURL(paste0(getwd(),'/', file), browser = browser)
-    }  
+    } 
+
+    if(!is.null(dev.list())) {
+       cat("\n\nPlotting device list:\n")
+       print(dev.list())    
+    }
     
     invisible()
 }
