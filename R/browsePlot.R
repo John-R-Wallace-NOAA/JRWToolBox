@@ -1,6 +1,6 @@
 
 browsePlot <- function(plotCode, width = 16, height = 10, res = 600, file = tempfile(fileext = ifelse(pdf, ".pdf", ".png")), 
-                          browser = "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe", pdf = FALSE) {
+                          browser = getOption("browser"), pdf = FALSE) {
 
    switchSlash <- function (backSlash = readClipboard()) {
       forwardSlash <- gsub("//", "/", gsub("\\\\", "/", backSlash))
