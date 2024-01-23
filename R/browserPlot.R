@@ -25,7 +25,7 @@ browserPlot <- function(plotCode, width = 16, height = 10, res = 600, file = tem
        browseURL(file, browser = browser)
     else {
        cat("\n\nFigure saved at:", file, "\n")
-       browseURL(paste0(getwd(),'/', file), browser = browser)
+       browseURL(paste0('file://', getwd(),'/', file), browser = browser)
     } 
 
     if(!is.null(dev.list())) {
