@@ -18,8 +18,11 @@ browsePlot <- function(plotCode, width = 16, height = 10, res = 600, file = temp
     else  
        png(width = width, height = height, units = 'in', res = res, file = file)
        
-    eval(parse(text = plotCode))
-    dev.off() 
+    on.exit({if(inherits(trySgVarSel, "try-error")) if(any(names(dev.list()) %in% c("png", "pdf"))) dev.off()}) 
+    trySgVarSel <- try(eval(parse(text = plotCode)))
+    
+    if(any(names(dev.list()) %in% c("png", "pdf")))
+       dev.off() 
     
     if(grepl(':/', switchSlash(file)))
        browseURL(file, browser = browser)
