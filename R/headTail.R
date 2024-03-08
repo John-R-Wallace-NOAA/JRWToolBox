@@ -1,5 +1,4 @@
 
-headTail <- function(x, n = 6L) {
-   rbind(head(x, n = n), tail(x, n = n))
+headTail <- function(x, n_head = 6L, n_tail = n_head) {
+   rbind(head(x, n = n_head), tail(x, n = n_tail))
 }   
-
