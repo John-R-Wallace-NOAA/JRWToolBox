@@ -12,5 +12,8 @@ headTail <- function(x, n_head = 6L, n_tail = n_head, n_col_head = if(ncol(x) > 
     if(!is.null(n_col_head) & is.null(n_col_tail) ) 
        out <- out[, 1:n_col_head]
    
-   out
+   print(out)
+   cat("\nDimension:", dim(x), "\n\n")
+   
+   invisible(out)
 }
