@@ -1,5 +1,7 @@
 
 predicted_observed_plot <- function(observed_val, predicted_val, model_predicted_line = NULL, model_line_col = 'dodgerblue', model_name = "", ...) {
+
+  require(ggplot2)
   
   residual_val <- observed_val - predicted_val
   R_squared <- round(cor(observed_val, predicted_val)^2, 4)
