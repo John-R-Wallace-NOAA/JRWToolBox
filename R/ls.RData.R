@@ -35,7 +35,7 @@ ls.RData <- function (file, str. = FALSE, list.len = 15, nrow = 5, all.names = T
     if(str.)
        ls.ext(list.len = list.len, nrow = nrow, all.names = all.names)
        
-    if(!str. & !longList)  {
+    if(!str.)  {                            # if(!str. & !longList)  {
        local({
          base::load(file)        
          base::ls(all.names = all.names)
