@@ -7,7 +7,7 @@ ls.RData <- function (file, str. = FALSE, list.len = 15, nrow = 5, all.names = T
             for (i in Names[!grepl("%", Names)]) {
               OBJ <- eval(parse(text = i))
               cat("\n", i, ":\n\n", sep = "")
-              str(OBJ, list.len = list.len)
+              print(str(OBJ, list.len = list.len))
               cat("\n")
               if (is.matrix(OBJ) | is.data.frame(OBJ)) {
                 print(head(OBJ, ifelse(nrow(OBJ) <= 20, nrow(OBJ), nrow)))
@@ -38,7 +38,7 @@ ls.RData <- function (file, str. = FALSE, list.len = 15, nrow = 5, all.names = T
     if(!str.)  {                            # if(!str. & !longList)  {
        local({
          base::load(file)        
-         base::ls(all.names = all.names)
+         print(base::ls(all.names = all.names))
        })
     }
 }
