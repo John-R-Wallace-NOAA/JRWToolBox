@@ -1,4 +1,4 @@
 Table <- function(...) {
 
-   table(..., useNA = "ifany")
+   print(table(..., useNA = "ifany"))
 }
