@@ -1,0 +1,5 @@
+
+       Function                                           Example                                                                           Comments
+GitHub_File_Download()    GitHub_File_Download("John-R-Wallace-NOAA/FishNIRS/master/R/agreementFigure.R")           Download a file from GitHub and open the working directory where it was downloaded into.
+                                                                                                                    'gitAFile', 'get.subs', and, if Open_Working_Directory = TRUE (the default), 'openwd' will be 
+                                                                                                                    overwritten in the .GlobalEnv.
