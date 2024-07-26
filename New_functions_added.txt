@@ -4,3 +4,6 @@ GitHub_File_Download()    GitHub_File_Download("John-R-Wallace-NOAA/FishNIRS/mas
                                                                                                                     'gitAFile', 'get.subs', and, if Open_Working_Directory = TRUE (the default), 'openwd' will be 
                                                                                                                     overwritten in the .GlobalEnv. Tried source(..., local = parent.frame() in the function to avoid 
                                                                                                                     this, but it didn't work.
+
+tempName()                tempName("Dense"); tempName("Dense"); tempName("Dense"); tempName("Dense", ".png")        Based on base::tempfile(). THe temp file is unlink()'ed once the temp name is created.
+
