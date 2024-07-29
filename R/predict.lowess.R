@@ -5,7 +5,7 @@ function(loFit, newdata = loFit$x, method = c("fmm", "periodic", "natural", "mon
       "  # JRWToolBox::plot.lowess(cars$speed, cars$dist)   "
   
       "  # lo.car <- lowess(cars$speed, cars$dist)   "
-      "  # If the x variable is descending, then it has to be called explictly, i.e. predict.lowess(lo.car, cars$speed)  "
+      "  # If the lowess() x variable is descending, then it has to be called explictly, i.e. predict.lowess(lo.car, cars$speed)  "
       "  # points(cars$speed, predict.lowess(lo.car), col = 'dodgerblue', pch = 19)    "
   
       "  # x.new <- c(5.3, 6.8, 20.5, 25.2)   "
