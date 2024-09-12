@@ -7,3 +7,9 @@ GitHub_File_Download()    GitHub_File_Download("John-R-Wallace-NOAA/FishNIRS/mas
 
 tempName()                tempName("Dense"); tempName("Dense"); tempName("Dense"); tempName("Dense", ".png")        Based on base::tempfile(). THe temp file is unlink()'ed once the temp name is created.
 
+extractRData                                                                                                        Function for extracting an object from a .RData file created by the R save() command. 
+                                                                                                                    Inputs: quoted object name, quoted .RData file path
+
+ls.RData                                                                                                            Function for listing the object(s) from a .RData file created by the R save() command. 
+                                                                                                                    Inputs: quoted object name, quoted .RData file path
+    
