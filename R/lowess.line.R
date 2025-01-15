@@ -22,6 +22,3 @@ lowess.line <- function(x, y, smoothing.param = 2/3, method = c("fmm", "periodic
     j <- order(lo$x)
     lines(lo$x[j], predictLo[j], ...)
 }
-
-
-}
