@@ -1,7 +1,8 @@
 
        Function                                           Example                                                                           Comments
-GitHub_File_Download()    GitHub_File_Download("John-R-Wallace-NOAA/FishNIRS/master/R/agreementFigure.R")           Download a file from GitHub and open the working directory where it was downloaded into.
-                                                                                                                    'gitAFile', 'get.subs', and, if Open_Working_Directory = TRUE (the default), 'openwd' will be 
+GitHub_File_Download()    GitHub_File_Download("John-R-Wallace-NOAA/FishNIRS/master/R/agreementFigure.R")           Download a function from GitHub into R and the working directory. With argument: 
+                                                                                                                    Open_Working_Directory = TRUE (the defauult), the working directory will also be opened.
+                                                                                                                    'gitAFile', 'get.subs', and, if Open_Working_Directory = TRUE, 'openwd' will be 
                                                                                                                     overwritten in the .GlobalEnv. Tried source(..., local = parent.frame() in the function to avoid 
                                                                                                                     this, but it didn't work.
 
