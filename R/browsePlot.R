@@ -20,7 +20,7 @@ function(plotCode, width = 16, height = 10, res = 600, file = tempfile(fileext =
        png(width = width, height = height, units = 'in', res = res, file = file)
        
     on.exit({if(inherits(trySgVarSel, "try-error")) if(any(names(dev.list()) %in% c("png", "pdf"))) dev.off()}) 
-    trySgVarSel <- try(eval(parse(text = plotCode)))
+    trySgVarSel <- try(eval(parse(text = plotCode), envir = parent.frame()))
     
     if(any(names(dev.list()) %in% c("png", "pdf")))
        dev.off() 
