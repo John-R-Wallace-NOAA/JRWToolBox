@@ -18,7 +18,7 @@ load <- function (file, str. = TRUE, list.len = 15, nrow = 5, ncol = nrow, all.n
                     flush.console()
                   }
                 }
-                rm(i, Names)
+                rm(i, OBJ, Names)
                 invisible(base::ls(all.names = all.names))
             }
             else base::ls(all.names = all.names)
