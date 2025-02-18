@@ -25,5 +25,5 @@ gPlot <- function(data, x.name, y.name, xFunc = NULL, xlab = NULL, ylab = NULL, 
           points(data[, x.name], data[, y.name], col = col, pch = pch) # Points over grid lines looks better
        else
           points(do.call(xFunc, list(data[, x.name])), data[, y.name], col = col, pch = pch)
-	   }   
+    }   
 }
