@@ -20,7 +20,7 @@ gPlot <- function(data, x.name, y.name, xFunc = NULL, xlab = NULL, ylab = NULL, 
     if(vertLineEachPoint) 
         abline(v = unique(data[, x.name]), h = 0, col = "grey")
 		
-    if(Type	!= "n") {	
+    if(Type != "n") {	
        if(is.null(xFunc))
           points(data[, x.name], data[, y.name], col = col, pch = pch) # Points over grid lines looks better
        else
