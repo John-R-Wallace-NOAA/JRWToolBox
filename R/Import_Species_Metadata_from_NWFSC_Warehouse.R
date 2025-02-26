@@ -1,5 +1,5 @@
 
-Import_Species_Metadata_from_NWFSC_Warehouse <- function(CommonName = NULL, SciName, verbose = FALSE,
+Import_Species_Metadata_from_NWFSC_Warehouse <- function(CommonName = NULL, SciName, verbose = FALSE, Days_into_Year = TRUE, 
                 Project = c('Groundfish Slope and Shelf Combination Survey', 'Groundfish Slope Survey', 'Groundfish Shelf Survey')[1]) {
     
     sourceFunctionURL <- function (URL,  type = c("function", "script")[1]) {
@@ -101,6 +101,14 @@ Import_Species_Metadata_from_NWFSC_Warehouse <- function(CommonName = NULL, SciN
        
     SP$Date <- as.POSIXct(SP$Date)
     SP$Month <- Months.POSIXt(SP$Date)
+    
+    if(Days_into_Year) {
+        SP$Days_into_Year <- NA
+        for (i in 1:nrow(SP)) {
+          bar(i, nrow(SP))
+          SP$Days_into_Year[i] <- julian(SP$Date[i], origin = as.POSIXct(paste0(get.subs(as.character(SP$Date[i]), "-")[1], "-01-01"), tz = "America/Los_Angeles"))
+        }
+    }
     
     if(verbose) {
        print(SP[1:3,]); cat("\n\n")
