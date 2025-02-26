@@ -23,6 +23,7 @@ Import_Species_Metadata_from_NWFSC_Warehouse <- function(CommonName = NULL, SciN
     
     sourceFunctionURL("https://raw.githubusercontent.com/John-R-Wallace-NOAA/JRWToolBox/master/R/Table.R")
     sourceFunctionURL("https://raw.githubusercontent.com/John-R-Wallace-NOAA/JRWToolBox/master/R/Spec.code.f.R")
+    sourceFunctionURL("https://raw.githubusercontent.com/John-R-Wallace-NOAA/JRWToolBox/master/R/Months.POSIXt.R")
     sourceFunctionURL("https://raw.githubusercontent.com/John-R-Wallace-NOAA/JRWToolBox/master/R/Spec.code.052002.R")
  
     rename_columns <- function(DF, origname = colnames(DF), newname) {
@@ -63,7 +64,7 @@ Import_Species_Metadata_from_NWFSC_Warehouse <- function(CommonName = NULL, SciN
                         ",field_identified_taxonomy_dim$scientific_name=", gsub(" ", "%20", SciName), "&variables=", paste0(Vars, collapse = ","))  
     }       
       
-    '   # station_invalid used below   '      
+    '   # station_invalid used below but not above  '      
     if(Project %in% c('Groundfish Triennial Shelf Survey', 'AFSC/RACE Slope Survey')) {
        if(!is.null(CommonName))
           UrlText <- paste0("https://www.webapps.nwfsc.noaa.gov/data/api/v1/source/trawl.individual_fact/selection.json?filters=project=", gsub(" ", "%20", Project), 
@@ -99,7 +100,7 @@ Import_Species_Metadata_from_NWFSC_Warehouse <- function(CommonName = NULL, SciN
                  "Stn_Invalid_Date_id", "Depth_m", "Common_Name", "Scientific_Name", "Length_cm", "Weight_kg", "Width_cm", "Sex", "Age", "AgeStr_id")]
        
     SP$Date <- as.POSIXct(SP$Date)
-    SP$Month <- JRWToolBox::Months.POSIXt(SP$Date)
+    SP$Month <- Months.POSIXt(SP$Date)
     
     if(verbose) {
        print(SP[1:3,]); cat("\n\n")
