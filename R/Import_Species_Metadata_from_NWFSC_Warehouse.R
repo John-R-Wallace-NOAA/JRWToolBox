@@ -22,9 +22,10 @@ Import_Species_Metadata_from_NWFSC_Warehouse <- function(CommonName = NULL, SciN
     }
     
     sourceFunctionURL("https://raw.githubusercontent.com/John-R-Wallace-NOAA/JRWToolBox/master/R/Table.R")
+    sourceFunctionURL("https://raw.githubusercontent.com/John-R-Wallace-NOAA/JRWToolBox/master/R/get.subs.R")
     sourceFunctionURL("https://raw.githubusercontent.com/John-R-Wallace-NOAA/JRWToolBox/master/R/Spec.code.f.R")
     sourceFunctionURL("https://raw.githubusercontent.com/John-R-Wallace-NOAA/JRWToolBox/master/R/Months.POSIXt.R")
-    sourceFunctionURL("https://raw.githubusercontent.com/John-R-Wallace-NOAA/JRWToolBox/master/R/Spec.code.052002.R")
+    sourceFunctionURL("https://raw.githubusercontent.com/John-R-Wallace-NOAA/JRWToolBox/master/R/Spec.code.052002.R")  
  
     rename_columns <- function(DF, origname = colnames(DF), newname) {
         " # 'age_years' has both age and years, so first forcing a change to just 'age' "
@@ -108,6 +109,7 @@ Import_Species_Metadata_from_NWFSC_Warehouse <- function(CommonName = NULL, SciN
           bar(i, nrow(SP))
           SP$Days_into_Year[i] <- julian(SP$Date[i], origin = as.POSIXct(paste0(get.subs(as.character(SP$Date[i]), "-")[1], "-01-01"), tz = "America/Los_Angeles"))
         }
+        SP$Days_into_Year <- round(SP$Days_into_Year)
     }
     
     if(verbose) {
