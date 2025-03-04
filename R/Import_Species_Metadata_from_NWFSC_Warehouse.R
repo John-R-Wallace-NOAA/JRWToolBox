@@ -1,5 +1,5 @@
 
-Import_Species_Metadata_from_NWFSC_Warehouse <- function(CommonName = NULL, SciName, verbose = FALSE, Days_into_Year = TRUE, 
+Import_Species_Metadata_from_NWFSC_Warehouse <- function(CommonName = NULL, SciName, verbose = FALSE, Days_into_Year = TRUE, show_capitalized_common_names = FALSE,
                 Project = c('Groundfish Slope and Shelf Combination Survey', 'Groundfish Slope Survey', 'Groundfish Shelf Survey')[1]) {
     
     sourceFunctionURL <- function (URL,  type = c("function", "script")[1]) {
@@ -47,6 +47,13 @@ Import_Species_Metadata_from_NWFSC_Warehouse <- function(CommonName = NULL, SciN
     
     #  ------------------------------------------------------------------------------------------------------------------------------------
     
+    if(show_capitalized_common_names) {
+       sourceFunctionURL("https://raw.githubusercontent.com/John-R-Wallace-NOAA/JRWToolBox/master/R/Spec.code.052002", type = "script")
+       print(Spec.code.052002$CommonName[Spec.code.052002$CommonName != casefold(Spec.code.052002$CommonName)]); cat("\n")
+       return(invisible())
+    }
+    
+    
     Vars <- c("project", "trawl_id", "station_code", "common_name", "scientific_name", "year", "vessel", "pass", "leg", "tow", "datetime_utc_iso", "sampling_start_hhmmss", 
               "sampling_end_hhmmss", "performance", "station_invalid", "target_station_design_dim$stn_invalid_for_trawl_date_whid", "depth_m", "weight_kg", "length_cm", 
               "width_cm", "sex", "age_years", "otosag_id", "latitude_dd", "longitude_dd")
@@ -65,7 +72,7 @@ Import_Species_Metadata_from_NWFSC_Warehouse <- function(CommonName = NULL, SciN
                         ",field_identified_taxonomy_dim$scientific_name=", gsub(" ", "%20", SciName), "&variables=", paste0(Vars, collapse = ","))  
     }       
       
-    '   # station_invalid used below but not above  '      
+    '   # "station_invalid" used below but not above  '      
     if(Project %in% c('Groundfish Triennial Shelf Survey', 'AFSC/RACE Slope Survey')) {
        if(!is.null(CommonName))
           UrlText <- paste0("https://www.webapps.nwfsc.noaa.gov/data/api/v1/source/trawl.individual_fact/selection.json?filters=project=", gsub(" ", "%20", Project), 
