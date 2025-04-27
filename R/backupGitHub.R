@@ -23,6 +23,8 @@ backupGitHub <- function() {
   download.file("https://github.com/John-R-Wallace-NOAA/GLMM-Comparison/archive/master.zip", destfile = paste0(Dir, 'GLMM-Comparison ', Sys.Date(), '.zip'), mode = 'wb')
   download.file("https://github.com/John-R-Wallace-NOAA/CI_for_the_mean_of_Log-Normal_Distributed_Data/archive/master.zip", destfile = paste0(Dir, 'CI_for_the_mean_of_Log-Normal_Distributed_Data ', Sys.Date(), '.zip'), mode = 'wb')
   download.file("https://github.com/John-R-Wallace-NOAA/Statistical-Investigations-with-R/archive/master.zip", destfile = paste0(Dir, 'Statistical-Investigations-with-R ', Sys.Date(), '.zip'), mode = 'wb')
+
+  download.file("https://github.com/John-R-Wallace-NOAA/FishNIRS/archive/master.zip", destfile = paste0(Dir, 'FishNIRS ', Sys.Date(), '.zip'), mode = 'wb')
   
   
   cat("\n\nAll GitHub directories have been backed up into:", Dir, "\n\n")
